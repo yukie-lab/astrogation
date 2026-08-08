@@ -54,6 +54,7 @@ class TestC19_NumbersPipeline:
         prose = re.sub(r"\b(19|20)\d\d\b", " YEAR ", prose)
         prose = re.sub(r"\b\d{4}-\d{2}-\d{2}\b", " DATE ", prose)
         prose = re.sub(r"C1--C1?\d", " CERT ", prose)
+        prose = re.sub(r"v\d+\.\d+(-\w+)?", " VERSION ", prose)
         prose = re.sub(r"10\^\{?-?\d+\}?", " TOL ", prose)
         bad = []
         for m in re.finditer(r"\d+\.\d+|\d+[eE][+-]?\d+|\b\d{3,}\b", prose):
