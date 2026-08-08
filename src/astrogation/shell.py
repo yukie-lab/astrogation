@@ -20,8 +20,11 @@ SURFACE_DEC_WINDOW_MAX = 24.0 / 25.0  # [R] v3 (25)
 def sigma0(x: float, R: float = 1.0) -> float:
     """静的殻の表面エネルギー密度 σ₀。[R] v3 (22):
 
-        σ₀ = (1/4πR)(1 − √(1−x))"""
-    return (1.0 - math.sqrt(1.0 - x)) / (FOUR_PI * R)
+        σ₀ = (1/4πR)(1 − √(1−x))
+
+    実装は桁落ちフリーの等価形 1−s = x/(1+s)(小 x で相殺を回避)。"""
+    s = math.sqrt(1.0 - x)
+    return x / ((1.0 + s) * FOUR_PI * R)
 
 
 def p0(x: float, R: float = 1.0) -> float:
@@ -50,9 +53,13 @@ def surface_dec_window(x: float) -> bool:
 
 
 def anchor_margin_M0(x: float) -> float:
-    """アンカーマージン M₀ = 8πR(σ₀−p₀) = −(5s−1)(s−1)/(2s)。[R] v3 (61)。"""
+    """アンカーマージン M₀ = 8πR(σ₀−p₀) = −(5s−1)(s−1)/(2s)。[R] v3 (61)。
+
+    実装は桁落ちフリーの等価形 (5s−1)·x/(2s(1+s))
+    ((s−1)(s+1) = −x による厳密変形。小 x での相殺を回避 — c 鎖の
+    tail 域(x ~ 1e-13)の数値ノイズ源だった)。"""
     s = math.sqrt(1.0 - x)
-    return -(5.0 * s - 1.0) * (s - 1.0) / (2.0 * s)
+    return (5.0 * s - 1.0) * x / (2.0 * s * (1.0 + s))
 
 
 # ------------------------------------------- ℓ=1 閉包(C3a / C3c の対象)

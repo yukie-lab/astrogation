@@ -101,3 +101,49 @@ C_LOWER_VALUES = (8.5e-5, 1.4e-4, 1.7e-4, 1.4e-4, 2.0e-5)
 """[R] v3 (73): c(x) ≈ {8.5, 14, 17, 14, 2.0}×10⁻⁵(Lemma 6 の閉形式評価値)。
 g̲ より約 3 桁保守的な「厳密安全床」。定数鎖 (68)-(72) の自前再評価は
 Phase 0 の範囲外(L7 §C・P0 レポート参照)— ここでは論文記録値のみ保持。"""
+
+
+# ================================================= 三層 API(PHASE_1.md 1-1)
+TIER_AUTHORITY = {
+    "floor": "[R(A3)/STOP-pending]",   # 保守化 c 鎖(P1_STOP_c_chain.md 参照)
+    "effective": "[N]",                 # g̲ 数表(範囲外は例外/呼び出し側でフォールバック)
+    "ceiling": "[R]",                   # min(運動学的天井, 厚壁窓)— 開条件・到達不能上界
+}
+
+
+class TierDomainError(ValueError):
+    """三層 API の定義域外。"""
+
+
+def tier_bound(x: float, tier: str) -> float:
+    """三層拘束 API。λ の上限値を返す(PHASE_1.md 1-1)。
+
+    - "ceiling": min(½(1−x), (4/5−x)/2) [R]。恒等的に (4/5−x)/2(台帳 L42)。
+      **開条件**(admissible には到達不能)。定義域 x ∈ (0, 4/5)
+    - "effective": g̲(x) [N]。定義域 [0.1, 0.7](範囲外は OutsideSampledRangeError。
+      騎乗プロファイルのフォールバック処理は timeopt 層が行う)
+    - "floor": 保守化 c(x) [R(A3)/STOP-pending](appc_floor.c_floor)
+
+    注意(順序逆転の検出・報告事項): x ≳ 0.54 で g̲(x) > ceiling(x)
+    (薄殻 [N] フロンティアが厚壁 [R] 実現可能性を超える)。主拘束(CLAUDE.md §5)
+    は常に併課されるため、騎乗の運用値は min(tier, ceiling) とする。"""
+    if tier == "ceiling":
+        if not (0.0 < x < 0.8):
+            raise TierDomainError(f"ceiling tier: x={x} は (0, 4/5) 外(厚壁窓が空)")
+        return min(0.5 * (1.0 - x), 0.5 * (0.8 - x))
+    if tier == "effective":
+        return g_lower(x)
+    if tier == "floor":
+        from .appc_floor import c_floor
+        if not (0.0 < x < 0.8):
+            raise TierDomainError(f"floor tier: x={x} は (0, 4/5) 外")
+        return c_floor(x)
+    raise ValueError(f"unknown tier: {tier!r}")
+
+
+def tier_operative(x: float, tier: str) -> float:
+    """騎乗の運用値: min(tier_bound, ceiling)(主拘束の併課)。"""
+    ceil = tier_bound(x, "ceiling")
+    if tier == "ceiling":
+        return ceil
+    return min(tier_bound(x, tier), ceil)

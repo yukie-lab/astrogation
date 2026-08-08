@@ -66,3 +66,32 @@ def msun_to_geo(n_msun: float) -> float:
 
 def geo_to_msun(m_geo: float) -> float:
     return m_geo / M_SUN_GEO_M
+
+
+# --- 電力・光度(Phase 1 追加。SI 正直レイヤー用)---
+PLANCK_POWER_SI = C_SI**5 / G_SI     # W — 幾何単位の無次元パワー → SI(c⁵/G)
+L_SUN_SI = 3.828e26                  # W(IAU 2015 nominal solar luminosity)
+GM_EARTH_SI = 3.986_004_418e14       # m³ s⁻²(IAU nominal geocentric grav. param.)
+M_EARTH_KG = GM_EARTH_SI / G_SI      # kg(G の不確かさを相続)
+
+
+def power_geo_to_si(p_geo: float) -> float:
+    """幾何単位の無次元パワー(dm/du、長さ/長さ)→ W。P_SI = p·c⁵/G。"""
+    return p_geo * PLANCK_POWER_SI
+
+
+def power_si_to_geo(p_si: float) -> float:
+    return p_si / PLANCK_POWER_SI
+
+
+def power_si_to_lsun(p_si: float) -> float:
+    """W → 太陽光度 L☉。"""
+    return p_si / L_SUN_SI
+
+
+def kg_to_mearth(m_kg: float) -> float:
+    return m_kg / M_EARTH_KG
+
+
+def kg_to_msun(m_kg: float) -> float:
+    return m_kg / M_SUN_KG
