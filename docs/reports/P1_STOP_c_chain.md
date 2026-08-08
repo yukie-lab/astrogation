@@ -70,3 +70,14 @@ from astrogation.appc_floor import chain_report, c_floor_conservative; ..."`
 4. 床 tier を保留し当面二層運用([N] 実効 + [R] 天井)
 
 選択肢 3 は同時に「(73) は本文のみから再現不能」という**発見候補の検証**を兼ねる。
+
+---
+
+## 追記(2026-08-08 ゲート裁定 1: 選択肢 3 採択 → 実施済み)
+
+人間裁定により選択肢 3(著者コード world_tube 照合)を実施した。
+結果: **(68)-(73) の鎖は公開著者コードにも存在せず、条件 (c) が発動 —
+STOP 継続、発見候補は「本文+公開コードから再現不能」に昇格**。
+詳細・相互検証 6 件(D(x) 撤回の著者明文確認を含む)・次の一手の選択肢は
+`P1_worldtube_reconciliation.md`。床 tier は条件 (a) により
+c_cons [R(A3)/STOP-pending] を継続。
