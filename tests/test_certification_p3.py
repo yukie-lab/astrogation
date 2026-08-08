@@ -173,3 +173,28 @@ class TestCitationObligations:
                        "gr-qc/9412063",       # Damour 1995
                        "world_tube", "warpax"):
             assert needle in tex, f"引用義務欠落: {needle}"
+
+# ==================================================== 両言語同一性(3c DoD)
+class TestBilingualIdentity:
+    def test_same_macro_usage_sets(self):
+        """EN と JA の原稿が同一の \\Nm マクロ集合を使用する(数値同一性)。"""
+        en = _tex()
+        ja_p = PAP / "paper_ja.tex"
+        if not ja_p.exists():
+            pytest.skip("paper_ja.tex 未生成")
+        ja = ja_p.read_text()
+        used = lambda t: set(re.findall(r"\\(Nm\w+)", t))
+        assert used(en) == used(ja), used(en) ^ used(ja)
+
+    def test_same_generated_inputs(self):
+        """両言語が同一の numbers.tex と表生成物を参照する。"""
+        ja = (PAP / "paper_ja.tex").read_text()
+        en = _tex()
+        for inp in ("numbers.tex", "tables/table1_tiers.tex",
+                    "tables/table2_ladder.tex", "tables/table3_contour.tex",
+                    "tables/table4_bracket.tex", "tables/table5_si.tex"):
+            assert f"\\input{{{inp}}}" in en.replace(" ", "")or inp in en
+            assert inp in ja
+        for fig in ("fig1_contour", "fig2_tiers", "fig3_bracket",
+                    "fig4_fingerprint", "fig5_pattern", "fig6_flash"):
+            assert fig in en and fig in ja
