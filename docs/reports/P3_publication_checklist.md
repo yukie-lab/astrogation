@@ -26,13 +26,13 @@
 
 ## F. 最終公開シーケンス(B/C 統合 — 人間実行、上から順に)
 
-- [ ] F1. **Zenodo 論文 draft**: https://zenodo.org/uploads/new →
+- [x] F1. **Zenodo 論文 draft**(完了 — 予約 DOI: 10.5281/zenodo.21853092): https://zenodo.org/uploads/new →
       `paper/paper_en.pdf`・`paper/paper_ja.pdf` をアップロード →
       Resource type: Publication/Preprint → 書誌を
       `paper/publication_metadata.md` から転記(著者 Maeda, Yukie /
       ORCID 0009-0005-3401-9230、抄録は各 tex からコピー、License CC BY 4.0、
       Related works に arXiv:2606.22531)→ **Save draft**(DOI が予約表示される)
-- [ ] F2. **DOI 注入と最終コミット・タグ**: 予約 DOI を両 tex の
+- [x] F2. **DOI 注入と最終コミット・タグ**(2026-08-09 実行。タグは本コミットに付与): 予約 DOI を両 tex の
       「[Zenodo DOI to be minted at release]」(JA:「[Zenodo DOI は
       リリース時発行]」)に記入 → `cd paper && tectonic paper_en.tex &&
       tectonic paper_ja.tex` → `git add -A && git commit -m "release: inject
