@@ -9,66 +9,56 @@
       (2026-08-09 完了: Yukie Maeda / 前田 幸枝(Yukie Maeda)、ORCID 0009-0005-3401-9230)
 - [x] 記入後に両 PDF を再コンパイル(2026-08-09 完了)
 
-## B. リポジトリ公開(GitHub)— 操作手順
+## B. 準備段階(2026-08-09 実行済み — 記録)
 
-- [ ] B1. https://github.com/new を開く → Repository name: `astrogation`(任意)、
-      Public、README/ライセンスは**追加しない**(ローカルに既存)→ Create
-- [ ] B2. ターミナルで(リポジトリ直下):
-      `git remote add origin https://github.com/<ユーザー名>/astrogation.git`
-      → `git push -u origin main`
-- [ ] B3. **リリースコミットの注入**: 現在の最終コミット(Phase 3 ゲート
-      `12f9cfd`)のハッシュを、`paper/paper_en.tex` の
-      「[commit hash injected at release]」と `paper/paper_ja.tex` の
-      「[リリース時注入のコミットハッシュ]」に記入(同時に B2 の GitHub URL を
-      「[GitHub URL, ...]」の GitHub 部分に記入)
-- [ ] B4. 再コンパイル: `cd paper && tectonic paper_en.tex && tectonic paper_ja.tex`
-- [ ] B5. `git add -A && git commit -m "release: inject GitHub URL and content
-      commit 12f9cfd"` → `git push`
-- [ ] B6. タグ付け: `git tag v1.0-paper && git push origin v1.0-paper`
+- [x] B1. リポジトリは **Private で作成済み**: https://github.com/yukie-lab/astrogation
+      (**Public 化スイッチは最終手順 F3 へ移動** — 公開イベント時に人間が実施)
+- [x] B2. `git remote add origin https://github.com/yukie-lab/astrogation.git`
+      → `git push -u origin main`(認証は gh keyring で通過、プロンプトなし)
+- [x] B3. 両 tex へ GitHub URL と **タグ参照方式**の固定記述を注入
+      (EN: "pinned at tag `v1.0-paper` … (the tag resolves to the release
+      commit)" / JA: 「タグ `v1.0-paper`(タグがリリースコミットに解決される)
+      に固定」)。ハッシュ直書きは撤廃 — 注入コミット自身を指せない循環を、
+      タグ解決参照で回避
+- [x] B4. 再コンパイル+テスト緑 → コミット `b04aa3c`
+      "release: inject repo URL and commit" → push 済み
+- [ ] B5. **タグはまだ打っていない**(F2 で最終コミットに打つ)
 
-## C. Zenodo — 操作手順
+## F. 最終公開シーケンス(B/C 統合 — 人間実行、上から順に)
 
-- [ ] C1. https://zenodo.org にログイン(GitHub アカウント連携可)
-- [ ] C2. コード DOI: https://zenodo.org/account/settings/github/ を開き、
-      `astrogation` リポジトリのスイッチを ON → GitHub 側で
-      https://github.com/<ユーザー名>/astrogation/releases/new → タグ
-      `v1.0-paper` を選択 → Publish release → 数分後 Zenodo にコード DOI が
-      自動発行される(Zenodo の GitHub ページで確認)
-- [ ] C3. 論文 DOI: https://zenodo.org/uploads/new → ファイルに
-      `paper/paper_en.pdf` と `paper/paper_ja.pdf` をドラッグ →
-      Resource type: Publication / Preprint → タイトル・著者
-      (Maeda, Yukie / ORCID 0009-0005-3401-9230)・抄録(EN は
-      paper_en.tex、JA は paper_ja.tex からコピー)・キーワード・
-      License: CC BY 4.0 を `paper/publication_metadata.md` から転記 →
-      Related works に arXiv:2606.22531 と C2 のコード DOI を追加 →
-      **Save draft のまま Publish は保留**(DOI は予約表示される)
-- [ ] C4. C3 の予約 DOI を両 tex の「[... Zenodo DOI to be minted at release]」
-      (JA: 「[... Zenodo DOI はリリース時発行]」)に記入 → 再コンパイル →
-      draft の PDF 2 本を差し替え → **Publish**
-- [ ] C5. `git add -A && git commit -m "release: inject Zenodo DOIs"` → push
-      (このコミットはタグ後のメタデータ追記であり、内容コミットは 12f9cfd の
-      まま — Data availability の記述と整合)
-
-## D. Jxiv — 操作手順
-
-- [ ] D1. https://jxiv.jst.go.jp/ → 右上「ログイン」(未登録なら
-      アカウント作成。所属は「なし(個人)/ Independent Researcher」)
-- [ ] D2. 「新規投稿」→ 原稿ファイル: `paper/paper_ja.pdf`
-- [ ] D3. 書誌入力: 氏名欄 姓=**前田** 名=**幸枝** / 英語表記 姓=**Maeda**
-      名=**Yukie** / ORCID **0009-0005-3401-9230** / 所属 = Independent
-      Researcher, Tokyo / 分野 = 物理学 / タイトル・抄録(JA)=
-      publication_metadata.md のとおり
-- [ ] D4. 利益相反: なし / 資金: なし / **AI 利用の申告**: 「計算・実装・
-      起草は Claude(Fable 5, Anthropic)が人間ゲート付きプロトコルの下で
-      実施(詳細は本文 Methods)」と記入
-- [ ] D5. 関連情報に Zenodo DOI(英語正本)と GitHub URL を記載 → 投稿
-
-## E. 事後
-
-- [ ] E1. リリース情報(コード DOI・論文 DOI・GitHub URL・タグ)を
-      `docs/reports/P3_release_record.md` に記録してコミット
-- [ ] E2. 床 tier 裁定(c 鎖 STOP)が将来解決した場合: results/ 再生成 →
-      `make_paper_numbers.py` → 再コンパイル → Zenodo 新版(DOI は版管理される)
+- [ ] F1. **Zenodo 論文 draft**: https://zenodo.org/uploads/new →
+      `paper/paper_en.pdf`・`paper/paper_ja.pdf` をアップロード →
+      Resource type: Publication/Preprint → 書誌を
+      `paper/publication_metadata.md` から転記(著者 Maeda, Yukie /
+      ORCID 0009-0005-3401-9230、抄録は各 tex からコピー、License CC BY 4.0、
+      Related works に arXiv:2606.22531)→ **Save draft**(DOI が予約表示される)
+- [ ] F2. **DOI 注入と最終コミット・タグ**: 予約 DOI を両 tex の
+      「[Zenodo DOI to be minted at release]」(JA:「[Zenodo DOI は
+      リリース時発行]」)に記入 → `cd paper && tectonic paper_en.tex &&
+      tectonic paper_ja.tex` → `git add -A && git commit -m "release: inject
+      Zenodo DOI"` → `git push` → **`git tag v1.0-paper && git push origin
+      v1.0-paper`**(タグは DOI 記入済みの最終コミットに載る — tex の
+      タグ参照が自己整合する)
+- [ ] F3. **Public 化**: https://github.com/yukie-lab/astrogation/settings →
+      General 最下部 Danger Zone → Change repository visibility → Public
+- [ ] F4. **コード DOI**: https://zenodo.org/account/settings/github/ で
+      `yukie-lab/astrogation` を ON →
+      https://github.com/yukie-lab/astrogation/releases/new → タグ
+      `v1.0-paper` を選択 → Publish release → 数分後にコード DOI が自動発行
+- [ ] F5. **Zenodo Publish**: F1 の draft に戻り、F2 で再コンパイルした
+      PDF 2 本へ差し替え → Related works に F4 のコード DOI を追記 →
+      **Publish**(論文 DOI 確定)
+- [ ] F6. **Jxiv**: https://jxiv.jst.go.jp/ → ログイン(未登録なら作成。
+      所属 = Independent Researcher)→ 新規投稿 → `paper/paper_ja.pdf` →
+      氏名欄 姓=前田 名=幸枝 / 英語表記 姓=Maeda 名=Yukie /
+      ORCID 0009-0005-3401-9230 / 分野=物理学 / 抄録 JA =
+      publication_metadata.md → 利益相反なし・資金なし・AI 利用申告
+      (「計算・実装・起草は Claude(Fable 5, Anthropic)、人間ゲート付き
+      プロトコル。詳細は Methods」)→ 関連情報に論文 DOI・GitHub URL → 投稿
+- [ ] F7. **記録**: コード DOI・論文 DOI・タグ・公開日を
+      `docs/reports/P3_release_record.md` に記録し、コミット+push
+- [ ] F8. 床 tier 裁定(c 鎖 STOP)が将来解決した場合: results/ 再生成 →
+      `make_paper_numbers.py` → 再コンパイル → Zenodo 新版(DOI は版管理)
 
 ## 注意(憲法遵守)
 
