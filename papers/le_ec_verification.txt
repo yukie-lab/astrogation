@@ -1,0 +1,3666 @@
+PAPER
+
+Observer-robust energy condition verification for warp drive
+spacetimes
+An T. Le1,2,3
+1 Center for Environmental Intelligence, VinUniversity, Hanoi, Vietnam
+2 College of Engineering and Computer Sciences, VinUniversity, Hanoi, Vietnam
+3 Intelligent Autonomous Systems, TU Darmstadt, Germany
+
+arXiv:2602.18023v4 [gr-qc] 12 Jun 2026
+
+E-mail: an.lt@vinuni.edu.vn; an@robot-learning.de
+
+Abstract
+We present warpax, a JAX-based toolkit that certifies the all-observer energy-condition
+structure of warp drive spacetimes frame-independently, from the eigenstructure of the
+mixed stress-energy tensor T a b . At a Hawking–Ellis Type I point an eigenvalue inequality
+decides each energy condition exactly and for every observer; a Type IV point has no rest
+frame and violates all of them unconditionally. Because the eigenvalues are boost invariants
+and no Eulerian normal is ever constructed, the test is well defined at all warp speeds,
+including vs ≥ 1. Across the warp-drive family this yields a clean dichotomy through the
+luminal transition: the irrotational Rodal geometry is globally Type I at every speed, while
+the Alcubierre, Natário, and Van den Broeck bubble walls are Type-IV dominated. The
+split is controlled by the vorticity of the ADM shift, with the Type-IV imaginary eigenvalue
+growing linearly, f = κ ω, in a controlled limit. Single-frame analyses understate this
+structure: for the Rodal drive the Eulerian frame misses about 72% of the wall weak-energy
+violations seen by boosted observers, a statement made analytic by a closed-form worst
+observer. A boost-invariant exoticity ranking places the irrotational drive forty-five to
+seventy times below the bubble-wall drives, and the wall null-energy deficit follows a
+universal −C vs2 law that makes the Santiago–Schuster–Visser no-go quantitative. A
+geodesic-integrated averaged null energy condition and a Ford–Roman comparison preserve
+the ordering: every drive violates, and the Rodal geometry is the mildest.
+Keywords: warp drive, energy conditions, Hawking–Ellis classification, general relativity, automatic differentiation,
+JAX
+
+1 Introduction
+Alcubierre’s 1994 warp drive metric [1] demonstrated that general relativity admits solutions
+describing effective superluminal travel by deforming the spacetime geometry around a compact
+region, a “warp bubble”. Inside the bubble, an observer follows a timelike worldline in locally flat
+spacetime while the bubble itself moves at an arbitrary coordinate velocity vs through the external
+Minkowski background. The metric takes the ADM 3 + 1 form
+ds2 = −dt2 + (dx − vs f (rs ) dt)2 + dy 2 + dz 2 ,
+
+(1)
+
+where f (rs ) is a top-hat shaping function that smoothly transitions from unity inside the bubble to
+zero outside, and rs = [(x − xs (t))2 + y 2 + z 2 ]1/2 is the distance from the bubble center.
+The fundamental obstacle to warp drive realizability is the requirement for exotic matter:
+matter whose stress-energy tensor violates the classical energy conditions. Throughout this paper,
+the spacetime signature is (− + ++) and we work in geometric units (G = c = 1). The four energy
+conditions, namely the null (NEC), weak (WEC), strong (SEC), and dominant (DEC), are
+pointwise inequalities on the stress-energy tensor contracted with timelike or null vectors:
+NEC:
+
+Tab k a k b ≥ 0
+
+∀ null k a ,
+
+WEC:
+
+Tab u u ≥ 0
+
+∀ timelike u ,
+
+SEC:
+
+Tab − 21 T gab ua ub ≥ 0
+Tab ua ub ≥ 0 and −T a b ub future causal
+
+DEC:
+
+a b
+
+(2)
+(3)
+
+a
+
+
+
+∀ timelike u ,
+
+(4)
+
+a
+
+∀ future timelike u .
+a
+
+(5)
+
+These conditions must hold for all admissible observers at each spacetime point, not merely for a
+single preferred frame [2, 3]. The truth value of an energy condition at a point is
+1
+
+observer-independent (it is defined by a universal quantifier); what is observer-dependent is any
+single-frame diagnostic that evaluates Tab ua ub for a particular ua .
+The theoretical content of this observation is classical: for a Type I stress-energy tensor the
+energy conditions reduce to inequalities on the Lorentz-invariant eigenvalues (ρ, pi ) [2–4]. Our
+contribution is to turn this into a computational, autodiff-exact, and velocity-unrestricted
+verification engine, to identify the geometric quantity that controls the algebraic type, and to apply
+both the engine and that control systematically across the family of warp-drive metrics. Concretely:
+1. A frame-independent, all-velocity certification engine. Energy-condition satisfaction
+is decided from the Hawking–Ellis classification of T a b and, for Type I, the eigenvalue
+inequalities, neither of which uses the Eulerian normal. The engine is therefore valid at
+vs ≥ 1, where the coordinate-stationary congruence used by single-frame and sampling tools
+ceases to exist (Section 1.2). Curvature is autodiff-exact (no finite-difference truncation), and
+a continuous optimizer is retained only as a one-sided diagnostic at the residual non-Type I
+points.
+2. A velocity-resolved Hawking–Ellis type map across the luminal transition.
+Sweeping vs through 1, we find a clean dichotomy (Section 3): the Rodal irrotational
+geometry is globally Type I at all speeds, while the Alcubierre and Natário walls are Type-IV
+dominated at all speeds, and Van den Broeck above its Type-I → Type-IV transition at
+vs ≈ 0.36, with a stress-energy that has no rest frame. The Type-IV labels are certified
+physical, not numerical, by a three-solver and 50-digit cross-check.
+3. The geometric control of the algebraic type. The vorticity of the ADM shift selects
+Type I against Type IV: an irrotational shift gives a global Type I drive (Rodal), while a shift
+with nonzero vorticity produces Type-IV walls. The zero-expansion Natário drive, which is
+vortical but expansion-free, is Type-IV walled, which identifies vorticity rather than
+expansion as the obstruction (Section 3.2).
+4. An independent all-observer test of positive-energy constructions [5–9], together
+with a closed-form Type I worst observer (Section 2.4) that replaces the optimizer where it
+matters and makes the off-Eulerian effect analytic.
+5. A boost-invariant exoticity characterization. A single invariant ranking orders the
+drives by exotic content, with Rodal forty-five to seventy times below the bubble-wall drives;
+the wall null-energy deficit follows min(ρ + pi ) = −C vs2 , a measured form of the
+Santiago–Schuster–Visser no-go, and the wall curvature growth exponent is set by the same
+vorticity that sets the type (Section 3.6).
+We also make the averaged statement rigorous: we report a geodesic-integrated averaged null
+energy condition, evaluated along the actual null geodesic with a structure-preserving symplectic
+integrator and an on-cone witness, alongside a Ford–Roman quantum-inequality comparison
+(Section 3.5), which leave the ranking intact. The implementation (warpax) is built on JAX [10]
+and Equinox [11]; geodesic, tidal, and kinematic-scalar utilities are included and documented in the
+appendices.
+Prior warp-drive tooling (WarpFactory [12]) samples ∼103 observer directions per point with
+fourth-order finite differences; we instead evaluate the Type I eigenvalue criteria directly, with
+autodiff-exact curvature, and detect the Type-IV walls that no single-frame sampling can certify
+(Section 1.1).
+We analyze four warp drive metrics at matched parameters (Alcubierre, Natário,
+Van den Broeck, Rodal); the Rodal geometry uses a lab-frame standardization (Appendix G).
+Within Rodal’s wall the Eulerian frame, the basis of its positive-energy characterization [5], does
+not register ≈73% of the dominant and ≈72% of the weak energy-condition violations seen by
+boosted observers. Lentz is severely under-resolved (≪ 1 cell across the wall at 503 ) and is excluded
+entirely; shell constructions and the regularized WarpShell stress test are deferred to the
+appendices.
+1.1 Related work
+The literature relevant to this paper falls into three strands: (i) energy-condition analysis in
+warp-drive spacetimes, (ii) the 2021–2026 proliferation of warp-drive geometries, and (iii) numerical
+methods for general relativity and energy-condition verification. We survey each in turn.
+
+2
+
+1.1.1 Energy-condition analysis in warp-drive spacetimes. The observer-dependence of
+energy-condition evaluation is well established in the mathematical-relativity literature. Hawking
+and Ellis [3] introduced the algebraic classification of T a b into four types; Martín-Moruno and
+Visser have since provided a modern treatment of the classification and of the conditions under
+which each energy condition can be violated for each type, in their classical and semi-classical
+energy-condition review [13], the “essential core” formulation [4], and a dedicated analysis of the
+rare Type III case [14]. The generalized Rainich conditions [15] and the test-field versus
+back-reaction distinction [16] extend the Hawking–Ellis framework to the stress-energy conditions
+that motivate our Tab ua ub optimization.
+Santiago, Schuster, and Visser [2] proved that any physically reasonable warp drive, taken to be
+a compact deformation of an asymptotically Minkowski background, must violate the null energy
+condition (NEC), a universal statement that does not depend on the choice of observer; Barzegar,
+Buchert, and Vigneron [17] examine the scope of this no-go and the routes that would evade its
+hypotheses. For Hawking–Ellis Type I matter the energy conditions reduce to inequalities on the
+eigenvalues, and the irrotational, unit-lapse, spatially flat configuration that yields Type I matter is
+exactly the one adopted by recent positive-energy constructions such as Rodal’s [5], who further
+showed by a controlled vorticity ablation of that single construction that adding shift vorticity
+sharply increases its negative-energy content. We take this sufficient direction as our starting point
+and carry it across the metric family and into the algebraic type: we confirm the
+irrotational-implies-Type-I direction exactly, identify nonzero shift vorticity as the geometric
+obstruction that drives the other bubble walls specifically to Hawking–Ellis Type IV, isolate that
+transition from expansion using the zero-expansion Natário drive, and reduce it to an analytic
+controlled-limit law (Section 3.2); the all-observer and superluminal extensions are likewise new
+here. The broader no-go landscape is fixed by Olum [18], who showed that superluminal travel
+requires negative energy, and by Lobo and Visser [19], who established the unavoidable
+energy-condition violation of the Alcubierre and Natário classes; Kontou and Sanders [20] review
+the modern status of the conditions, including the violability of the strong energy condition by a
+positive cosmological constant, which is why we lead with the null and weak conditions and treat
+the strong condition as secondary. Celmaster and Rubin [21] demonstrated explicit Eulerian-frame
+weak-energy-condition (WEC) violations for the Lentz geometry, showing that the original
+positive-energy claim is incorrect even in the single preferred frame. In parallel, the
+Bobrick–Martire taxonomy of physical warp drives [7] and the hidden-geometric positive-energy
+construction of Fell and Heisenberg [8] reframe the problem from “violations in a single metric” to
+“which warp-drive class admits a physically acceptable stress-energy”. Our contribution to this
+strand is an observer-robust verification methodology that reports wall-restricted Hawking–Ellis
+type breakdowns together with NEC/WEC/SEC/DEC margins from continuous observer
+optimization, distinguishes the invariant energy density ρ from the observer-contracted Tab ua ub of
+single-frame analysis, and identifies shift vorticity as the geometric control of the algebraic type.
+1.1.2 Warp-drive geometries. The foundational warp-drive constructions remain Alcubierre’s
+1994 metric [1], Natário’s zero-expansion variant [22], and Van den Broeck’s modified-volume
+construction [23]; the Krasnikov tube [24] is an alternative route to effective superluminal travel
+that replaces the moving bubble with a static corridor. The Lentz soliton [25] was proposed as a
+positive-energy alternative but was subsequently shown to violate the NEC [2] and the WEC in the
+Eulerian frame [21]. The Rodal metric [5] completes our benchmark set; Rodal’s own earlier
+work [26, 27] analyses curvature invariants for Alcubierre and Natário using the same 3+1
+formalism that underpins our ADM setup.
+Recent 2024–2026 constructions enlarge this space considerably. Fuchs et al. [6] introduce a
+constant-velocity shell-based positive-energy warp drive in the Bobrick–Martire family. Garattini
+and Zatrimaylov [28] show that embedding a warp drive on a black-hole background alleviates
+energy-condition violations, and further generalize to a de Sitter background [9]. Clough, Dietrich,
+and Khan [29] report the first numerical evolution of a warp-drive collapse and the associated
+gravitational-wave signature, the dynamical counterpart to the static analysis we perform here.
+Rodal [30] argues against low-energy warp drives on metamaterial gravitational-coupling grounds.
+Huey [31] proposes a superluminal drive sourced by non-compact thin membranes whose
+distributional stress-energy satisfies the WEC; constructions of that distributional, non-compact
+type sit outside both the Santiago–Schuster–Visser hypotheses and the smooth-metric scope of the
+grid-based engine used here. Santos-Pereira et al. [32] study Darmois junction conditions for
+matching Alcubierre to Minkowski, a theme related to the shell-regularization used in our
+WarpShell stress-test geometry. Barzegar and Buchert [33] identify shared restrictions of the
+
+3
+
+current warp-drive spacetimes (flow-orthogonal foliations, vanishing spatial curvature) and possible
+routes to improvement; with Vigneron [17] they extend this to a general formal classification, and
+Buchert and Frackowiak [34] construct new warp solutions and analyze their
+coordinate-acceleration and vorticity structure kinematically. These classifications are geometric
+and do not address the algebraic Hawking–Ellis type of the wall stress-energy, the complementary
+axis our shift-vorticity result organizes.
+1.1.3 Numerical methods for general relativity and energy-condition verification. Computational
+tools for general relativity span symbolic algebra (xAct [35], SageManifolds [36]; exact but not
+grid-based EC verification) to numerical-relativity frameworks (the Einstein Toolkit [37]; dynamical
+evolution rather than pointwise EC assessment of static metrics); see Ref. [38] for a survey.
+The warp-drive community has a dedicated toolkit, WarpFactory, described in a methodology
+companion [39], analyzed in detail for warp-drive spacetimes by Helmerich et al. [12], and
+documented online [40]. WarpFactory evaluates energy conditions over a discrete sample of ∼ 103
+observer directions and velocities and uses fourth-order central finite differences for the curvature
+chain. Our warpax toolkit differs methodologically on three axes: it uses forward-mode automatic
+differentiation (implemented in JAX [10]) for the curvature chain, rather than finite differences,
+following the emerging autodiff-for-GR approach demonstrated by diffjeom [41], the neural-field
+Einstein Fields representation [42], and the broader astrophysical autodiff program that Bara [43]
+identifies; it replaces discrete observer sampling with continuous, gradient-based optimization using
+Optimistix [44]; and it integrates geodesics via Diffrax [45] with an Equinox [11] module structure.
+Together these give explicit Hawking–Ellis Type-IV detection valid at all warp speeds, not available
+in the Eulerian, finite-difference pipelines used previously.
+The rest of this paper is organized as follows. Section 2 presents the methods; Section 3 gives
+the energy-condition results, including the frame-independent benchmark and the
+luminal-transition sweep (Section 3.1), the shift-vorticity control of the type, and the invariant
+exoticity characterization; Section 4 validates numerical convergence; Section 5 discusses
+implications and Section 6 concludes. The warpax implementation (Appendix A), supporting
+geodesic, tidal, and kinematic diagnostics (Appendix B), and metric definitions (Appendix G) are
+provided for completeness.
+1.2 Scope and limitations
+We separate two scopes with different velocity ranges. The frame-independent certification, the
+Hawking–Ellis classification of T a b together with the Type I eigenvalue inequalities, uses no
+preferred observer and is valid at all warp speeds; we report it for vs ∈ [0.1, 2.5], spanning the
+luminal transition (Section 3). The Eulerian-frame comparison (the single-frame miss fraction)
+requires the coordinate-stationary congruence and is therefore restricted to vs < 1.
+At vs = 1 the metric develops a vanishing g00 along the bubble wall, and for vs > 1 the ∂t
+direction becomes spacelike there (g00 > 0); the spacetime remains Lorentzian throughout
+(signature (− + ++), det g = −1; for the unit-lapse Alcubierre form det g = −1 identically,
+independent of vs ). What is lost above vs = 1 is only the family of coordinate-stationary timelike
+observers that defines the Eulerian baseline, not the eigenstructure of T a b , whose eigenvalues are
+boost invariants and stay smooth across the transition; the Hawking–Ellis type there, Type IV
+included, is therefore as well posed as at vs < 1. We verified directly that the curvature and
+energy-condition pipeline is finite (no NaN, det g = −1) at vs ∈ {1.0, 1.5, 2.0, 2.5}, and we compute
+the all-observer type and eigenvalue structure there (Section 3, Table 4). The continuous optimizer,
+used only at non-Type I points, parameterizes future-directed unit-timelike vectors of the metric at
+each point, so its observer domain follows the local light cones through the transition rather than a
+fixed background cone. We also guard against the one genuine numerical risk of the superluminal
+eigenproblem, a spurious Type IV from an ill-conditioned non-symmetric T a b : the Type-IV labels
+reported here are confirmed by three independent eigensolvers (the standard and generalized-pencil
+LAPACK routines and a 50-digit arbitrary-precision recomputation) with zero disagreement.
+Our primary certification is pointwise and classical: we evaluate Tab at grid points and test
+eigenvalue inequalities or observer-optimized contractions. A pointwise NEC violation is logically
+distinct from a violation of the averaged null energy condition (ANEC) [46], the line-integral
+version tied to the topological-censorship and chronology results; our Type-IV finding is pointwise
+and does not by itself establish an ANEC violation. We therefore also evaluate the ANEC along
+the actual null geodesic of each metric with a structure-preserving symplectic integrator, reported
+with an on-cone witness that certifies the average where the witness is small (Section 3.5); a
+
+4
+
+Ford–Roman quantum-inequality comparison [47, 48] is included as an explicitly flat-space
+estimate, and a rigorous curved-space (Fewster-type [49, 50]) quantum inequality remains open.
+Separate from the certification results above, warpax provides a differentiable shape-function
+parametrization for the metric’s bubble profile with three basis families (cubic B-spline, Bernstein
+polynomial, and Gaussian mixture), exposed through a hard-bound, constrained projected-gradient
+BFGS optimizer on the observer-robust EC margin. The parametrization enables end-to-end
+gradient descent over shape parameters subject to a lapse-floor bound, profile regularity, and
+bubble-finiteness constraints at every step. These are local sufficient conditions enforced pointwise;
+we do not claim that they establish global hyperbolicity. Numerical results for the shape-function
+design catalog, including recovery of the Alcubierre profile and new single-condition shape families,
+together with the source-first S- and T-shell constructions and their boundary-cost
+energy-condition analysis, are the subject of a companion note [51]; we neither construct nor certify
+those shells here, keeping the present contribution—the frame-independent certifier and its five
+results—disjoint from that work.
+2 Methods
+2.1 Stress-energy via automatic differentiation
+The Einstein field equations in geometric units (G = c = 1) are
+Gab = 8π Tab ,
+
+(6)
+
+where the Einstein tensor Gab = Rab − 12 R gab is constructed from the Ricci tensor Rab and scalar
+curvature R = g ab Rab . Computing Tab from a given metric requires the full curvature chain:
+∂
+
+∂
+
+contract
+
+EFE
+
+gab −
+→ Γa bc −
+→ Ra bcd −−−−−→ Rab , R −−−→ Tab .
+
+(7)
+
+The Christoffel symbols of the second kind are
+Γa bc =
+
+1 ad
+g (∂c gbd + ∂b gcd − ∂d gbc ) ,
+2
+
+(8)
+
+and the Riemann curvature tensor is
+Ra bcd = ∂c Γa bd − ∂d Γa bc + Γa ce Γe bd − Γa de Γe bc .
+
+(9)
+
+warpax implements this chain using JAX’s forward-mode automatic differentiation. The
+metric function gab (xµ ) maps a coordinate 4-vector to a 4 × 4 symmetric matrix. A single
+forward-mode pass yields the metric derivatives ∂c gab as exact derivatives of the implemented
+program, up to floating-point roundoff, with no step-size parameter and no finite-difference
+truncation error. All computations use 64-bit floating point. A nested application of forward-mode
+differentiation (forward-over-forward) computes the second derivatives needed for the Riemann
+tensor. For dimension d = 4, this forward-mode approach is efficient: the Jacobian has only 4
+directional derivatives, compared to the 16 reverse-mode passes that would be needed for the
+4 × 4 → 4 × 4 Christoffel computation.
+The derivative convention throughout warpax places the differentiation index last in the
+output array: (∂c g)abc has ∂gab /∂xc at index [a, b, c]. This choice simplifies the einsum
+contractions in subsequent steps.
+Three energy-density quantities. We distinguish three energy-density quantities that appear
+throughout this paper. The invariant energy density ρ is defined as the timelike eigenvalue of the
+mixed stress-energy tensor T a b and is frame-independent; it equals Tab ua ub when evaluated on the
+principal timelike eigenvector. The observer-dependent energy density Tab ua ub is the energy
+density measured by an observer with four-velocity ua and depends on the observer choice. The
+Eulerian energy density Tab na nb is the special case where na is the unit normal to the ADM
+spatial hypersurface; it is the single-frame baseline used by prior work that reports “energy
+density” without qualification.
+Notation. We use Rb throughout to denote the warp bubble radius, distinct from the Ricci
+scalar R that appears in curvature expressions. The shell radii R1 , R2 of the WarpShell metric
+denote inner and outer shell boundaries and are unrelated to Rb .
+
+5
+
+2.2 Hawking–Ellis classification
+The algebraic classification of T a b [3] determines the structure of the energy condition constraints.
+At each spacetime point, we compute the eigenvalues of the mixed stress-energy tensor
+T a b = g ac Tcb and classify the result into one of four types:
+• Type I: Four real eigenvalues with a timelike eigenvector. The generic case for physically
+reasonable matter. For signature (− + ++), the eigenvalues of T a b are (−ρ, p1 , p2 , p3 ); we
+identify the timelike eigenvector via gab v a v b < 0 and set ρ = −λtimelike , pi = λspacelike,i .
+• Type II: Pure radiation, with a defective 2 × 2 null Jordan block, a double null eigenvector
+with no additional linearly independent null eigenvector. Canonical example: a null dust with
+stress-energy Tab = Φ2 ka kb for null k a [4].
+• Type III: 3 × 3 null Jordan structure, a triple null eigenvector in nilpotent configuration. No
+known classical or semiclassical source produces Type III stress-energy [14].
+• Type IV: Complex eigenvalues. Absent for most classical matter models, but possible for
+exotic stress–energy (numerical certification of the labels: Section 1.2).
+Our non-Type-I verification pathway (observer optimization for WEC/SEC/DEC and full null
+optimization for NEC) has been validated primarily on a null-dust (Type II) benchmark in the test
+suite; full validation on Type III and generic Jordan-block configurations remains an open direction
+(see Section 5).
+warpax implements a branchless, vectorized classifier. The mixed tensor T a b = g ac Tcb is
+generally non-symmetric, so a general eigensolver is used; eigenvalues count as real when
+|Im λi | < ϵs (ϵ = 10−10 , s = max(|Re λj |, 1)), with a second relative tier for split-degenerate pairs
+at large ∥T a b ∥ (Section 1.2 validates the resulting Type-IV labels against three solvers).
+Near-vacuum points (max |λi | < ϵ, e.g. the Minkowski/Schwarzschild exterior) are assigned Type I
+with ρ = pi = 0; the gate uses the eigenvalue modulus, not the real part, since a pure momentum
+flux has eigenvalues ±iq and is genuinely Type IV. For Type I, all energy conditions reduce to
+algebraic inequalities in the eigenvalues ρ, p1 , p2 , p3 :
+NEC:
+
+ρ + pi ≥ 0
+
+WEC:
+
+ρ ≥ 0 and ρ + pi ≥ 0
+
+SEC:
+
+ρ + pi ≥ 0 ∀ i and ρ +
+
+DEC:
+
+ρ ≥ |pi |
+
+∀i,
+
+(10)
+
+∀i,
+
+(11)
+
+∀i.
+
+(13)
+
+i pi ≥ 0 ,
+
+(12)
+
+P
+
+These inequalities are exact: for Type I stress-energy, a point satisfies (or violates) an energy
+condition if and only if the corresponding eigenvalue inequality holds, regardless of which observer
+is chosen. In floating-point arithmetic, the Type I/II/IV classification decision is tolerance-based
+(Section 5); all “exact” statements are in the sense of exact algebra applied to the numerically
+classified type, and are only as good as the eigenvalue accuracy, the complex/degeneracy
+tolerances, and the timelike eigenvector test. We therefore distinguish three diagnostic quantities:
+1. Boolean truth (cap-independent): determined by the sign of the eigenvalue inequalities for
+Type I.
+2. Algebraic slack: finite, cap-independent scalars such as mini (ρ + pi ) (NEC),
+min(ρ, mini (ρ + pi )) (WEC), and mini (ρ − |pi |) (DEC), quantifying proximity to the
+violation boundary.
+3. Capped observer extremum: the ζmax -dependent contraction minimum
+minζ≤ζmax Tab ua ub , which for NEC-violating points diverges as γ 2 and whose magnitude is a
+diagnostic of violation severity at a chosen rapidity scale.
+We keep the last two separate rather than merging them: the cap-independent algebraic slack at
+Type I points, which is authoritative and used for violation detection, and the ζmax -capped
+observer extremum at non-Type I points, a severity diagnostic only. Any combined “robust
+margin” field plots the former at Type I and the latter elsewhere; the two are never compared as
+commensurable. The algebraic slack certifies Boolean satisfaction/violation but is not the
+minimum observer-contracted energy density (which, at NEC-violating Type I points, is −∞).
+Empirically, for ζmax = 5 the capped optimizer agrees in sign with the Type I truth at all grid
+points, though a finite cap could in principle miss a shallow violation (|ρ + pi | ≪ |ρ|). At
+non-Type I points (≲ 8% for the warp metrics; Table 18) the optimizer is the sole method,
+validated by a null-dust benchmark (Section 5).
+6
+
+2.3 Observer parameterization
+We distinguish three verification pathways. (i) For Hawking–Ellis Type I stress-energy, the
+eigenvalue inequalities (equations 10–13) are observer-independent and provide exact certification
+(Section 2.2). (ii) For the NEC at non-Type I points, we optimize over the closed null cone, with
+directions on S 2 parameterized by (θ, ϕ) via stereographic projection. (iii) For the WEC, SEC, and
+DEC at non-Type I points, we optimize over the open timelike cone with a rapidity cap ζmax ; a
+positive margin at the cap is a lower bound on the true margin and does not certify satisfaction for
+arbitrarily large boost. The phrase “over all admissible observers” refers to this capped,
+type-dependent pathway. We parameterize the space of timelike and null vectors at each point as
+follows.
+Timelike observers. Any unit timelike vector ua at a point can be written as a Lorentz boost of
+the Eulerian normal na :
+ua = cosh ζ na + sinh ζ ŝa (θ, ϕ) ,
+(14)
+where ζ ≥ 0 is the rapidity (boost magnitude), (θ, ϕ) specify the spatial boost direction, and
+ŝa (θ, ϕ) is a unit spatial vector constructed from an orthonormal tetrad adapted to the ADM
+decomposition. The tetrad is built by applying Gram–Schmidt orthogonalization to the coordinate
+basis vectors projected into the spatial hypersurface orthogonal to na .
+Null observers.
+
+Any future-directed null vector can be written as
+k a = na + ŝa (θ, ϕ) ,
+
+(15)
+
+where (θ, ϕ) parameterize the null direction on the celestial sphere. This fixes ka na = −1, removing
+the null-vector rescaling ambiguity and making the NEC margin Tab k a k b scale-fixed. The NEC is
+thus a two-dimensional optimization problem over (θ, ϕ).
+In the rapidity parameterization, ζ = 0 recovers the Eulerian observer, so the optimization
+always includes the Eulerian result as a baseline. The WEC and DEC involve three-dimensional
+optimization over (ζ, θ, ϕ), while the NEC requires only (θ, ϕ). The true timelike observer manifold
+has unbounded rapidity (ζ ∈ [0, ∞)); in practice, we optimize over ζ ∈ [0, ζmax ] with a fixed cap
+ζmax = 5 (corresponding to γ ≈ 74; see Section 2.4).
+2.4 Observer optimization
+For each spacetime point and energy condition, warpax solves the optimization problem
+margin∗ =
+
+min
+
+(ζ,θ,ϕ)∈O
+
+m(Tab , ua (ζ, θ, ϕ)) ,
+
+(16)
+
+where m is the signed margin function: m ≥ 0 means the condition is satisfied, and m < 0 indicates
+a violation. For the NEC, m = Tab k a k b with optimization over (θ, ϕ) only. For the DEC, the
+diagnostic at each spacetime point returns
+
+mDEC = min mflux , mfuture , mWEC ,
+(17)
+where mflux = −gab j a j b (positive when the energy flux j a = −T a b ub is causal), mfuture = −ja na
+(positive when j a is future-directed, with na the future-pointing unit normal), and
+mWEC = Tab ua ub (positive when the energy density is non-negative). A negative value of any
+component indicates a DEC violation for that observer. The three sub-terms have mixed
+dimensions, so we use them only for sign-based detection (m∗DEC < 0), not as a combined severity.
+For Type I stress-energy the algebraic condition (equation 13) guarantees j a causal and
+future-directed for every future-directed ua , so the algebraic slack mini (ρ − |pi |) is the primary
+DEC result; the three-term optimizer diagnostic is used only at the residual non-Type I points.
+Optimization uses BFGS [52] in Optimistix [44] over an unconstrained boost vector w ∈ R3
+(ζ = |w|, direction w/|w|, Eulerian at w = 0), with a soft cap ζ 7→ ζmax tanh(|w|/ζmax ) at ζmax = 5
+(γ ≈ 74); null directions use a stereographic parameterization of S 2 . Multi-start (Nstarts seeds:
+Eulerian, six axis-aligned, and random) is evaluated in parallel on GPU.
+Closed-form worst observer at Type I points. At a Type I point no search is needed. In the
+eigenframe T a b = diag(−ρ, p1 , p2 , p3 ), an observer boosted from the rest frame with rapidity ζ
+along principal axis i measures
+ρobs (ζ) = ρ cosh2 ζ + pi sinh2 ζ = ρ + (ρ + pi ) sinh2 ζ ,
+7
+
+(18)
+
+monotone in sinh2 ζ. If ρ + pi ≥ 0 for every axis the rest frame already measures the least energy
+density; if ρ + pi∗ < 0 for i∗ = arg mini (ρ + pi ), the worst boost lies along the principal eigenvector
+ei∗ of the most-violating pressure, every observer past the threshold rapidity sinh2 ζth = ρ/|ρ + pi∗ |
+(for ρ > 0) measures negative energy density, and ρobs is unbounded below as ζ → ∞. The closed
+form therefore supplies the worst direction, the violation threshold, and the asymptotic sign; there
+is no finite worst observer to find, which is why the capped optimizer is only a one-sided diagnostic.
+The implementation is cross-checked against the BFGS optimizer in the test suite: at the
+optimizer’s reported rapidity the boosted density matches equation (18), and the capped search
+never undercuts the closed-form value.
+Interpretation caveat. At NEC-violating points the boosted energy density diverges as
+∼ γ 2 Tab k a k b , so the true WEC/SEC/DEC infima are −∞ and the reported optimizer minima are
+ζmax -conditioned diagnostics, not observer-independent scalars (the cap-independent quantities are
+the Type I algebraic slacks of Section 2.2). The NEC margin, involving null directions only, carries
+no rapidity and is exempt.
+2.5 Geodesic integration
+warpax integrates the geodesic equation
+dxα dxβ
+d2 xµ
++ Γµ αβ
+=0
+2
+dλ
+dλ dλ
+
+(19)
+
+using the Tsitouras 5(4) Runge–Kutta method (Tsit5) [53] via Diffrax [45], with adaptive step-size
+control (PID controller, rtol = atol = 10−10 ).
+Tidal forces are computed via the geodesic deviation equation
+D2 ξ µ
+dxα β dxγ
+ξ
+,
+= −Rµ αβγ
+2
+dτ
+dτ
+dτ
+
+(20)
+
+which is integrated simultaneously with the geodesic equation as a coupled 16-component ordinary
+differential equation (ODE) system y = (xµ , v µ , ξ µ , wµ ), where v µ = dxµ /dλ and wµ = Dξ µ /dλ.
+The explicit first-order form is
+ẋµ = v µ ,
+ξ˙µ = wµ − Γµ αβ v α ξ β ,
+
+v̇ µ = −Γµ αβ v α v β ,
+ẇµ = −Rµ νρσ v ν ξ ρ v σ − Γµ αβ wα v β ,
+
+(21)
+
+where dots denote d/dλ. The tidal tensor K µ ρ = Rµ νρσ v ν v σ is a 4 × 4 matrix with one zero
+eigenvalue (corresponding to the velocity direction v µ ). The three non-zero eigenvalues coincide
+with those of the spatial tidal matrix Eij = R0̂i0̂j in an orthonormal frame comoving with the
+observer, and directly quantify tidal stretching and compression experienced by a freely falling
+observer.
+Photon blueshift is computed as the ratio of the observed frequency at two points along a null
+geodesic:
+(gµν uµobs k ν )obs
+νobs
+=
+,
+(22)
+νemit
+(gµν uµemit k ν )emit
+where k µ is the photon 4-momentum and uµ is the observer 4-velocity at each endpoint.
+Computational implementation. warpax is a JAX [10]/Equinox [11] package: each metric is
+a module xµ 7→ gab (x) with dynamic parameters, and the metric-to-Tab chain uses forward-mode
+automatic differentiation, JIT-fused and batched over the grid (seconds at 503 , tens of seconds at
+1003 on an NVIDIA A100). The all-observer, all-velocity certification is exposed as a single
+high-level call. The package layout and the grid-verifier workflow are documented in Appendix A.
+3 Results: Energy conditions
+We evaluate energy conditions on 503 spatial grids for each metric, with the time coordinate fixed
+at t = 0 (for constant-velocity bubbles whose metric depends on x − vs t, the t = 0 slice is
+representative up to spatial translation). The grid extends ±5Rb for metrics with Rb = 1
+(Alcubierre, Van den Broeck, Natário) and ±3Rb for large-radius metrics (Rodal, Lentz with
+Rb = 100), centered on the bubble; the WarpShell grid extends ±5R2 . On these uniform grids the
+Alcubierre/VdB/Natário walls span only ∼1.3 cells (10–90% width ∆r ≈ 2.2/σ; Table 2), marginal
+but resolution-stable for the minimum NEC margin (Section 4); the central benchmark
+8
+
+Table 1. Per-metric parameters and grid configuration. All grids are 503 at t = 0, centered on the bubble.
+This table lists native per-metric parameters for the uniform-grid diagnostics; the primary cross-metric comparison
+instead evaluates every retained metric at common parameters (Rb = 1, σ = 8) on smoothly graded compact grids
+(Section 3.1).
+Rb
+
+σ
+
+Domain
+
+ζmax
+
+1
+1
+1
+100
+100
+R1 = 0.5, R2 = 1
+M =1
+
+8.0
+8.0
+8.0
+0.03
+8.0
+–
+–
+
+(±5)3
+(±5)3
+(±5)3
+(±300)3
+(±300)3
+(±5)3
+(±20)3
+
+5
+5
+5
+5
+5
+5
+5
+
+Metric
+Alcubierre
+Van den Broeck†
+Natário
+Rodal
+Lentz
+WarpShell‡
+Schwarzschild
+†
+‡
+
+Additional VdB parameters: R̃ = 1, αvdb = 0.5, σB = 8.
+WarpShell parameters: rS = 5, smooth_width = 0.06, C 2 quintic Hermite transitions.
+
+Table 2. Wall resolution analysis for all metrics (503 grid). Transition width computed as the 10–90% threshold
+distance of each metric’s shape function (∆r = 2 atanh(0.8)/σ for tanh-based walls). The Convergence column
+records the resolution-support tier: Richardson (numerical extrapolation), Stability-only (minimum margin stable
+under refinement), Weakest (least refined), – (no convergence study). Autodiff computes exact curvature at each grid
+point; wall resolution affects spatial sampling density, not curvature accuracy.
+Metric
+
+Wall width
+
+∆x
+
+Cells
+
+Resolved
+
+Convergence
+
+Alcubierre
+Natário
+Van Den Broeck
+Rodal
+
+0.27
+0.27
+0.27
+73.24
+
+0.20
+0.20
+0.20
+12.24
+
+1.35
+1.35
+1.35
+5.98
+
+No
+No
+No
+Yes
+
+Richardson
+–
+–
+Stability-only
+
+Lentz
+
+0.27
+
+12.24
+
+0.02
+
+No
+
+–
+
+WarpShell
+
+0.06
+
+0.20
+
+0.29
+
+No
+
+Weakest
+
+Schwarzschild
+
+–
+
+0.82
+
+–
+
+–
+
+–
+
+(Section 3.1) instead evaluates every retained metric at matched parameters on smoothly graded
+compact grids, where the matched wall spans ∼2–3 cells and every benchmark statistic is validated
+by a per-metric three-resolution convergence study (Table 9) rather than by nominal wall sampling.
+Table 1 lists the parameters; unless a caption states otherwise, every figure and table below uses
+these per-metric parameters, and matched-parameter results use Rb = 1, σ = 8, vs = 0.5 on these
+graded grids.
+Autodiff computes exact curvature at each sampled point; under-resolution affects only the spatial
+sampling of the violation region. For the severely under-resolved Lentz wall (∼0.02 cells) no
+quantitative fraction is meaningful, so it is excluded.
+For each grid point, we compute: (i) the Eulerian baseline (ADM normal observer for
+WEC/SEC/DEC; six axis-aligned null directions for NEC), and (ii) the robust margins of
+Section 2.2, with multi-start optimization (Nstarts = 8, Section 2.4) at the residual non-Type I
+points. The Hawking–Ellis classifier identifies most grid points as Type I (four real eigenvalues with
+a timelike eigenvector): Rodal 100%, WarpShell 99.6%, VdB 97.7%, Alcubierre 94.5%, and Natário
+92.6% (Table 18). These full-grid Type-I fractions are dominated by the near-vacuum exterior,
+where T a b ≈ 0 is trivially Type I; they should not be read as a statement about the physically
+active bubble wall, whose algebraic character, examined next, is markedly different.
+3.1 Frame-independent benchmark across the luminal transition
+We now report the principal result: the all-observer energy-condition structure of the
+matched-parameter (Rb = 1, σ = 8) bubble walls, computed frame-independently from the
+eigenstructure of T a b on the graded benchmark grids, and tracked across the luminal transition.
+Every quantity here is a Lorentz invariant (a Hawking–Ellis type, an eigenvalue margin, or a
+proper-volume integral); none uses the Eulerian normal, so the analysis is identically defined for
+vs < 1, vs = 1, and vs > 1.
+The wall is sharply not Type I. Table 3 restricts to the active wall (f ∈ [0.1, 0.9],
+proper-volume weighted). In contrast to the vacuum-dominated full-grid fractions above, the
+
+9
+
+Table 3. Matched-parameter (Rb = 1, σ = 8, vs = 0.5), wall-restricted, proper-volume-weighted invariant
+benchmark on the graded benchmark grids (N = 50). Type fractions and the invariant peak NEC deficit min(ρ + pi )
+(Type I points) are frame-independent. “Missed by Eulerian” is the fraction of all-observer violations for which the
+Eulerian frame reports no violation; it is defined only for vs < 1 and is a property of the single-frame diagnostic. For
+the Type-IV-dominated walls the Type-I margin samples only the residual real-eigenvalue points and is not a
+severity bound; the Type-IV points violate every condition unconditionally.
+Type I
+
+Type IV
+
+min(ρ + pi )
+
+Metric
+
+(%)
+
+(%)
+
+(Type I)
+
+WEC
+
+NEC
+
+DEC
+
+Alcubierre
+Natário
+Van den Broeck
+Rodal
+
+0.9
+10.1
+12.2
+100.0
+
+99.1
+89.9
+87.8
+0.0
+
+-0.158
+-2.069
+-0.195
+-0.172
+
+0.0
+0.0
+42.2
+72.1
+
+0.0
+0.0
+12.6
+12.4
+
+0.0
+0.0
+37.5
+73.3
+
+Missed by Eulerian (%)
+
+Table 4. Wall-restricted Hawking–Ellis Type I / Type IV fractions (%, proper-volume weighted) at subluminal,
+luminal, and superluminal speeds. Computed frame-independently from T a b ; Type-IV labels certified (Section 1.2).
+vs = 0.5 (sub)
+
+vs = 1.0 (luminal)
+
+vs = 2.0 (super)
+
+Metric
+
+Type I
+
+Type IV
+
+Type I
+
+Type IV
+
+Type I
+
+Type IV
+
+Alcubierre
+Natário
+Van den Broeck
+Rodal
+
+0.9
+10.1
+12.2
+100.0
+
+99.1
+89.9
+87.8
+0.0
+
+5.6
+22.0
+18.3
+100.0
+
+94.4
+78.0
+81.7
+0.0
+
+17.8
+33.8
+25.6
+100.0
+
+82.2
+66.2
+74.4
+0.0
+
+Alcubierre, Natário, and Van den Broeck walls are Type-IV dominated (87–99% at vs = 0.5): there
+the stress-energy has a complex-eigenvalue pair, hence no rest frame and no invariant energy
+density, and it violates every energy condition for some observer unconditionally (Hawking–Ellis;
+Martín-Moruno–Visser [4]). The Rodal geometry is the lone exception: it is 100% Type I, so its
+all-observer energy conditions are decided exactly by the eigenvalues.
+The all-observer reading of the positive-energy result. Rodal recently put forward a warp
+drive with predominantly positive invariant energy density and global Type I structure,
+characterized in the Eulerian frame at v/c = 1 [5]. We confirm the global Type I structure, which
+lets us state the all-observer energy conditions exactly, and use it to illustrate how observer choice
+enters: the Eulerian frame reports no violation at ≈72% of the wall points where a boosted
+observer sees a weak-energy violation, and at ≈73% for the dominant energy condition (Table 3).
+These off-Eulerian violations are an exact eigenvalue consequence of the Type I structure, not an
+optimizer artifact. The Eulerian-frame and invariant statements coincide only for Rodal, since it is
+the sole drive with a global rest frame; for the Type-IV-walled metrics the frame-independent
+energy density that published energy-reduction comparisons optimize does not exist in the wall at
+all. The single-frame, single-velocity result is correct as stated; the all-observer analysis adds that
+the violations outside that frame are the majority.
+Type and severity across vs = 1. Table 4 and Figure 1 track the wall type structure from deep
+subluminal to superluminal. The dichotomy is stable across the transition: Rodal remains 100%
+Type I to vs = 2.5, while the Alcubierre/Natário/Van den Broeck walls remain Type-IV
+dominated. The Type-IV fraction decreases with vs (more of the wall acquires a rest frame as the
+bubble speeds up): in the superluminal regime the wall Type I fraction rises monotonically,
+reaching 22.8% (Alcubierre), 38.7% (Natário), and 29.6% (Van den Broeck) at vs = 2.5, even as the
+invariant violation severity grows sharply. Van den Broeck additionally passes through a
+velocity-driven Type-I → Type-IV transition, its wall Type I fraction crossing 50% at vs ≈ 0.36. For
+the everywhere-Type-I Rodal geometry the invariant NEC and DEC margins (Figure 1b) deepen
+monotonically from min(ρ + pi ) ≈ −0.007 at vs = 0.1 to ≈ −4.3 at vs = 2.5, following a clean
+quadratic law min(ρ + pi ) ≈ −0.688 vs2 (coefficient of determination R2 > 0.9999 over
+vs ∈ [0.1, 2.5]), the expected scaling of a stress-energy built from a shift linear in vs . This
+quantifies, for all observers and at all speeds, the Santiago–Schuster–Visser theorem [2] that no
+warp drive escapes NEC violation.
+
+10
+
+100
+80
+60
+40
+20
+0
+0.0
+
+luminal
+
+0.5
+
+1.0
+
+Alcubierre
+Natário
+Van den Broeck
+Rodal
+
+1.5
+
+warp speed vs
+
+2.0
+
+2.5
+
+invariant eigenvalue margin
+
+wall Type-IV fraction (%)
+
+(a) wall Type-IV fraction
+
+0
+
+(b) Rodal all-observer margins
+min(ρ + pi ) (NEC)
+min(ρ − |pi |) (DEC)
+
+1
+2
+3
+4
+0.0
+
+0.5
+
+1.0
+
+1.5
+
+warp speed vs
+
+2.0
+
+2.5
+
+Figure 1. Wall type structure across the luminal transition (vs = 1, dashed). (a) Wall Type-IV fraction versus warp
+speed: Rodal is globally Type I (Type-IV = 0) at all speeds; the Alcubierre and Natário walls are Type-IV
+dominated throughout, Van den Broeck above its Type-I → Type-IV transition at vs ≈ 0.36, with the fraction
+decreasing toward superluminal speeds. (b) Invariant all-observer margins for the everywhere-Type-I Rodal
+geometry, min(ρ + pi ) (NEC) and min(ρ − |pi |) (DEC); both are negative at all speeds (NEC violation is generic)
+and deepen through and beyond vs = 1.
+
+3.2 What controls the type: shift vorticity
+The type map of Section 3.1 raises a sharper question than “which walls are exotic”: why is one
+geometry globally Type I while the others are Type-IV walled? The answer is a single geometric
+property of the metric, the vorticity of the ADM shift vector βi = g0i . On the slice we split the
+covariant gradient of the shift into its expansion, shear, and vorticity parts, exactly as a fluid
+velocity field is decomposed,
+β
+β
+Di βj = 13 θβ γij + σij
++ ωij
+,
+
+β
+ωij
+= D[i βj] = ∂[i βj] ,
+
+(23)
+
+where the vorticity part is the exterior derivative of the shift one-form, so it is exact from first
+metric derivatives and invariant under spatial coordinate changes. We summarize each drive by the
+dimensionless vorticity fraction Rω = ωβ2 /( 13 θβ2 + σβ2 + ωβ2 ), the share of the shift-gradient norm
+carried by rotation. Because the shift scales linearly with the warp speed, Rω is independent of vs
+and is a fixed fingerprint of each geometry.
+Table 5 and Figure 2 report the wall-restricted, proper-volume-weighted decomposition, from
+which three features stand out. First, the Rodal shift is irrotational to machine precision
+(Rω = 0.000), and Rodal is the lone globally Type I drive. This is the sufficient direction of the
+classical result: an irrotational, unit-lapse, spatially flat shift admits a scalar potential and gives
+Type I matter [2, 4], and we confirm it exactly. Second, the remaining drives carry nonzero shift
+vorticity (Rω = 0.333 Alcubierre, 0.433 Van den Broeck, 0.506 Natário) and all have Type-IV
+walls. Third, the Natário drive has zero shift expansion (its expansion fraction is 0.000 to machine
+precision, its defining property) yet the largest vorticity fraction, and it is Type-IV walled:
+vorticity, not expansion, is the operative obstruction.
+We therefore read the dichotomy as follows. Zero shift vorticity is a sufficient condition for a
+global Type I drive, realized uniquely here by Rodal. A rotational shift is the geometric obstruction
+to a real eigenframe, and every rotational drive in our set develops Type-IV walls.
+We can make this mechanism precise. For the unit-lapse, flat-slice family the imaginary part of
+the Type-IV eigenvalue pair {−ρ ± if,
+qp1 , p2 } [16] is, at leading order in the wall gradient, linear in
+the shift vorticity, f = κ ω with ω =
+
+ωβ2 : the symmetric part of the shift gradient (expansion and
+
+shear) sources the real Type-I spectrum, while the antisymmetric (vorticity) part sources the
+momentum-density asymmetry of T a b that admits no rest frame. A controlled pure-rotation shift –
+zero expansion, zero shear, only vorticity – makes this exact: across a vorticity sweep the fit has
+R2 = 1 with slope κ ≈ 0.060 in this construction, and the algebraic type flips from I to IV precisely
+as the vorticity is switched on (Table 6), recovering Type I in the irrotational limit. Rodal showed
+numerically, by a controlled vorticity ablation of his single irrotational construction [5], that adding
+shift vorticity worsens the negative-energy content; the law f = κ ω upgrades that observation to
+an analytic statement about the algebraic type, with the Type-I → Type-IV transition itself linear
+in the vorticity, and recovers both the irrotational global-Type-I result [5] and the
+11
+
+Table 5. Wall-restricted, proper-volume-weighted decomposition of the ADM shift gradient (Eq. 23) into expansion,
+shear, and vorticity fractions, with the resulting wall Type-IV range over vs ∈ [0.1, 2.5]. The vorticity fraction Rω is
+independent of vs . Rodal is the only irrotational drive and the only globally Type I one; Natário has zero expansion
+yet is Type-IV walled.
+Shift-gradient fraction
+
+Alcubierre
+Natário
+Van den Broeck
+Rodal
+
+Shear
+
+Vorticity Rω
+
+range (%)
+
+0.111
+0.000
+0.188
+0.486
+
+0.556
+0.494
+0.379
+0.514
+
+0.333
+0.506
+0.433
+0.000
+
+77–100
+61–100
+9–91
+0–0
+
+(a) shift-gradient decomposition
+
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+ierre Natário n Broeck
+e
+Alcub
+Van d
+
+shift-gradient fraction
+
+Expansion
+
+expansion
+
+shear
+
+l
+Roda
+vorticity
+
+wall Type-IV fraction (%)
+
+Metric
+
+Wall Type IV
+
+100
+
+(b) vorticity controls the type
+
+75
+
+Alcubierre
+Natário
+Van den Broeck
+Rodal
+
+50
+25
+0
+
+0.0
+
+0.2
+
+0.4
+
+shift vorticity fraction Rω
+
+0.6
+
+Figure 2. (a) Irreducible decomposition of each drive’s shift gradient: the irrotational Rodal drive has no vorticity,
+the zero-expansion Natário drive has no expansion. (b) Wall Type-IV fraction against the vorticity fraction Rω over
+the velocity sweep: the irrotational drive sits at the origin (zero vorticity, zero Type IV), while the rotational drives
+have Type-IV walls.
+
+Santiago–Schuster–Visser irrotational-implies-Type-I lemma [2] as the ω → 0 limit. Across the
+retained drives the irrotational Rodal geometry carries f ≈ 0 and is Type I, while the vortical
+Alcubierre/Natário/Van den Broeck walls carry f > 0 and are Type IV.
+The controlled slope also calibrates how far the full metrics sit from the pure-rotation limit: at
+the matched wall sample the measured imaginary part exceeds κ ω by metric-dependent factors
+that grow with the shear-to-vorticity ratio σ/ω (Table 6; the zero-expansion Natário wall makes the
+symmetric gradient pure shear). The irrotational Rodal shift carries shear of the same order at the
+same point yet has f = 0 to machine precision: the symmetric gradient amplifies the imaginary
+pair that vorticity opens, but does not open one itself. With three vortical drives we read this as a
+consistent trend, not a fitted law.
+The Type-IV fraction is then modulated by speed and wall geometry (Van den Broeck is only
+9% Type-IV walled at vs = 0.1 before its Type-I → Type-IV transition), and the coefficient κ
+depends on the wall geometry, as the excess factors above quantify, so we state the result as a
+structural control with an exact controlled-limit mechanism, not a single universal law. We do not
+claim a general converse for arbitrary, non-flat-slice shells, where the link remains numerical.
+Martín-Moruno and Visser show that in any strictly static spacetime the stress-energy is Type I
+throughout the domain of outer communication, and in the stationary-axisymmetric case on any
+horizon and on the symmetry axis [16]; the warp wall is non-static (the bubble translates), so
+neither constraint bears on the present Type-IV result.
+3.3 Individual metric analysis
+For Alcubierre at vs = 0.5 the Eulerian and observer-independent NEC violation sets coincide (min
+margin −0.628 robust vs −0.625 Eulerian), but the WEC shows the severity gap of Section 2.4: the
+robust minimum at ζmax = 5 (γ ≈ 74) is ∼−3460 versus −0.038 Eulerian — even where the
+Eulerian frame locates violations correctly, boosted observers see far larger magnitudes (panels in
+Appendix C, Figures 7 and 8). Lentz [25], shown by Celmaster–Rubin [21] to violate the WEC
+even in the Eulerian frame, is excluded from all quantitative results (Table 2) and retained only as
+a qualitative consistency check. Van den Broeck, which adds a conformal factor on the spatial
+metric, is the only Type-IV-walled drive with missed violations across all four conditions on the
+
+12
+
+Table 6. The vorticity → Type-IV mechanism at the matched wall sample. In the controlled pure-rotation family
+(zero expansion, zero shear) the imaginary part of the Type-IV eigenvalue pair is exactly linear in the shift vorticity,
+f = κ ω with κ ≈ 0.060 (R2 = 1), and the algebraic type flips from I to IV as the vorticity is switched on. For the
+full metrics the measured f exceeds the pure-rotation prediction by the factor f /(κ ω), which grows with the
+shear-to-vorticity ratio σ/ω; the irrotational Rodal wall carries same-order shear yet f = 0.
+Metric
+Rodal
+Van den Broeck
+Alcubierre
+Natário
+
+Wall type
+
+f /(κ ω)
+
+σ/ω
+
+I
+IV
+IV
+IV
+
+–
+2.1
+3.7
+31.8
+
+– (ω = 0)
+3.1
+4.0
+7.3
+
+uniform-grid diagnostic (Table 7); its SEC carries the largest conditional miss among its conditions
+(fmiss|viol = 17.5%; Figures 9 and 10, Appendix C), and for Alcubierre the SEC is the only missed
+condition at all, showing that SEC violations are genuinely independent of the NEC/WEC/DEC
+hierarchy.
+3.4 Validation against WarpFactory and the single-frame miss diagnostic
+The invariant benchmark of Section 3.1 is the primary cross-metric statement; this subsection
+validates the underlying pipeline against the published WarpFactory results and reports the
+single-frame miss diagnostic that motivates the invariant reformulation. We first compare the
+Eulerian-only NEC/WEC margins against WarpFactory’s published results [12] for the Alcubierre
+and Lentz metrics at matched parameters, then apply the observer-robust analysis.
+The Eulerian baseline in warpax evaluates the NEC for six axis-aligned null directions and
+WEC/SEC/DEC using the ADM normal observer. Our Eulerian results reproduce WarpFactory’s
+published violation regions and structure, with ∼ 10−3 –10−2 relative differences attributable to
+autodiff versus fourth-order finite differences. Where WarpFactory samples ∼ 1000 observer
+directions per point, warpax instead decides Type-I points algebraically (exact,
+observer-independent) and applies continuous optimization only at the residual non-Type-I points
+(Section 2.4); the narrow-cone failure mode of fixed sampling is quantified in the Discussion
+(Figure 12).
+We define the missed violation fraction for a given energy condition as
+fmiss =
+
+#{x ∈ grid : mEuler (x) ≥ 0 ∧ mrob (x) < 0}
+,
+#{x ∈ grid}
+
+(24)
+
+i.e. the fraction of grid points the Eulerian frame reports as satisfied (mEuler ≥ 0) but the
+observer-independent ground truth (the algebraic slack at Type I, Section 2.2) marks violated. The
+unconditional fmiss (Table 7) is a domain-restricted diagnostic: it scales with each metric’s wall
+thickness and grid volume and is not a cross-metric severity measure. The appropriate cross-metric
+statistic is the wall-restricted conditional miss rate fmiss|viol = (missed)/(total violated), reported
+on the matched benchmark (Table 8) and, invariantly, in Section 3.1. Table 7 retains the
+within-metric
+P Eulerian-vs-robust comparison; note SEC misses are independent of the others (the
+trace ρ + i pi can be negative while each ρ + pi ≥ 0).
+Velocity dependence of the Eulerian comparison. The full, frame-independent velocity
+story, including the superluminal regime and the Hawking–Ellis type structure, is the sweep of
+Section 3.1 (Table 4, Figure 1); here we record only the subluminal Eulerian-versus-robust
+comparison underlying it. For Alcubierre (Figure 15a, Appendix F) the Eulerian frame detects all
+NEC/WEC points at every vs (missed = 0.0%); the robust margins deepen with vs (greater severity
+for boosted observers). For Rodal at its native parameters (Rb = 100, σ = 0.03) the Eulerian frame
+misses ∼28.5% of DEC and ∼15.6% of WEC violations as a fraction of the full 503 grid (Table 16),
+with the missed points lying near the satisfaction boundary (Figure 11 in Appendix C; Figure 12).
+This unconditional grid fraction is not to be conflated with the wall-restricted miss fractions of the
+matched-parameter benchmark (≈73% DEC, ≈72% WEC; Section 3.1), which condition on the
+violating points within the active wall. The discrepancy is systematic across the velocity range and,
+in the wall-restricted conditional rate, strongest for DEC and WEC.
+3.5 Averaged and quantum conditions
+The results above are pointwise and classical. A pointwise NEC violation is logically weaker than
+the averaged statement, and carries no semiclassical information. We close the energy-condition
+13
+
+Table 7. Energy condition analysis at vs = 0.5 on a 503 grid (ζmax = 5 throughout). Total: percentage of grid
+points violating each condition (robust margin: algebraic slacks at Type I points, ζmax -capped extrema at
+non-Type I). Missed: percentage of grid points where the Eulerian analysis fails to detect a violation found by the
+robust check. The Eulerian violated fraction equals the total violated fraction minus the missed fraction. A missed
+fraction of 0.0% does not imply zero violations; it means the Eulerian frame detects all violations to the displayed
+precision. Bold entries highlight missed fractions ≥ 1%. Volume fractions scale with wall thickness (Table 2);
+cross-metric comparisons should use the conditional miss rate fmiss|viol (missed/total violated). WarpShell is
+under-resolved (∼ 0.3 cells across the wall; Table 2); its total and missed fractions should be interpreted as lower
+bounds. Lentz is omitted entirely: its wall spans only ∼ 0.02 cells at 503 , so no quantitative fraction is meaningful
+(Table 2).
+Total violated (%)
+
+Missed by Eulerian (%)
+
+Metric
+
+NEC
+
+WEC
+
+SEC
+
+DEC
+
+NEC
+
+WEC
+
+SEC
+
+DEC
+
+Schwarzschild
+Alcubierre
+Van Den Broeck
+Natário
+Rodal
+WarpShell‡
+
+0.0
+5.9
+6.5
+7.4
+87.0
+0.3
+
+0.0
+5.9
+6.5
+7.4
+87.0
+0.4
+
+0.0
+5.9
+6.6
+7.4
+87.0
+0.3
+
+0.0
+6.1
+6.9
+7.4
+99.9
+0.5
+
+0.0
+0.0
+0.1
+0.0
+1.6
+0.0
+
+0.0
+0.0
+0.4
+0.0
+15.6
+0.1
+
+0.0
+4.3
+1.2
+0.0
+28.0
+0.1
+
+0.0
+0.0
+0.3
+0.0
+28.5
+0.0
+
+‡
+
+WarpShell uses a C 2 quintic Hermite regularization of the thin-shell; margins reflect the regularized
+implementation, not an idealized thin-shell spacetime.
+Table 8. Matched-parameter cross-metric benchmark. All retained metrics are evaluated at common family
+parameters (Rb = 1, σ = 8) on identical compact bounds, at the finest resolution of the per-metric convergence study
+that validates every statistic reported here (Table 9). The reported quantity is the volume-weighted wall-restricted
+conditional miss rate (Eulerian-satisfied but robust-violated points, as a fraction of robust-violated points within the
+wall f ∈ [0.1, 0.9]); unlike the unconditional grid-volume fractions of Table 7, this statistic does not scale with wall
+thickness and is therefore directly comparable across metrics. The off-Eulerian effect is strongest for the
+everywhere-Type I Rodal geometry and persists at these matched parameters (cf. its native-parameter values in
+Table 7); it is also substantial for Van den Broeck. Natário shows no missed violations in any condition; Alcubierre
+shows none for the NEC/WEC/DEC (with a residual SEC miss), while its violation severity is much larger off the
+Eulerian frame. Lentz is excluded (wall unresolvable on these grids).
+Type I
+
+Wall
+
+Missed by Eulerian, wall-restricted (%)
+
+Metric
+
+(%)
+
+pts
+
+NEC
+
+WEC
+
+SEC
+
+DEC
+
+Alcubierre
+Natário
+Van den Broeck
+Rodal
+
+79.1
+71.5
+91.5
+100.0
+
+3847
+3847
+3847
+3847
+
+0.0
+0.0
+12.1
+12.2
+
+0.0
+0.0
+41.3
+72.8
+
+18.4
+0.0
+11.2
+19.3
+
+0.0
+0.0
+37.6
+74.2
+
+analysis by probing both edges with the same engine: the averaged null energy along null rays, and
+the Ford–Roman quantum inequality along a coordinate-static wall worldline. Table 11 and
+Figure 3 collect the results.
+Averaged null energy. We integrate the null contraction Tab k a k b along axial null rays at
+varying perpendicular impact parameter b, with the per-point null-projected tangent so the
+integrand is an exact null observable. Every retained metric admits rays with a negative line
+integral: the minimum over b is −0.40 (Alcubierre, b ≈ 0.86), −0.049 (Van den Broeck, b ≈ 0.82),
+−0.0070 (Rodal, b ≈ 1.27), and −0.0020 (Natário, b ≈ 0.86). The on-axis ray separates the
+geometries: Alcubierre is already negative on axis, whereas Rodal, Natário, and Van den Broeck
+are positive on axis and turn negative only off-axis, consistent with their wall violations sitting
+away from the symmetry axis. The line integral is resolution-converged (unchanged to four figures
+from 512 to 4096 samples along the ray, far better resolved than the 503 volume grid), and the
+Minkowski ray integrates to zero to <10−8 . This is a coordinate null-ray diagnostic, not a geodesic
+ANEC: it establishes that negative-average rays exist for every drive, but the path is the coordinate
+ray rather than an integrated null geodesic, and cancellation along that arbitrary path – most
+visible for the oscillatory Natário wall, whose ray integral nearly cancels – makes it unsuitable for
+cross-metric ranking. The geodesic-integrated result next supplies both the rigorous average and
+the ranking.
+Rigorous geodesic-integrated ANEC. We make the averaged statement rigorous by
+integrating the actual null geodesic of each metric and evaluating the ANEC along it. The
+obstruction – that an adaptive Runge–Kutta integrator drifts off the null cone for a long crossing of
+14
+
+Table 9. Per-metric resolution validation of the matched benchmark. Wall-restricted DEC miss rate at
+three resolutions (N = 30, 50, 70) on the graded benchmark grids, the maximum deviation across resolutions
+(percentage points), and the Richardson order p of the minimum NEC margin (a smooth quantity), inferred from the
+303 → 503 refinement ratio. Every retained metric is resolution-stable: the wall-restricted miss rate varies by ≲ 1
+percentage point across the more-than-twofold change in N , validated per metric rather than assumed. A “†” marks
+the assumed p = 2 fallback where the triplet is non-monotone and the ratio test is inapplicable.
+Wall DEC miss (%) at N =
+
+Max dev
+
+NEC-min
+
+Metric
+
+30
+
+50
+
+70
+
+(pp)
+
+order p
+
+Alcubierre
+Natário
+Van den Broeck
+Rodal
+
+0.0
+0.0
+38.3
+75.0
+
+0.0
+0.0
+37.5
+73.3
+
+0.0
+0.0
+37.6
+74.2
+
+0.00
+0.00
+0.52
+0.85
+
+5.4
+3.9
+2.0†
+2.0†
+
+Stable
+
+✓
+✓
+✓
+✓
+
+Table 10. Rigorous geodesic-integrated ANEC at matched parameters (R
+Rb = 1, σ = 8, vs = 0.5), evaluated along
+the actual null geodesic with the symplectic integrator. The line integral Tab ka kb dλ is given on axis and at its
+minimum over the impact-parameter scan (with the minimizing b∗ ); max |g(k, k)| is the worst off-cone deviation
+along the path (the rigor witness, <10−6 for every retained wall, so every value is symplectically certified).
+Metric
+
+on-axis
+
+min (b∗ )
+
+Alcubierre
+Natário
+Van den Broeck
+Rodal
+
+−0.0386
++0.1914
+−0.0268
++0.0210
+
+−0.1587 (0.43)
+−0.0510 (0.78)
+−0.0450 (0.69)
+−0.0041 (1.90)
+
+max |g(k, k)|
+
+method
+
+3.9e − 10
+7.9e − 08
+3.2e − 11
+2.7e − 10
+
+symplectic
+symplectic
+symplectic
+symplectic
+
+a strong-shift bubble – is removed by a structure-preserving symplectic integrator for the canonical
+null Hamiltonian H = 12 g ab pa pb [54, 55], whose bounded long-time error holds the on-cone
+constraint gab k a k b at the ∼10−10 level over a long crossing where the adaptive Runge–Kutta
+tangent leaves the cone by ∼0.2. With each geodesic ANEC we report the worst off-cone deviation
+max |gab k a k b | along the path as an explicit rigor witness. For all four retained walls this witness is
+below 10−6 , certifying every value as a genuine null-geodesic average. The geodesic-integrated
+ANEC is negative for every retained metric, vanishes on the Minkowski sentinel, and fixes the
+cross-metric ordering as an averaged-condition result: the minimum over the impact-parameter
+scan is −0.159 (Alcubierre), −0.051 (Natário), −0.045 (Van den Broeck), and −0.0041 (Rodal), the
+irrotational drive again the mildest, by one to two orders of magnitude (Table 10). Per-ray values
+differ from the coordinate-ray diagnostic above because the geodesic samples a different path; only
+the negativity of the minimum and the cross-metric ordering are claimed as robust.
+Quantum inequality. At a fixed wall point the passing bubble presents a coordinate-static
+observer with a temporary
+negative-energy pulse, the situation constrained by the Ford–Roman
+R
+quantum inequality ρ(τ ) f (τ ) dτ ≥ −C/τ04 , with C = 3/32π 2 and f the normalized Lorentzian
+sampling function of width τ0 . For the two drives with a smooth, resolution-stable wall energy
+density, Rodal (globally Type I) and Alcubierre, the inequality is satisfied at short sampling times
+and violated beyond a threshold τ0th (Figure 3b): τ0th ≈ 0.69 for Alcubierre (ρmin ≈ −0.086) and
+≈ 1.6 for Rodal (ρmin ≈ −0.0070). Rodal’s milder negative energy density thus tolerates a ∼2.3×
+longer sampling window before the quantum inequality fails, a semiclassical echo of its mildness.
+For the Type-IV walls the Eulerian energy density is oscillatory and resolution-marginal, so a
+pointwise-density quantum-inequality threshold is not a robust observable there; the
+resolution-converged null-ray integral is the appropriate averaged probe for them. We apply the
+flat-space inequality as a sampling diagnostic along a curved-spacetime worldline; a rigorous
+curved-space quantum inequality would carry curvature corrections, and the coordinate-static
+worldline is timelike only for vs < 1. The status of quantum inequalities as physicality criteria is
+itself still debated [20], so we read these thresholds as a relative, semiclassical ordering rather than
+a feasibility verdict. Neither the geodesic ANEC nor the Ford–Roman comparison exempts any
+drive; Rodal is quantitatively the mildest on both, but still violates.
+3.6 Cross-construction verification and invariant exoticity ranking
+The all-observer verification of Section 3.1 extends beyond the metrics analyzed so far. We run a
+panel of recent positive-energy constructions through the same frame-independent certifier: the
+Fuchs constant-velocity shell [6], the Bobrick–Martire/Fell–Heisenberg WarpShell [7, 8], and the
+Garattini–Zatrimaylov de Sitter bubble [9], alongside the Alcubierre and Rodal references. (The
+
+15
+
+Table 11. Averaged and quantum
+diagnostics at matched parameters (Rb = 1, σ = 8, vs = 0.5). ANEC columns
+R
+give the null-ray line integral Tab ka kb dλ on axis and its minimum over the impact-parameter scan (with the
+minimizing b∗ ); a coordinate null-ray diagnostic, resolution-converged, with the Minkowski ray = 0 to <10−8 .
+Ford–Roman columns give the most-negative static-observer wall energy density ρmin and the sampling-time
+threshold τ0th beyond which the quantum inequality is violated; reported only for the two smooth-wall drives, since
+the Type-IV walls have no robust pointwise energy density (a dash).
+ANEC null-ray
+
+R
+
+τ0th
+
+−0.0857
+–
+–
+−0.00703
+
+0.69
+–
+–
+1.59
+
+on-axis
+
+Alcubierre
+Natário
+Van den Broeck
+Rodal
+
+−0.0807
++0.0287
++0.0109
++0.0218
+
+−0.397 (0.86)
+−0.00202 (0.86)
+−0.0494 (0.82)
+−0.00699 (1.27)
+
+Alcubierre
+Natário
+Van den Broeck
+Rodal
+
+2
+1
+0
+1.0
+
+1.5
+
+2.0
+
+2.5
+
+impact parameter b
+
+Ford--Roman QI margin
+
+null line integral Tab k a k b dλ
+
+Z
+
+ρmin
+
+Metric
+
+3
+
+0.5
+
+Ford–Roman QI
+
+min (b∗ )
+
+(a) Averaged null energy along null rays
+
+0.0
+
+Tab ka kb dλ
+
+(b) Quantum inequality, smooth-wall drives
+Alcubierre
+1010
+Rodal
+101
+10 2
+10 3
+10 4
+10 5
+10
+0
+10 54
+10 3
+10 2
+10 1
+10 0
+10
+10 1
+100
+101
+
+sampling time τ0
+
+R
+
+Figure 3. (a) Averaged null energy: the null-ray line integral Tab ka kb dλ against perpendicular impact parameter
+b for the four retained metrics (matched parameters). Every metric admits rays with a negative integral (the
+cross-metric ranking is carried by the geodesic-integrated result, Table 10). (b) Ford–Roman quantum inequality
+margin against sampling time τ0 for the smooth-wall drives, with the violation threshold τ0th marked (dotted): the
+milder Rodal wall tolerates a ∼2.3× longer sampling window than Alcubierre before the inequality fails.
+
+source-first S- and T-shell constructions are developed separately in the companion note [51]; we do
+not re-certify them here, keeping the two contributions disjoint.) A wall-resolution gate withholds
+certification of any wall spanning fewer than four grid cells, so no under-resolved wall is reported
+quantitatively. Table 12 collects the wall-restricted result. The translating WarpShell wall is
+dominated by Type-IV matter (no rest frame), which the Eulerian-frame positive-energy statement
+does not register. The Hawking–Ellis type of a regularized shell wall depends on the shell
+construction: the physical WarpShell wall is Type IV at the gate resolution, acquiring a Type-I
+admixture as the speed grows, while the regularized stress-test variant (Appendix D) yields
+Type II/III walls; we report the certified construction at the matched gate resolution. The
+Garattini–Zatrimaylov bubble, evaluated at its matched de Sitter regime vs = HRb where the
+construction’s averaged (ANEC/AWEC) conditions are designed to hold [9], is likewise Type-IV
+walled (no rest frame): even with the Eulerian energy density largely rendered non-negative by the
+de Sitter background, the Eulerian frame does not register ≈63% of the wall weak-energy violations
+seen by boosted observers. This pointwise, all-observer reading is logically distinct from—and does
+not contradict—the averaged-condition claim; it shows once more that single-frame or
+background-tuned positivity does not certify all-observer pointwise positivity. Because this
+geometry sits on a Λ > 0 de Sitter background rather than an asymptotically Minkowski one, we
+report it in this verification panel and not on the Minkowski-baselined exoticity ranking below.
+Invariant exoticity ranking. As a single boost-invariant summary, Table 13 reports an
+exoticity index combining the NEC severity, the Type-IV fraction, and the rigorous ANEC
+minimum, each normalized to the Alcubierre baseline. The irrotational Rodal drive ranks a factor
+of forty-five to seventy below the bubble-wall drives (index 0.014 versus 0.63–1.0). The gap is
+informative: Rodal and Alcubierre are equally NEC-violating (both follow the same vs2 law below,
+
+16
+
+Table 12. Cross-construction all-observer verification, wall-restricted and volume-weighted, at matched wall
+resolution. Each construction is certified at its own matched speed (the Garattini–Zatrimaylov de Sitter bubble at
+vs = HRb , its averaged-condition regime). “Wall cells” is the number of grid cells spanning the wall transition (the
+resolution gate); min(ρ + pi ) is the invariant peak NEC margin over wall Type-I points (positive ⇒ NEC-satisfying
+there); the miss columns are the fraction of all-observer violations the Eulerian frame does not see.
+Metric
+
+Wall
+cells
+
+Type I
+(%)
+
+Type IV
+(%)
+
+min(ρ + pi )
+(Type I)
+
+Alcubierre
+Rodal
+Fuchs
+WarpShell
+Garattini
+
+6.0
+6.0
+12.0
+14.0
+6.0
+
+0.9
+100.0
+100.0
+0.0
+0.0
+
+99.1
+0.0
+0.0
+100.0
+100.0
+
+-0.158
+-0.172
+2.1e-05
+–
+–
+
+WEC
+NEC
+miss (%)
+0.0
+72.1
+–
+0.0
+62.6
+
+0.0
+12.4
+–
+0.0
+0.0
+
+Table 13. Boost-invariant exoticity ranking: per-axis sub-scores (NEC severity, Type-IV fraction, rigorous ANEC
+minimum) normalized to the Alcubierre baseline, and their geometric-mean index (lower = less exotic). Sub-score
+ratios are capped at 1.0 (uncapped, Natário’s pointwise NEC severity is ∼13× the baseline; Table 14) and zero axes
+are floored at 10−4 in the geometric mean, so the index orders the drives rather than measures the gap; the full
+per-axis vector, reported alongside, carries the floor-independent comparison.
+Metric
+
+NEC
+severity
+
+Type IV
+fraction
+
+ANEC
+| min |
+
+Exoticity
+index
+
+Alcubierre
+Natário
+Van den Broeck
+Rodal
+
+1.000
+1.000
+1.000
+1.000
+
+0.991
+0.899
+0.878
+0.000
+
+1.000
+0.321
+0.283
+0.026
+
+0.997
+0.661
+0.629
+0.014
+
+with comparable coefficient), so the separation comes entirely from Rodal’s vanishing Type-IV
+fraction and its tiny averaged-null energy, not from a milder pointwise NEC. The ranking therefore
+measures exotic content that no single-frame energy can hide, rather than rewarding positivity in a
+preferred frame.
+Universal vs scaling and the Santiago–Schuster–Visser no-go. The wall NEC severity
+follows a universal power law. Fitting | min(ρ + pi )| = A vsp over the subluminal Type-I branch
+(Table 14) gives a universal exponent p ≈ 2 for every drive with a clean fit (Alcubierre, Natário,
+Rodal); Rodal recovers its 0.688 vs2 law and the coefficient A is the per-drive fingerprint, while
+Van den Broeck, Type-IV-dominated over most of the branch, admits no clean vs2 fit (R2 < 0.99).
+The vs2 form is the Santiago–Schuster–Visser theorem made quantitative: for a unit-lapse, spatially
+flat drive the shift is linear in vs , so the leading wall deficit is necessarily quadratic,
+min(ρ + pi ) = −C vs2 with C > 0 fixed by the geometry, and the data follow this form (Table 14:
+R2 = 1, maximum deviation below a percent for Alcubierre and Rodal). A strictly positive C is
+exactly the SSV statement that NEC violation is unavoidable at every speed, here measured rather
+than asserted.
+Curvature scaling. The vorticity that selects the algebraic type also sets how fast the wall
+curvature grows with speed. Sweeping the wall-peak Kretschmann, Weyl-squared, and
+Ricci-squared invariants over vs (Figure 4, Table 15) gives a clean split: the vortical Alcubierre and
+Natário walls grow as vs2 , while the irrotational Rodal wall grows as vs4 (R2 ≥ 0.996 on every fitted
+branch). Detailed curvature-invariant studies of the individual Alcubierre and Natário
+geometries [26, 27] already established their Weyl-dominated, sharply wall-localized curvature;
+what the matched family adds here is that the growth exponent is fixed by the shift vorticity. The
+doubled exponent is the geometric counterpart of the type dichotomy: a rotational shift contributes
+a curvature term linear in vs , hence vs2 in the quadratic invariants, absent for the irrotational drive
+whose curvature is purely second order in the shift. Van den Broeck, with its Type-I → Type-IV
+transition, has no single power law over the branch. The exotic content is therefore intrinsic
+geometry that grows smoothly through and beyond the luminal transition; the irrotational drive is
+mildest on every invariant axis at low speed, its steeper vs4 growth overtaking the Alcubierre wall’s
+vs2 near vs ≈ 0.7 on the Ricci axis, exactly as the two exponents dictate.
+4 Resolution stability
+We validate grid sampling with Richardson extrapolation at three resolutions (253 /503 /1003 ,
+refinement ratio r = 2 with spacing proxy h = 1/N ), extracting the convergence order p and the
+17
+
+Table 14. Universal vs scaling of the wall NEC severity over the subluminal Type-I branch. Top: free-exponent fit
+| min(ρ + pi )| = A vsp ; the exponent is universal (p ≈ 2 across the flat-slice family) and the coefficient A is the
+per-drive fingerprint (Rodal recovers 0.688). Bottom: the same data fit to the necessarily-quadratic
+Santiago–Schuster–Visser form min(ρ + pi ) = −C vs2 , with q the free log-log exponent (consistency check) and “max
+dev.” the worst relative deviation from the fixed law. A strictly positive C realizes, quantitatively, the SSV statement
+that NEC violation is unavoidable at every speed.
+exponent p
+
+Metric
+Alcubierre
+Natário
+Van den Broeck
+Rodal
+
+R2
+
+2.00
+0.632
+1.0000
+2.05
+8.487
+1.0000
+no clean fit (R2 < 0.99)
+2.00
+0.688
+1.0000
+R2
+
+max dev.
+
+NEC ∀ vs
+
+2.00
+1.0000
+0.35%
+2.05
+1.0000
+13.27%
+no clean vs2 fit (R2 < 0.99)
+0.688
+2.00
+1.0000
+0.00%
+
+violated
+violated
+violated
+violated
+
+C
+
+Metric
+Alcubierre
+Natário
+Van den Broeck
+Rodal
+
+coefficient A
+
+q (free)
+
+0.631
+8.373
+
+Table 15. Universal vs scaling of the wall-peak curvature invariants (Weyl-squared and Ricci-squared), fit to
+X = A vsq over the subluminal branch. The vortical walls scale as vs2 ; the irrotational Rodal wall scales as vs4 .
+Van den Broeck’s transitional wall has no clean single power law.
+Ricci Rab Rab
+
+Weyl C 2
+Metric
+
+q
+
+Alcubierre
+Natário
+Van den Broeck
+Rodal
+
+1.97
+2.00
+4.00
+
+A
+
+R2
+
+q
+
+A
+
+699.727
+0.9999
+2.06
+416.157
+72700.555
+1.0000
+2.00
+33775.995
+no clean fit (Type-IV-dominated wall)
+312.003
+1.0000
+4.00
+787.619
+
+R2
+0.9961
+1.0000
+1.0000
+
+extrapolated value where the data permit. The 253 /503 legs use the observer-robust NEC margin;
+the 1003 leg, for cost, uses the Eulerian margin. For Alcubierre the two estimators nearly coincide
+on the minimum margin (Section 3.3), so that triplet remains informative; the integrated violation
+volume instead carries a ∼10% robust-versus-Eulerian estimator gap, which dominates its
+cross-resolution variation, and we do not read a continuum estimate from it. The minimum NEC
+margin (−0.631, −0.628, −0.629) is non-monotone across the triplet, so we report an assumed
+second-order (p = 2) resolution-stability check rather than a measured order: the extrapolated
+minimum margin differs from 1003 by ∼0.1%, and the values vary by under 1% across the triplet
+and across the two estimators. The exact coordinate center, sampled only at odd N and dominated
+there by the C ∞ regularization guard rather than by physics, is excluded from these statistics,
+which validate spatial sampling only; the curvature operator is autodiff-exact at each point.
+Table 21 (Appendix F) and Figure 15b summarize.1
+Per-metric resolution. Wall resolution at 503 (Table 2): Rodal exceeds the 4-cell threshold (∼6
+cells); Alcubierre/VdB/Natário are marginal (∼1.4 cells); Lentz (∼0.02 cells) is excluded. The
+matched-parameter benchmark also samples the wall sparsely (∼2–3 cells at N = 70), so its
+support is not nominal wall sampling but the per-metric convergence study (Table 9), which holds
+every reported statistic stable across a more-than-twofold change in N . For the native-parameter
+Rodal case, the missed fractions are stable across 253 /503 /1003 (Table 16; < 2 pp over a 64×
+volume change), confirming they are not grid artifacts (Rodal is 100% Type I, so the algebraic
+slacks are exact truth).
+4.1 Curvature identity validation
+As an independent check of the autodiff curvature chain, the computed Riemann tensor satisfies
+the algebraic symmetries and the first Bianchi identity to residual < 10−12 , and the contracted
+Bianchi identity ∇a Gab = 0 to < 10−6 (third-derivative cancellation) at representative
+Schwarzschild and Alcubierre points; Tab = Gab /8π is symmetric to < 10−14 . All computations use
+64-bit floating point.
+1 A coordinate-invariance check passes: shifting the Alcubierre bubble center by ∆x = 1 shifts the NEC-violation
+s
+centroid by 1.002 (transverse < 0.01), with minimum margins agreeing to machine precision.
+
+18
+
+(b) Ricci Rab R ab
+
+Alcubierre
+Natário
+Van den Broeck
+Rodal
+
+106
+105
+104
+103
+102
+101
+100
+10 1
+10 1
+
+wall-peak invariant
+
+wall-peak invariant
+
+(a) Weyl C 2
+
+100
+
+106
+105
+104
+103
+102
+101
+100
+10 1
+
+warp speed vs
+
+10 1
+
+100
+
+warp speed vs
+
+Figure 4. Wall-peak curvature invariants versus warp speed (Rb = 1, σ = 8; log–log; vs = 1 dashed).
+(a) Weyl-squared C 2 and (b) Ricci-squared Rab Rab . The vortical Alcubierre and Natário walls follow vs2 power laws
+(fitted lines), while the irrotational Rodal wall follows vs4 ; Van den Broeck’s Type-I → Type-IV transition admits no
+single power law.
+
+Table 16. Rodal missed-fraction stability across grid resolutions (vs = 0.5, Rb = 100, σ = 0.03, Nstarts = 8). All
+points are Type I at N ≥ 50; truth is the algebraic slack. Missed fractions vary by < 2 percentage points across a
+64× increase in grid volume.
+fmiss (%)
+
+Total violated (%)
+
+N
+
+NEC
+
+WEC
+
+SEC
+
+DEC
+
+NEC
+
+WEC
+
+SEC
+
+DEC
+
+25
+50
+100
+
+1.8
+1.6
+1.5
+
+15.7
+15.6
+15.6
+
+28.4
+28.0
+27.8
+
+28.4
+28.5
+28.7
+
+87.3
+87.0
+86.9
+
+87.3
+87.0
+86.9
+
+87.3
+87.0
+86.9
+
+100.0
+99.9
+99.9
+
+4.2 Optimization stability
+To verify that the multi-start observer optimization converges reliably, we ablate the number of
+restarts Nstarts ∈ {1, 2, 4, 8, 16} at vs = 0.5 for Alcubierre, Rodal, and WarpShell, recomputing only
+the observer search on a fixed curvature grid with independent (non-nested) random draws per
+setting. As Table 17 shows, the minimum margins and missed-violation fractions are insensitive to
+the multi-start budget: Alcubierre and Rodal are Nstarts -independent from a single start (Rodal,
+100% Type I, bypasses the optimizer entirely), and only WarpShell’s < 1% non-Type I
+shell-boundary subset shows a residual ∼20% spread in its capped extremum, which is an
+order-of-magnitude diagnostic there in any case. Nstarts = 8, used throughout, therefore carries a
+comfortable safety margin. Initializations use JAX’s splittable PRNG with a fixed base key
+(deterministic per backend; not bitwise reproducible across CPU/GPU due to non-associative
+parallel reductions).
+Optimizer convergence. Per-point diagnostics (WarpShell, vs = 0.5) show the optimizer
+converging at > 99.6% of points for all four conditions (median 2 iterations).
+4.3 Classification breakdown and conditional miss rate
+Table 18 reports the full-grid Hawking–Ellis type breakdown at vs = 0.5. On the full grid, which is
+dominated by the near-vacuum exterior, Rodal is 100% Type I and Alcubierre/Natário/VdB are
+∼ 92–98% Type I; the residual is genuine weak Type IV, concentrated at the bubble wall and in its
+extended far field, where the eigenvalue-pair imaginary part is small but scale-resolved. This
+vacuum-dominated full-grid figure is distinct from the wall-restricted picture (Section 3.1), where
+those same walls are Type-IV dominated; the wall Type-IV labels are certified physical
+(Section 1.2). WarpShell is ∼ 99.6% Type I; its residual non-Type I points sit in the thin-shell
+transition where ∥T a b ∥ is extreme, and are properties of the regularized stress test (Appendix D).
+We also define the conditional miss rate fmiss|viol as the fraction of robust-violated points
+missed by the Eulerian analysis:
+fmiss|viol =
+
+#{Eulerian-satisfied ∩ robust-violated}
+× 100%.
+#{robust-violated}
+19
+
+(25)
+
+Table 17. Nstarts ablation at vs = 0.5 on a 503 grid (ζmax = 5). Rodal is 100% Type I; Alcubierre ∼ 94.5%;
+WarpShell ∼ 99.6%. The missed WEC fraction fmiss and the minimum margins are stable across the full sweep; the
+small (< 1%) non-Type I WarpShell subset drives the only residual multi-start sensitivity.
+Nstarts
+Metric
+
+1
+
+2
+
+4
+
+8
+
+16
+
+−3460.2
+−2.6 × 10−6
+−1.4 × 1037
+
+−3460.2
+−2.6 × 10−6
+−1.5 × 1037
+
+−3460.2
+−2.6 × 10−6
+−1.5 × 1037
+
+−3460.2
+−2.6 × 10−6
+−1.6 × 1037
+
+0.00
+15.60
+0.06
+
+0.00
+15.60
+0.06
+
+0.00
+15.60
+0.06
+
+0.00
+15.60
+0.06
+
+Min robust WEC margin †
+Alcubierre
+Rodal
+WarpShell
+
+−3460.2
+−2.6 × 10−6
+−1.3 × 1037
+
+Missed WEC (%)
+Alcubierre
+Rodal
+WarpShell
+
+0.00
+15.60
+0.05
+
+† Robust margin: algebraic slack at Type I points; capped extremum at non-Type I points.
+
+Table 18. Hawking–Ellis type breakdown at vs = 0.5 (503 grid). Full-grid columns cover all 125,000 points;
+wall-restricted columns filter to the active warp-wall region f ∈ [0.1, 0.9].
+Metric
+Alcubierre
+Natário
+Van Den Broeck
+Rodal
+WarpShell‡
+
+% Type I
+
+% Type II
+
+% Type III
+
+% Type IV
+
+Wall % Type I
+
+Wall % Type IV
+
+max |Im λ|
+
+94.5
+92.6
+97.7
+100.0
+99.6
+
+0.0
+0.0
+0.0
+0.0
+0.3
+
+0.0
+0.0
+0.0
+0.0
+0.1
+
+5.5
+7.4
+2.3
+0.0
+0.0
+
+0.0
+9.6
+15.4
+100.0
+0.0
+
+100.0
+90.4
+84.6
+0.0
+0.0
+
+0.27
+2.6
+0.22
+0
+2.8 × 1025
+
+‡
+
+WarpShell uses a C 2 quintic Hermite regularization of the thin-shell; margins reflect the regularized
+implementation, not an idealized thin-shell spacetime. Its wall-restricted residue is Type II/III, in the
+transition zone where ∥T a b ∥ is extreme. Lentz is omitted: its wall is 44× under-resolved at 503 (Table 2),
+so no quantitative type fraction is meaningful.
+
+This quantity measures how “leaky” the Eulerian frame is at points where violations actually exist,
+complementing the unconditional fmiss , which is diluted by the (potentially large) number of
+satisfied points.
+5 Discussion
+Single-frame (Eulerian) evaluation can systematically understate the energy-condition structure of
+warp drive spacetimes, and the way it does so is geometry-dependent. For the everywhere-Type I
+Rodal metric, presented in [5] as predominantly positive in invariant energy density while still
+violating the null energy condition, the Eulerian frame reports as satisfied ≈73% of the wall points
+where boosted observers register a dominant-energy violation, and ≈72% for the weak energy
+condition (Table 3); because Rodal is Type I this is an exact eigenvalue statement, and the
+ablation (Appendix E) confirms it is geometric, not numerical. For the Alcubierre and Natário
+walls the failure is more basic: they are Hawking–Ellis Type IV (no rest frame), so no invariant
+energy density exists for a single frame to estimate. Van den Broeck is intermediate (WEC 42%,
+DEC 38% wall miss at vs = 0.5). Beyond extent, single-frame analysis also understates severity: at
+NEC-violating Type I points the boosted weak-energy density diverges as γ 2 ∼ e2ζ along the worst
+null direction (Section 2.4), so the off-Eulerian magnitude is unbounded while the Eulerian value
+stays small. Violation detection, by contrast, is cap-independent (algebraic at Type I).
+Physical interpretation. The closed form of Section 2.4 locates the worst-case boost along the
+principal eigenvector of the most-violating pressure, generically misaligned with the Eulerian
+normal, with violation onset at sinh2 ζth = ρ/|ρ + pi∗ |. At Rodal’s DEC-violating wall points the
+optimizer runs to the rapidity cap (γ ≈ 74): the worst-case observers are overwhelmingly
+non-Eulerian, and single-frame analysis misses these violations precisely because it does not probe
+boosted frames. We caution that the optimizer’s reported boost direction at DEC-violating points
+is not by itself a validation axis: the DEC diagnostic is sign-based with mixed-dimension sub-terms
+(Section 2.4), so at the rapidity cap its arg-min direction need not coincide with the energy-density
+divergence axis; the quantitative cross-check of the closed form against the optimizer is at the
+margin level (Section 2.4). The effect is condition-dependent: WEC and DEC (timelike observers,
+parameterized by rapidity) are more observer-sensitive than the NEC (null directions alone).
+
+20
+
+Role of algebraic vs. optimization methods. Since most grid points classify as Type I
+(Table 18), the eigenvalue inequalities of Section 2.2 decide the energy conditions exactly and
+observer-independently there; the optimizer’s remaining roles are to locate the worst-case observer
+and to cross-check the algebraic verdict. At non-Type I points it is instead the sole, one-sided
+diagnostic (ζmax -capped: a negative margin certifies violation, a positive one does not certify
+satisfaction), a pathway validated with a null-dust Type II benchmark in the test suite (Section 5).
+Implications for warp drive engineering. Any claim that a warp metric satisfies an energy
+condition must specify which observers were tested. Santiago–Schuster–Visser [2] proved that
+physically reasonable warp drives must violate the NEC (hence WEC, SEC, DEC), and
+Celmaster–Rubin [21] confirmed explicit Eulerian-frame WEC violations for Lentz. Our results
+sharpen the operational lesson: even where the Eulerian frame is positive, the all-observer verdict
+need not be, so positive-energy claims require an all-observer, all-velocity check of the kind
+warpax provides. The Type-IV diagnosis gives a structural reason for this in the wall: a Type-IV
+stress-energy violates the NEC for some observer unconditionally, so a rotational shift, which drives
+the wall to Type IV (Section 3.2), makes the generic NEC violation of Santiago–Schuster–Visser
+unavoidable there with no observer search required. These ingredients furnish the
+frame-independent figure of merit we report in Section 3.6: the invariant exoticity ranking built
+from the peak deficit min(ρ + pi ), the Type-IV fraction, and the rigorous ANEC minimum, with
+the worst-observer threshold rapidity sinh2 ζth = ρ/|ρ + pi | at Type I points. Being boost
+invariants, these do not reward a drive merely for hiding its exotic content from the
+coordinate-stationary observer, as an Eulerian-frame energy can.
+Comparison with WarpFactory: sampling versus optimization. WarpFactory [12, 39, 40]
+samples ∼ 1000 observer directions and velocities at each grid point and takes the minimum energy
+condition value over the sample set; our Eulerian-baseline NEC/WEC results match its published
+Alcubierre values at matched parameters, with residual ∼ 1% relative differences consistent with
+autodiff vs. finite-difference curvature computation. Discrete sampling, however, can miss narrow
+violation cones in the observer manifold: a deterministic Fibonacci-lattice sampler on the Rodal
+DEC saturates at ∼ 93% detection even at 104 observer samples per point (Figure 12,
+Appendix C); the remaining ∼ 7% of violations, with algebraic slacks down to |margin| ∼ 10−6 , lie
+in cones too narrow for any fixed sampling grid to resolve. At Type I points warpax needs no
+observer search at all (the eigenvalue check is exact); elsewhere it applies continuous,
+gradient-based multi-start optimization (Section 2.4).
+Limitations. The residual non-Type I optimizer (used only off Type I) is a one-sided,
+rapidity-capped diagnostic: with Nstarts = 8 restarts it is not guaranteed to find the global worst
+observer, and the soft cap attenuates gradients near ζmax , so a positive capped margin does not
+certify all-observer satisfaction (a hard-bound projected optimizer is planned). The Nstarts ablation
+(Section 4.2) shows convergence by Nstarts = 4; a null-dust (Type II) benchmark in the test suite
+validates the non-Type I pathway (NEC saturation to < 10−12 ). Per-metric resolution is validated
+by the three-resolution convergence study (Section 4); the pointwise type/eigenvalue verdict is
+algebraic and resolution-robust, with grid resolution entering only the aggregate volume fractions.
+Finally, the certification proper assesses classical pointwise conditions, known to be violated
+semiclassically (Casimir, Hawking flux); the geodesic-integrated ANEC of Section 3.5 carries the
+analysis to the averaged condition where its on-cone witness is small, while the Ford–Roman
+comparison remains a flat-space estimate and a curved-space (Fewster-type) quantum inequality
+remains open. Our results are classical and semiclassical diagnostics of the geometry, not universal
+physicality criteria.
+Regularization and the geometry-dependence of the Rodal miss fraction. The
+WarpShell construction is a regularized numerical stress test rather than a physical proposal; its C 2
+smoothstep transitions, residual spatial-metric tail, and the resulting large near-shell stress-energy
+are documented in Appendix D, where we also confirm the energy-condition results are unchanged
+under a C 1 → C 2 smoothness swap. Reported WarpShell margins should be read as diagnostics of
+that specific regularized implementation.
+√
+The Rodal metric uses a C ∞ regularization r2 + ε2 with ε2 = 10−24 at r = 0 in the angular
+shape function. A controlled ablation with three single-variable sweeps (resolution, regularization,
+wall thickness; Alcubierre as control) shows the ∼ 28.5% DEC miss rate is insensitive to resolution
+(0.32 pp) and regularization (0.0 pp) but varies by 12.43 pp across wall thickness σ ∈ [0.01, 0.3],
+21
+
+consistent with the anisotropic pressures of the irrotational shift’s angular component G(r)
+sharpening as the wall thins; the Alcubierre control misses 0.0% throughout. Full sweep data:
+Appendix E.
+Future directions. Several extensions are natural: (i) metric-space optimization, where the
+shape function f (rs ) itself is optimized to minimize energy condition violations; (ii) a curved-space
+(Fewster-type) quantum-inequality treatment, completing the semiclassical diagnostics of
+Section 3.5; (iii) application to the broader family of warp drive metrics, including the
+Bobrick–Martire classification [7]; (iv) extension to non-vacuum backgrounds (e.g., cosmological
+spacetimes); and (v) the subleading shear contribution to the Type-IV imaginary part, suggested
+by the systematic excess of the measured f over κ ω (Section 3.2), as a step toward a converse for
+the flat-slice family.
+6 Conclusion
+We have presented warpax, a toolkit that certifies the all-observer energy-condition structure of
+warp drive spacetimes frame-independently and at all warp speeds, from the eigenstructure of T a b .
+Its rigorous core is the Hawking–Ellis eigenvalue test, exact and observer-independent at Type I
+points and an unconditional all-condition violation at Type IV points (no rest frame), which never
+uses the Eulerian normal and therefore remains valid through and beyond vs = 1. The
+rapidity-capped optimizer is retained only as a one-sided diagnostic at the residual non-Type I
+points. The theoretical content (the Type I reduction to eigenvalue inequalities) is classical; the
+contribution is its systematic, autodiff-exact, superluminal-capable application and identifying the
+geometric quantity that controls the algebraic type. Our main findings are:
+1. A clean type dichotomy across the luminal transition. On matched grids, the Rodal
+irrotational geometry is globally Hawking–Ellis Type I at every speed from vs = 0.1 to 2.5,
+whereas the Alcubierre and Natário bubble walls are Type-IV dominated, with no rest frame
+and no invariant energy density, at every speed, and Van den Broeck above its velocity-driven
+Type-I → Type-IV transition (Table 4, Figure 1). Past the transition the Type-IV fraction
+decreases with vs while the invariant violation severity grows. The Type-IV labels are
+certified physical, not numerical (Section 1.2).
+2. Shift vorticity controls the type. The split is governed by the vorticity of the ADM shift:
+an irrotational shift gives a global Type I drive (Rodal, Rω = 0.000), while nonzero vorticity
+drives the wall to Type IV. The zero-expansion Natário drive, vortical but expansion-free, is
+Type-IV walled, which isolates vorticity rather than expansion as the obstruction
+(Section 3.2). A Type-IV wall in turn violates the NEC unconditionally, a search-free,
+pointwise realization of the Santiago–Schuster–Visser theorem [2] in the wall.
+3. Single-frame, single-velocity positivity is not all-observer positivity. For the
+everywhere-Type I Rodal geometry, recently advanced as a predominantly positive-energy,
+global Type I drive on the basis of an Eulerian, v/c = 1 analysis [5], the Eulerian frame
+reports no violation at ≈72% of the wall points where boosted observers see a weak-energy
+violation, and at ≈73% for the dominant energy condition (Table 3). This is an exact
+eigenvalue consequence of the Type I structure, not an optimizer artifact. For the
+Type-IV-walled metrics the frame-independent energy density that such comparisons
+optimize does not exist in the wall at all.
+4. A closed-form worst observer. For Type I matter the worst-case boost is analytic
+(Section 2.4): the spatial direction is the principal eigenvector of the most-violating pressure,
+and the threshold rapidity is sinh2 ζth = ρ/|ρ + pi |, with the weak-energy density diverging as
+ρ + (ρ + pi ) sinh2 ζ along that axis. This renders the off-Eulerian effect analytic and is
+cross-checked against the optimizer at the margin level.
+5. An invariant exoticity characterization. A boost-invariant ranking (NEC severity,
+Type-IV fraction, rigorous ANEC minimum) places the Rodal drive a factor of forty-five to
+seventy below the bubble-wall drives, driven by its vanishing Type-IV fraction and tiny
+averaged-null energy rather than a milder pointwise NEC. The wall NEC deficit obeys a
+universal min(ρ + pi ) = −C vs2 law that makes the Santiago–Schuster–Visser no-go
+quantitative, and the wall curvature splits by the same vorticity that sets the type, growing
+as vs2 for the vortical walls and vs4 for the irrotational Rodal wall (Section 3.6). A
+geodesic-integrated ANEC, evaluated with a structure-preserving symplectic integrator and
+22
+
+reported with an on-cone witness, and a Ford–Roman comparison preserve this ordering, with
+Rodal the mildest by one to two orders of magnitude yet still violating.
+Across the four matched drives the invariant NEC margin is negative wherever the wall is
+Type I, and the wall is Type IV elsewhere, an explicit, all-observer, all-velocity realization of the
+Santiago–Schuster–Visser theorem [2]; the one certified positive case, the Fuchs shell (Table 12),
+evades the theorem’s hypotheses through its Schwarzschild exterior rather than contradicting it.
+We offer warpax as an independent verifier for the warp-drive community: given any metric, it
+recomputes the all-observer energy-condition truth from T a b , at any velocity, with autodiff-exact
+curvature, in a single call (Appendix A).
+Acknowledgments
+This work is financially supported by VinUniversity under the Environmental Intelligence (CEI)
+Grant (No. VUNI.CEI.FS_0009). The author thanks J. Rodal for clarifications regarding frame
+conventions, the rs → 0 limit of the irrotational angular profile, and the Cartesian form of the shift
+vector. The author declares no competing interests.
+Data availability
+warpax is freely available under the MIT license at https://github.com/anindex/warpax; the
+version used here is archived as warpax v1.1.0 at https://doi.org/10.5281/zenodo.18715933.
+All results presented in this paper can be reproduced by running the provided scripts; the
+repository documents the figure- and table-to-script mapping. No external datasets are required.
+The repository also ships the source-first S-/T-shell constructions of the companion note [51]; those
+shells are constructed and certified there, not here, and no result in this paper depends on them.
+A The warpax toolkit
+warpax is a Python package built on JAX [10] for hardware-accelerated numerical computation
+with automatic differentiation. We organize the toolkit into six computational modules:
+• warpax.geometry – Metric specification, Christoffel symbols, curvature tensors, stress-energy,
+curvature invariants, and grid evaluation with vmap-based batching.
+• warpax.energy_conditions – Hawking–Ellis classification, observer construction, observer
+optimization, and the unified grid verifier.
+• warpax.metrics – The metrics analyzed in this paper (Alcubierre [1], Lentz [25], Natário
+[22], Van den Broeck [23], Rodal [5], WarpShell) and two benchmark metrics (Minkowski,
+Schwarzschild in isotropic Cartesian coordinates), each as an Equinox [11] module with
+dynamic physical parameters (Appendix G gives the full ADM decompositions).
+• warpax.geodesics – Geodesic integrator, initial condition constructors, deviation equation
+solver, and observable computations (proper time, blueshift, tidal eigenvalues).
+• warpax.analysis – Multi-metric comparison, Richardson extrapolation for convergence
+studies, and kinematic scalar computation.
+• warpax.visualization – Comparison panels, direction fields, convergence plots, and
+kinematic scalar plots.
+Computational approach. Each metric is an Equinox module xµ 7→ gab (x) with dynamic
+physical parameters (no recompilation on change), lifted to grids via jax.vmap (optional
+jax.lax.map batching). Derivatives use forward-mode autodiff (jax.jacfwd), giving exact
+derivatives of the implemented metric up to roundoff; the full metric-to-Tab chain is JIT-fused.
+Performance scope. The curvature-chain evaluation benefits from GPU parallelism at large
+grid sizes (Section 2 reports order-of-seconds timings on an NVIDIA A100 at 503 and 1003 ). At the
+observer-optimization inner-loop scale, however, GPU performance is workload-dependent: a
+single-point benchmark on an NVIDIA RTX 5090 (Blackwell architecture) reports a
+geometric-mean BFGS speedup of 0.60× across four optimizer variants, driven by just-in-time (JIT)
+compile and GPU-transfer overhead at the single-point scale. Full 503 /1003 end-to-end GPU runs
+at field-scale workload are expected to outperform the CPU but are not directly measured here.
+
+23
+
+Alcubierre Tidal Eigenvalues (vs = 0.5, R = 1, σ = 8)
+
+Tidal eigenvalue
+
+4
+
+λ1
+λ2
+λ3
+
+2
+
+Bubble wall
+
+0
+2
+4
+0.0
+
+2.5
+
+5.0
+
+7.5
+
+10.0
+
+Proper time τ
+
+12.5
+
+15.0
+
+17.5
+
+20.0
+
+Figure 5. Tidal eigenvalue evolution along a radial timelike geodesic crossing the Alcubierre bubble (vs = 0.5,
+Rb = 1, σ = 8; Tsit5 ODE integration). The three eigenvalues of the geodesic-deviation (tidal) tensor K µ ρ give the
+stretching (negative) and compression (positive) felt by a comoving observer along the three principal spatial
+directions, as a function of proper time (the deviation equation, Eq. (20), carries a minus sign). They are near zero
+in the flat interior and exterior and spike with opposite signs at the two wall crossings, the signature of the thin
+exotic shell.
+
+Verification procedure. The grid verifier (warpax.energy_conditions.verifier) orchestrates
+the full analysis for a given metric and grid:
+1. Evaluate the curvature chain on the grid (metric → Tab ).
+2. Classify each point via Hawking–Ellis (Type I/II/III/IV).
+3. For Type I points: compute algebraic slacks.
+4. For all points: run observer optimization with multi-start (Section 2.4).
+5. For Type I: use algebraic slacks for violation detection; report capped extrema as
+ζmax -dependent severity diagnostics. For non-Type I: use capped extrema. Compute
+per-condition summaries.
+The Eulerian baseline (six axis-aligned null rays for NEC; the ADM normal for WEC/SEC/DEC)
+is, for any fixed observer u0 , an upper bound on the worst-case margin (m∗ (x) ≤ m(x, u0 )), so its
+violation set lower-bounds the true extent, an inequality enforced as a test-suite consistency check.
+2
+Metric regularity. The warp metrics use C ∞ tanh-based shaping; WarpShell
+p uses C quintic
+2
+2
+Hermite transitions (the regularized stress test). Radial expressions divide by rs + ε (ε = 10−12 )
+to remain C ∞ at the center; curvature is the exact autodiff derivative of the implemented profile.
+
+Use.
+
+The all-observer, all-velocity verifier is one call, warpax.certify(metric) (Section 3.1).
+
+B Transport and kinematic diagnostics
+warpax additionally provides geodesic integration (timelike tidal forces; null blueshift) and
+Eulerian-congruence kinematic scalars (expansion, shear, vorticity). These are transport and
+validation diagnostics rather than energy-condition results: the photon frequency ratio, for
+instance, reproduces the Lorentz prediction 1/γ(vs ) to six significant figures, validating the
+geodesic integrator that the rigorous ANEC of Section 3.5 relies on. We collect them here to keep
+the main text focused on the certification results.
+B.1 Tidal forces
+Integrating a timelike geodesic through the Alcubierre bubble at vs = 0.5, we evaluate the tidal
+tensor K µ ρ = Rµ νρσ v ν v σ via autodiff (Section 2.5). Figure 5 shows the three tidal eigenvalues
+versus proper time: at each wall crossing the radial eigenvalue swings between stretching and
+compression while the degenerate transverse pair peaks together, and the interior is nearly flat;
+peak tidal force grows with vs and wall steepness σ.
+
+24
+
+Alcubierre Blueshift (vs = 0.5, R = 1, σ = 8)
+Frequency ratio νobs /νemit
+
+1.00
+0.98
+0.96
+0.94
+0.92
+0.90
+0.88
+0.86
+
+νobs /νemit
+
+10
+
+Bubble wall
+8
+
+6
+
+4
+
+2
+
+x position
+
+0
+
+2
+
+4
+
+Figure 6. Photon frequency ratio along a future-directed null geodesic traversing the Alcubierre bubble head-on
+(vs = 0.5, Rb = 1, σ = 8; Tsit5 ODE integration), measured relative to coordinate-stationary observers. The ratio
+dips below unity (redshift) inside the bubble, reaching the Lorentz prediction 1/γ(vs ) to six significant figures – the
+conserved helical-Killing frequency of the unit-lapse interior – and returns to unity after the photon exits the trailing
+wall, which validates the geodesic integrator. Shaded bands mark the wall at t = 0; the advancing bubble meets the
+photon later, so the crossings sit to their right in x.
+
+B.2 Blueshift analysis
+Integrating a future-directed null geodesic head-on through the bubble and evaluating the frequency
+ratio (equation 22) relative to coordinate-stationary observers, the photon is redshifted inside the
+bubble, the ratio dipping to 0.99499, 0.86603, 0.43589, 0.14107 at vs = 0.1, 0.5, 0.9, 0.99 (Figure 6) –
+the Lorentz prediction 1/γ(vs ), matched to six significant figures (the interior with α = 1 admits
+the helical Killing vector ∂t + vs ∂x , whose conserved frequency fixes the ratio). This agreement
+validates the geodesic integrator; the ratio returns to unity once the photon exits the trailing wall.
+B.3 Kinematic scalars
+The Eulerian-congruence kinematics, namely the expansion θ = −K i i , the shear σ 2 , and the
+vorticity ω 2 (which vanishes because the slicing is hypersurface-orthogonal), follow from the
+extrinsic curvature Kij = −α Γ0 ij . The rotation that selects the algebraic type does not live in this
+congruence but in the shift vector (Section 3.2). The Alcubierre expansion is bipolar (positive
+ahead, negative behind, flat interior) with shear concentrated at the wall. For the unit-lapse
+metrics the congruence is geodesic, so the Raychaudhuri equation θ̇ = − 13 θ2 − σab σ ab − Rab ua ub
+links the expansion to Rab ua ub and hence (via Einstein’s equations) to the SEC.
+C Per-metric comparison panels and observer-search diagnostics
+For completeness we collect the per-metric Eulerian-versus-robust margin panels referenced in
+Section 3.3 and Section 3.4, together with the observer-search diagnostic discussed in Section 5: the
+sampling-versus-optimization comparison (Figure 12). All margin panels show the z = 0 mid-plane
+slice; the quoted miss fractions are full-volume statistics, so slice point counts need not match the
+volume fractions. The most informative single-frame miss in the panel set is the Van den Broeck
+SEC (Figure 10); the remaining panels either show coinciding Eulerian and observer-robust
+violation sets (the Alcubierre sanity checks) or a small miss fraction.
+D WarpShell transition smoothness ablation
+The WarpShell metric requires smooth transition functions to connect the flat interior, curved
+shell, and asymptotically flat exterior regions. Because the Riemann tensor involves second
+derivatives of the metric, the minimum smoothness class that guarantees continuous curvature
+across transition boundaries is C 2 . We ask whether the simpler C 1 -smooth cubic Hermite
+smoothstep (3t2 − 2t3 ) suffices in practice, or whether the additional smoothness of the C 2 quintic
+Hermite smoothstep (6t5 − 15t4 + 10t3 ) is needed.
+The C 2 polynomial satisfies six boundary conditions: f (0) = 0, f (1) = 1, f ′ (0) = f ′ (1) = 0, and
+′′
+f (0) = f ′′ (1) = 0. The vanishing second derivatives at the transition endpoints ensure that the
+metric’s second derivatives, and hence the Riemann tensor components computed via jax.jacfwd,
+are continuous across all shell boundaries. The C 1 cubic polynomial satisfies only f (0) = 0,
+
+25
+
+Eulerian
+
+Alcubierre NEC: Eulerian vs Robust (vs = 0.5, 503 grid)
+
+2
+
+y
+
+Robust
+
+0.62
+
+0.63
+
+1
+
+1.1e-4
+
+1.6e-4
+
+0
+
+0
+
+0
+
+1
+
+-1.1e-4
+
+-1.6e-4
+
+2
+2
+
+1
+
+0
+
+x
+
+1
+
+2
+
+-0.62
+
+2
+
+1
+
+0
+
+x
+
+1
+
+2
+
+-0.63
+
+2
+
+Missed (0 pts)
+
+1
+
+0
+
+x
+
+1
+
+Missed
+2
+
+Figure 7. NEC evaluation for the Alcubierre metric (503 grid, vs = 0.5). Left: Eulerian margin (positive =
+satisfied, negative = violated). Center: Robust margin (Section 2.2). Right: Points where the Eulerian analysis
+misses violations (red = missed violation). This panel serves as a sanity check: for the Alcubierre NEC, the violation
+sets coincide (0 missed points), confirming that the observer-robust method recovers the Eulerian result when no
+additional violations exist. Non-trivial missed violations are demonstrated for other metrics and conditions
+(Figures 9, 10, Table 7).
+
+Eulerian
+
+Alcubierre WEC: Eulerian vs Robust (vs = 0.5, 503 grid)
+
+2
+
+y
+
+Robust
+
+0.033
+
+3.5e3
+
+1
+
+7.8e-9
+
+0.46
+
+0
+
+0
+
+0
+
+1
+
+-7.8e-9
+
+-0.46
+
+-0.033
+
+-3.5e3
+
+2
+2
+
+1
+
+0
+
+x
+
+1
+
+2
+
+2
+
+1
+
+0
+
+x
+
+1
+
+2
+
+2
+
+Missed (0 pts)
+
+1
+
+0
+
+x
+
+Missed
+1
+2
+
+Figure 8. WEC evaluation for the Alcubierre metric (503 grid, vs = 0.5). Same layout as Figure 7. The violation
+sets coincide (0 missed points), but the robust WEC margin at ζmax = 5 (γ ≈ 74) is much more negative than the
+Eulerian value; at NEC-violating points this ratio grows with the rapidity cap.
+
+f (1) = 1, f ′ (0) = f ′ (1) = 0; its second derivative is discontinuous at the transition endpoints,
+introducing kinks in the curvature.
+Table 19 and Figure 13 compare the two choices across all four tested velocities.
+The Hawking–Ellis Type I fraction is identical (99.6%) for both smoothness classes across all
+four velocities, confirming that the classification is insensitive to the transition order at 503
+resolution. The minimum NEC margin remains comparable in magnitude: both choices produce
+margins of O(1030 )–O(1034 ) depending on vs , with no systematic ordering between the two classes
+across the sweep (these capped extrema at the regularized shell are order-of-magnitude diagnostics,
+not converged severities). The third-derivative discontinuity max |d3 α/dx3 | increases from 5.6 × 104
+(C 1 ) to 2.7 × 105 (C 2 ), as expected: the quintic polynomial achieves f ′′ = 0 at the endpoints by
+concentrating curvature change in the transition interior.
+Since the C 2 choice guarantees Riemann continuity by construction without affecting the
+classification fractions or violation-detection rates, we adopt the quintic Hermite smoothstep for all
+WarpShell analyses in this paper.
+E Rodal DEC ablation study
+This appendix reports the full parameter sweep data for the Rodal DEC ablation study
+summarized in Section 5. Three single-variable sweeps were performed with Alcubierre as a control
+metric; baseline parameters are vs = 0.5, N = 50, σRodal = 0.03, ε2 = 10−24 . Table 20 reports the
+numerical data and Figure 14 visualizes the three sweeps.
+
+26
+
+Van Den Broeck NEC: Eulerian vs Robust (vs = 0.5, 503 grid)
+
+Eulerian
+2
+
+y
+
+Robust
+
+1.1
+
+1
+
+1.4e-4
+
+8.3e-5
+
+0
+
+0
+
+0
+
+1
+
+-1.4e-4
+
+-8.3e-5
+
+2
+2
+
+1
+
+0
+
+x
+
+1
+
+2
+
+-1.1
+
+2
+
+1
+
+0
+
+x
+
+Missed (16 pts)
+
+0.83
+
+1
+
+2
+
+-0.83
+
+2
+
+1
+
+0
+
+x
+
+1
+
+Missed
+2
+
+Figure 9. NEC evaluation for the Van den Broeck metric (503 grid, vs = 0.5). Left: Eulerian margin. Center:
+Robust margin (Section 2.2). Right: Missed violations (red). The observer-robust analysis finds 0.1% of grid points
+where the Eulerian frame misses NEC violations (conditional miss rate fmiss|viol = 1.6%; Table 7).
+
+Van Den Broeck SEC: Eulerian vs Robust (vs = 0.5, 503 grid)
+
+Eulerian
+
+y
+
+2
+
+Robust
+
+0.091
+
+4.7e3
+
+1
+
+1.8e-4
+
+1.7
+
+0
+
+0
+
+0
+
+1
+
+-1.8e-4
+
+-1.7
+
+-0.091
+
+-4.7e3
+
+2
+1.0 0.5 0.0 0.5 1.0
+
+1.0 0.5 0.0 0.5 1.0
+
+x
+
+x
+
+Missed (52 pts)
+
+Missed
+1.0 0.5 0.0 0.5 1.0
+
+x
+
+Figure 10. SEC evaluation for the Van den Broeck metric (503 grid, vs = 0.5). Left: Eulerian margin. Center:
+Robust margin. Right: Missed violations (red). SEC exhibits the largest conditional miss rate among all conditions
+for Van den Broeck (fmiss|viol = 17.5%, 1.2% of grid points missed; Table 7).
+
+The sigma sweep reveals that the Rodal DEC miss fraction is a genuine property of the
+irrotational geometry, modulated by the wall-thickness parameter: thicker walls (smaller σ, wider
+transition region) extend the angular shift gradients over a larger spatial volume, increasing the
+number of grid points where the DEC violation cone is non-empty. (Rodal and Alcubierre share
+the same tanh shape function for F (r), so smaller σ means a less steep, broader wall in both
+metrics.) This behavior is absent in Alcubierre, which lacks the angular shift component,
+confirming that the effect is specific to the Rodal geometry rather than a numerical artifact. Future
+work could investigate whether alternative shape-function profiles reduce the DEC miss rate
+without sacrificing the irrotational property.
+
+Table 19. WarpShell transition smoothness ablation: C 1 (cubic) vs C 2 (quintic) across warp velocities (503 grid,
+ζmax = 5).
+
+vs
+0.1
+0.5
+0.9
+0.99
+
+Type I (%)
+C1
+C2
+99.6 99.6
+99.6 99.6
+99.6 99.6
+99.6 99.6
+
+Type IV (%)
+C1
+C2
+0.0
+0.0
+0.0
+0.0
+0.0
+0.0
+0.0
+0.0
+
+min mNEC
+C1
+−3.04 × 1032
+−1.35 × 1034
+−1.30 × 1030
+−9.38 × 1031
+
+27
+
+C2
+−8.10 × 1029
+−3.16 × 1033
+−2.29 × 1033
+−1.58 × 1033
+
+max |d3 α/dx3 |
+C1
+C2
+5.56 × 104
+2.74 × 105
+5.56 × 104
+2.74 × 105
+4
+5.56 × 10
+2.74 × 105
+4
+5.56 × 10
+2.74 × 105
+
+Rodal WEC Missed Violations (503 , R = 100, σ = 0.03)
+vs = 0.1 (14.9% vol)
+
+300
+
+vs = 0.5 (15.6% vol)
+
+1.0
+
+200
+
+y
+
+100
+0.8
+
+0
+100
+200
+
+Missed fraction
+
+0.6
+
+300
+vs = 0.9 (15.6% vol)
+
+300
+
+vs = 0.99 (15.6% vol)
+
+0.4
+
+200
+
+y
+
+100
+0
+
+0.2
+
+100
+200
+300
+
+200
+
+0
+
+x
+
+200
+
+200
+
+0
+
+x
+
+200
+
+0.0
+
+Figure 11. Energy condition violations missed by Eulerian analysis (503 grid, ζmax = 5) across four bubble
+velocities vs ∈ {0.1, 0.5, 0.9, 0.99}. Red regions indicate points where a condition appears satisfied for the Eulerian
+observer but is violated for the worst-case observer. In the volume fractions shown in the panel titles the misses are
+largest for DEC and SEC (Table 7); in the wall-restricted conditional rate they are largest for DEC and WEC
+(Section 3.1).
+
+F Resolution evidence
+Table 2 reports the analytical 10–90% wall width (in coordinate units) and corresponding number
+of grid cells for each metric at the default 503 grid. For the Alcubierre, VdB, and Natário metrics,
+the wall spans ∼ 1.4 cells; Richardson extrapolation for the Alcubierre metric (Section 4) confirms
+resolution stability of the minimum NEC margin (within ∼ 1% at 503 /1003 ); the per-metric
+convergence study (Table 9) shows the same directly for VdB and Natário.
+Lentz is severely under-resolved (∼ 0.02 cells) and is excluded from all quantitative results
+(Table 2); it is retained only as a qualitative consistency check. For the Rodal metric (σ = 0.03,
+wall width ≈ 73 coordinate units, ≈ 6 cells), the missed-fraction stability study (Table 16) shows
+< 2 percentage-point variation across a 64× increase in grid volume (253 to 1003 ), confirming that
+violation fractions are insensitive to resolution at the tested grid spacing. For the WarpShell
+metric, the regularized thin-shell transition is concentrated over ≲ 1 cell; Section 4.3 reports its
+classification breakdown, and Section 4.2 confirms margin stability with Nstarts . All WarpShell
+results should therefore be interpreted as diagnostics of the specific regularized implementation
+rather than the idealized thin-shell limit.
+
+28
+
+Rodal DEC: Fibonacci sampling vs warpax pipeline
+DEC violation detection rate (%)
+
+100
+80
+60
+40
+20
+
+Fibonacci sampling
+warpax pipeline (100%)
+
+0
+
+101
+
+102
+
+103
+
+Number of directions
+
+Figure 12. Fibonacci-lattice DEC sampling convergence for the Rodal metric (253 grid, ζmax = 5). Detection rate
+(left axis, circles) saturates at ∼ 93% up to the tested density (≤ 103 directions × 10 rapidities, i.e. 104 observer
+samples per point). Dashed line: the warpax pipeline at 100%, exact by construction here (every violating point on
+this grid is Type I, decided algebraically; the optimizer handles only the single non-Type-I point). The sampling gap
+reflects violating points with DEC margins too shallow for any fixed sampling grid to resolve.
+
+(a) Hawking--Ellis Type I
+
+Type I (\%)
+
+100.0
+
+1033
+
+99.8
+99.6
+99.4
+
+(b) Worst-case NEC margin
+1034
+|min mNEC |
+
+100.2
+
+1032
+
+99.6099.58
+
+99.6199.62
+
+99.6199.61
+
+99.6199.61
+
+1031
+
+C1 (cubic)
+C2 (quintic)
+
+0.1
+
+0.5
+
+vs
+
+0.9
+
+0.99
+
+1030
+
+C1 (cubic)
+C2 (quintic)
+
+0.2
+
+0.4
+
+0.6
+
+vs
+
+0.8
+
+1.0
+
+Figure 13. WarpShell transition smoothness ablation at four warp velocities (503 grid, ζmax = 5). Left:
+Hawking–Ellis Type I classification percentage. Right: minimum observer-robust NEC margin (log scale). The
+classification is insensitive to the transition order; the capped margins are comparable in magnitude with no
+systematic ordering.
+
+G Metric definitions
+For reproducibility, we collect the ADM 3 + 1 decompositions of all six test metrics. In each case
+the line element takes the general form
+
+
+ds2 = −α2 dt2 + γij dxi + β i dt dxj + β j dt ,
+(26)
+where α is the lapse, β i the shift vector, and γij thepspatial metric. All metrics share the bubble
+center xs (t) = vs t and the comoving distance rs = (x − xs )2 + y 2 + z 2 . The standard
+tanh-smoothed top-hat shape function is
+
+
+
+
+tanh σ(rs + Rb ) − tanh σ(rs − Rb )
+f (rs ) =
+,
+(27)
+2 tanh(σRb )
+with f (0) = 1 and f (rs ) → 0 for rs ≫ Rb .
+Alcubierre. α = 1, γij = δij , β i = (−vs f (rs ), 0, 0). The shape function f is given by
+equation (27) [1].
+p
+Lentz. α = 1, γij = δij , β i = (−vs f⋄ (d), 0, 0), where d = |x − xs | + y 2 + z 2 is the L1
+(diamond) distance and f⋄ is equation (27) evaluated at d instead of rs [25].
+29
+
+Table 20. Rodal DEC ablation sweep data. Each row varies one parameter while holding the others at baseline.
+The Alcubierre control confirms 0.0% DEC miss throughout.
+Sweep
+
+Parameter value
+
+Rodal DEC miss (%)
+
+Alcubierre DEC miss (%)
+
+Resolution (N )
+
+25
+50
+100
+
+28.36
+28.53
+28.68
+
+0.0
+0.0
+0.0
+
+Regularization (ε2 )
+
+10−24
+10−18
+10−12
+10−6
+
+28.53
+28.53
+28.53
+28.53
+
+–
+–
+–
+–
+
+Wall thickness (σ)
+
+0.01
+0.03
+0.1
+0.3
+
+38.50
+28.53
+26.94
+26.07
+
+0.0
+0.0
+0.0
+0.0
+
+DEC miss (\%)
+
+Wall thickness
+Resolution
+
+40
+
+Regularization
+
+10
+
+30
+
+20
+
+30
+
+Rodal
+Alcubierre
+
+20
+10
+0
+
+σAlc
+
+0.0\%
+
+25
+
+50
+
+75
+
+100
+
+10 20 10 15 10 10
+
+N (grid points per dim.)
+
+ε2
+
+0.0
+
+0.1
+
+0.2
+
+σRodal
+
+0.3
+
+Figure 14. Rodal DEC ablation study: three single-variable parameter sweeps with Alcubierre control (red,
+dashed). Left: resolution (N = 25, 50, 100). Center: regularization (ε2 = 10−24 to 10−6 ). Right: wall thickness
+(σ = 0.01 to 0.3; Alcubierre uses proportionally scaled σ). The DEC miss rate is insensitive to resolution and
+regularization but varies by 12.43 pp across wall-thickness values.
+
+Van den Broeck. α = 1, β i = (−vs f (rs ), 0, 0), γij = B 2 (rs ) δij , where
+B(rs ) = 1 + αvdb fB (rs ). The inner shape function fB uses a separate radius R̃ and width σB [23]:
+
+
+
+
+tanh σB (rs + R̃) − tanh σB (rs − R̃)
+fB (rs ) =
+.
+(28)
+2 tanh(σB R̃)
+Natário. α = 1, γij = δij . The divergence-free shift (∇i β i = 0) has three nonzero Cartesian
+components [22]:
+
+
+β x = −vs 2 n(rs ) + rs n′ (rs ) sin2 θ ,
+β y = vs n′ (rs )
+
+(x − xs ) y
+,
+rs
+
+β z = vs n′ (rs )
+
+(x − xs ) z
+,
+rs
+
+(29)
+
+
+where n(rs ) = 21 1 − f (rs ) , sin2 θ = (y 2 + z 2 )/rs2 , and primes denote d/drs .
+Rodal. α = 1, γij = δij . The irrotational (curl-free) shift is specified in a spherical tetrad aligned
+with the propagation axis (θ measured from +x) [5]:
+β̂r = −vs F (rs ) cos θ ,
+
+β̂θ = vs G(rs ) sin θ ,
+
+(30)
+
+where F = f (equation 27) and
+G(rs ) = 1 −
+
+
+
+2 rs σ sinh(Rb σ) + cosh(Rb σ) ln cosh σ(rs −Rb ) − ln cosh σ(rs +Rb )
+.
+2 rs σ sinh(Rb σ)
+
+30
+
+(31)
+
+Data
+
+p = 2.00
+
+10 3
+
+|Q(h) − Qext |
+
+Min NEC margin
+
+0.00
+0.25
+0.50
+0.75
+1.00
+1.25
+
+(b) Convergence (253 /503 /1003 )
+
+(a) Min NEC margin vs velocity
+
+10 4
+
+Eulerian
+Robust
+
+0.2
+
+0.4
+
+0.6
+
+vs
+
+0.8
+
+1.0
+
+10 2
+
+Grid spacing h ∝ 1/N
+
+Figure 15. (a) Minimum NEC margin as a function of bubble velocity for the Alcubierre metric (503 grid). The
+Eulerian margin (solid, circles) and observer-robust margin (dashed, squares) track closely, confirming that the
+Eulerian frame captures the NEC violation extent for this geometry. Both margins become more negative with
+increasing vs . (b) Richardson extrapolation resolution-stability study for the Alcubierre metric NEC minimum
+margin (253 /503 /1003 grids). Data points (circles) and reference p = 2 slope (dashed); the three-point data is
+non-monotone, so the line indicates the assumed order, not a measured convergence rate. Error is measured relative
+to the Richardson-extrapolated value.
+
+Table 21. Richardson extrapolation data for the Alcubierre NEC on 253 /503 /1003 grids (253 /503 : observer-robust
+margin; 1003 : Eulerian margin, the cost-driven estimator switch disclosed in Section 4; the two estimators nearly
+coincide on the minimum margin). The minimum margin is resolution-stable (assumed p = 2; three-point data is
+non-monotone); the integrated violation varies mainly through the estimator gap; the L2 norm does not converge
+(extensive quantity).
+N = 25
+
+Quantity
+Min margin NEC
+Integrated viol.
+L2 viol. norm
+
+−0.631
+1.781
+3.06
+
+N = 50
+−0.628
+1.806
+8.56
+
+N = 100
+−0.629
+1.643
+22.59
+
+Extrap.
+
+p
+
+Error est.
+
+−0.630
+1.589
+–
+
+(2)†
+
+3.7 × 10−4
+0.054
+–
+
+(2)†
+−1.4
+
+† Assumed; three-point data is non-monotone (standard Richardson ratio test inapplicable).
+
+Note on conventions (Rodal). Ref. [5] presents the irrotational construction in a Natário-style
+“bubble-at-rest” convention, with radial profiles fpaper (0) = gpaper (0) = 0 and
+fpaper (∞) = gpaper (∞) = 1. We standardize to a lab-frame convention with vanishing shift at
+infinity:
+F (rs ) = 1 − fpaper (rs ),
+G(rs ) = 1 − gpaper (rs ),
+(32)
+so that F (0) = G(0) = 1 and F (∞) = G(∞) = 0. Subtracting a uniform asymptotic translation
+preserves irrotationality (a uniform translation field is curl-free). We use the “+β” ADM
+convention ds2 = −α2 dt2 + γij (dxi + β i dt)(dxj + β j dt); Ref. [5] uses “−β”, so component-level
+comparison requires the corresponding sign flip.
+Removable rs → 0 form in G(rs ). Although equation (31) contains an apparent 1/rs factor,
+this is a removable
+representation. Defining
+ 0/0 form
+ arising from the spherical-basis
+
+∆(rs ) ≡ ln cosh σ(rs −Rb ) − ln cosh σ(rs +Rb ) , one finds ∆′ (0) = −2σ tanh(σRb ), whence
+limrs →0
+p G(rs ) = 1. The irrotational construction is therefore regular at the bubble center; the
+rs 7→ rs2 + ε2 substitution used in our implementation is a numerical stability device for
+automatic differentiation, not a physical repair.
+In Cartesian coordinates, equations (30) become
+
+
+
+β = −vs G(rs ) x̂ + F (rs ) − G(rs ) nx n ,
+
+Cartesian shift components.
+
+(33)
+
+where n = (∆x, y, z)/rs is the radial unit vector from the bubble center and nx = ∆x/rs . Since
+F (0) = G(0) = 1, the factor (F − G) → 0 at rs = 0 and the shift reduces to β(0) = −vs x̂,
+confirming manifest regularity without coordinate patches.
+
+31
+
+WarpShell. The only metric in our suite with non-unit lapse and non-flat spatial metric [8].
+Using C 2 -smooth quintic Hermite transition functions Swarp (r) and Sshell (r) (Appendix D):
+
+
+p
+α = 1 − Sshell (r) 1 − 1 − rS /r ,
+
+β i = −Swarp (r) vs , 0, 0 ,
+
+eff
+γij = δij + γrr
+(r) − 1 n̂i n̂j ,
+(34)
+where rS denotes the Schwarzschild radius parameter (rS = 5 in our runs), r the coordinate
+distance from the bubble center, n̂i = xi /r, and
+
+
+1
+eff
+γrr
+(r) = 1 + Sshell (r)
+−1 .
+1 − rS /r
+
+(35)
+
+The flat interior (r < R1 ) and exterior (r > R2 ) are recovered by Sshell → 0; the Schwarzschild-like
+shell (R1 < r < R2 ) has Sshell → 1.
+WarpShell regularization. With rS = 5 and shell radii R1 = 0.5, R2 = 1, the ratio rS /r > 1
+throughout
+the shell region, placing the geometry formally inside the Schwarzschild horizon where
+p
+1 − rS /r is imaginary in real arithmetic. The implementation applies a smooth clamp
+rS /r 7→ min(rS /r, 1 − ϵ) with ϵ = 10−12 before evaluating the lapse and radial metric factor. This
+regularization produces a real, positive-definite spatial metric at the cost of replacing
+the
+√
+Schwarzschild interior with a clamped approximation (effective lapse αshell ≈ ϵ ∼ 10−6 , radial
+stretch γrr ∼ 1/ϵ ∼ 1012 in the shell). In addition, the lapse is floored at 10−12 to ensure positivity.
+The resulting geometry is not a faithful Schwarzschild shell but rather a regularized toy metric
+designed as a numerical stress test for the classifier, optimizer, and convergence diagnostics under
+extreme curvature scales (∥T a b ∥ ∼ O(1025 ) at 503 resolution). Reported WarpShell energy
+condition results should be understood as properties of this regularized implementation, not
+predictions for a physically realizable warp shell spacetime. A physically consistent parameter
+choice (e.g. rS < R1 ) would avoid the clamping entirely; we retain the current parameters to
+exercise extreme-curvature code paths.
+References
+[1] Alcubierre M 1994 Class. Quantum Grav. 11 L73–L77 (Preprint gr-qc/0009013)
+[2] Santiago J, Schuster S and Visser M 2022 Phys. Rev. D 105 064038 (Preprint 2105.03079)
+[3] Hawking S W and Ellis G F R 1973 The Large Scale Structure of Space-Time (Cambridge
+University Press)
+[4] Martín-Moruno P and Visser M 2018 Class. Quantum Grav. 35 125003 (Preprint 1802.00865)
+[5] Rodal J 2026 Gen. Relativ. Gravit. 58 1 (Preprint 2512.18008)
+[6] Fuchs J, Helmerich C, Bobrick A, Sellers L, Melcher B and Martire G 2024 Class. Quantum
+Grav. 41 095013 (Preprint 2405.02709)
+[7] Bobrick A and Martire G 2021 Class. Quantum Grav. 38 105009 (Preprint 2102.06824)
+[8] Fell S D B and Heisenberg L 2021 Class. Quantum Grav. 38 155020 (Preprint 2104.06488)
+[9] Garattini R and Zatrimaylov K 2025 (Preprint 2502.13153)
+[10] Bradbury J, Frostig R, Hawkins P, Johnson M J, Leary C, Maclaurin D, Necula G, Paszke A,
+VanderPlas J, Wanderman-Milne S and Zhang Q 2018 JAX: composable transformations of
+Python+NumPy programs https://github.com/jax-ml/jax, version 0.9.0
+[11] Kidger P and Garcia C 2021 (Preprint 2111.00254)
+[12] Helmerich C et al. 2024 Class. Quantum Grav. 41 095009 (Preprint 2404.03095)
+[13] Martín-Moruno P and Visser M 2017 Classical and semi-classical energy conditions
+Wormholes, Warp Drives and Energy Conditions (Fundamental Theories of Physics vol 189)
+ed Lobo F S N (Springer) pp 193–213 (Preprint 1702.05915)
+
+32
+
+[14] Martín-Moruno P and Visser M 2018 Class. Quantum Grav. 35 185004 (Preprint 1806.02094)
+[15] Martín-Moruno P and Visser M 2017 Class. Quantum Grav. 34 225014 (Preprint 1707.04172)
+[16] Martín-Moruno P and Visser M 2021 Phys. Rev. D 103 124003 (Preprint 2102.13551)
+[17] Barzegar H, Buchert T and Vigneron Q 2026 (Preprint 2602.16495)
+[18] Olum K D 1998 Phys. Rev. Lett. 81 3567–3570 (Preprint gr-qc/9805003)
+[19] Lobo F S N and Visser M 2004 Class. Quantum Grav. 21 5871–5892 (Preprint
+gr-qc/0406083)
+[20] Kontou E A and Sanders K 2020 Class. Quantum Grav. 37 193001 (Preprint 2003.01815)
+[21] Celmaster B and Rubin S 2025 (Preprint 2511.18251)
+[22] Natário J 2002 Class. Quantum Grav. 19 1157–1166 (Preprint gr-qc/0110086)
+[23] Van Den Broeck C 1999 Class. Quantum Grav. 16 3973–3979 (Preprint gr-qc/9905084)
+[24] Krasnikov S V 1998 Phys. Rev. D 57 4760–4766 (Preprint gr-qc/9511068)
+[25] Lentz E W 2021 Class. Quantum Grav. 38 075015 (Preprint 2006.07125)
+[26] Rodal J 2023 Gen. Relativ. Gravit. 55 134
+[27] Rodal J 2024 Int. J. Theor. Phys. 63 168
+[28] Garattini R and Zatrimaylov K 2024 Phys. Lett. B 856 138910 (Preprint 2408.04495)
+[29] Clough K, Dietrich T and Khan S 2024 The Open Journal of Astrophysics 7 (Preprint
+2406.02466)
+[30] Rodal J 2025 (Preprint 2507.09724)
+[31] Huey G 2024 Classical and Quantum Gravity 41 135007 (Preprint 2311.07193)
+[32] Santos-Pereira O L, Abreu E M C and Ribeiro M B 2026 Eur. Phys. J. C 86 46 (Preprint
+2512.12541)
+[33] Barzegar H and Buchert T 2025 Universe 11 293 (Preprint 2407.00720)
+[34] Buchert T and Frackowiak A 2026 Universe 12 132 (Preprint 2605.03653)
+[35] Martín-García J M 2008 Comput. Phys. Commun. 179 597–603 (Preprint 0803.0862)
+[36] Gourgoulhon É and Mancini M 2018 Les cours du CIRM 6 (Preprint 1804.07346)
+[37] Einstein Toolkit Consortium 2024 The Einstein Toolkit: a community computational
+infrastructure for relativistic astrophysics https://einsteintoolkit.org
+[38] MacCallum M A H 2018 Living Rev. Relativ. 21 6
+[39] Helmerich C, Fuchs J, Bobrick A, Melcher B, Sellers L and Martire G 2023 Warp Factory: A
+numerical toolkit for the analysis and optimization of warp drive geometries AIAA SCITECH
+2023 Forum (Preprint 2404.10855)
+[40] Applied Physics 2024 WarpFactory documentation: energy conditions analysis https://
+applied-physics.gitbook.io/warp-factory/examples/analysis/a1-energy-conditions
+[41] Coogan A 2024 diffjeom: differential geometry with JAX
+https://github.com/adam-coogan/diffjeom
+[42] Cranganore S S, Bodnar A, Berzins A and Brandstetter J 2025 ICLR 2026 (Preprint
+2507.11589)
+[43] Bara M 2025 (Preprint 2507.09379)
+[44] Kidger P 2024 Optimistix: modular optimisation in JAX
+https://github.com/patrick-kidger/optimistix
+33
+
+[45] Kidger P 2022 Diffrax: numerical differential equation solvers in JAX
+https://github.com/patrick-kidger/diffrax
+[46] Graham N and Olum K D 2007 Phys. Rev. D 76 064001 (Preprint 0705.3193)
+[47] Ford L H and Roman T A 1995 Phys. Rev. D 51 4277–4286 (Preprint gr-qc/9410043)
+[48] Pfenning M J and Ford L H 1997 Class. Quantum Grav. 14 1743–1751 (Preprint
+gr-qc/9702026)
+[49] Fewster C J 2000 Class. Quantum Grav. 17 1897–1911 (Preprint gr-qc/9910060)
+[50] Fewster C J and Eveson S P 1998 Phys. Rev. D 58 084010 (Preprint gr-qc/9805024)
+[51] Le A T 2026 (Preprint 2605.25417)
+[52] Nocedal J and Wright S J 2006 Numerical Optimization 2nd ed (Springer)
+[53] Tsitouras C 2011 Comput. Math. Appl. 62 770–775
+[54] Tao M 2016 Phys. Rev. E 94 043303 (Preprint 1609.02212)
+[55] Christian P and Chan C K 2021 Astrophys. J. 909 67 (Preprint 2010.02237)
+
+34
+
+

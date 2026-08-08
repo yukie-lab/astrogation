@@ -1,0 +1,1000 @@
+Draft version May 31, 2024
+Typeset using LATEX preprint style in AASTeX631
+
+Motivating Emissions from Positive Energy Warp Bubbles
+Erik W. Lentz1 and Ryan C. Felton2
+1 Pacific Northwest National Laboratory
+
+902 Battelle Blvd. Richland, WA 99352, USA
+
+arXiv:2405.19381v1 [astro-ph.IM] 29 May 2024
+
+2 NASA Ames Research Center, Mountain View, CA 94035, USA
+
+ABSTRACT
+Recent research has proposed that advanced propulsion mechanisms such as warp drives are more
+physically feasible than previously thought, using positive energy sources potentially sourced by known
+classical physics. Motivated by this, we hypothesize that an advanced inter-planetary or interstellar civilization using warp drives at sub-luminal or super-luminal speeds will broadcast detectable emissions
+of their travels. These technosignatures would be of significant astronomical, physical, and technological interest. This paper seeks to motivate signatures from warp drive emissions due to intrinsic and
+extrinsic processes across several messenger types (electromagnetic, particle, and gravitational) and
+propose a research program to simulate such emissions in sufficient detail to search for their signatures
+through coordinated analyses across multiple observatories.
+1. INTRODUCTION/MOTIVATION
+
+Spacecraft technosignatures are one of many potential signatures of extraterrestrial intelligence (ETI)
+(Haqq-Misra et al. 2022). Unlike quasi-static planetarybased or stellar-based engineered structures tied to
+well-defined marker objects (NASA 2019; Sheikh et al.
+2021; Romanovskaya 2022), spacecraft by their design are made to quickly span increasingly ambitious
+inter-planetary, inter-stellar, or inter-galactic distances.
+Nonetheless, an ETI-driven spacecraft may produce
+unique signatures across its path through interaction
+with its immediate surroundings, such as the interstellar medium, or intrinsically as a byproduct of the craft’s
+powerplant, propulsion mechanism, control system, etc.,
+or some interaction thereof (Zubrin 1994; Romanovskaya
+2022). These signatures may highlight points of interest, yet to be detected exoplanets, or other points of
+congregation, providing focal points for the astrobiology
+community’s research interests.
+Current considerations of ETI craft mobility are
+rather limited, focusing on inertial concepts of propulsion such as rocketry or light sails to move a craft and
+use costly propellants or other means of momentum
+transfer to boost the craft towards its destination, relegating it to sub-luminal speeds (Zubrin 1994; NASA
+2019; Sheikh et al. 2021; Haqq-Misra et al. 2022; Romanovskaya 2022). Such mechanisms are highly resource intensive and come with long travel times that
+may be considered wasteful by an ETI. There may be a
+point where even the bonds of special relativity are un-
+
+desirable, motivating the invention of a means of transport capable of effectively super-luminal rates. Such
+means of super-luminal travel may involve concepts of
+fundamental physics and methods of advanced engineering as yet to us unconfirmed or unknown and would
+naturally be of intense interest to both the physics and
+engineering/technology communities, though we do not
+consider it useful to speculate on these concepts at this
+time.
+Physics research does point to one possibility using
+known classical physics and Einstein’s general theory of
+relativity to generate compact regions of curvature in
+space-times capable of transporting observers up to and
+potentially beyond the speed of light, commonly known
+as warp drives (Lentz 2021; Bobrick & Martire 2021;
+Fell & Heisenberg 2021; Huey 2023; Fuchs et al. 2024).
+We hypothesize that a sufficiently advanced civilization
+having obtained the capability to use warp drives or
+similar as a practical transportation device may be observable when traveling between points of interest of
+that civilization. We therefore propose to theoretically
+model and search for emissions from craft moving at suband super-luminal speeds between stellar systems in our
+galaxy. The craft’s technosignatures are expected to be
+numerous and varied, resulting from both intrinsic operations and interactions with its environment, extending
+across several messengers (electromagnetic, particle, and
+gravitational), and occurring during each stage of travel
+(acceleration, coast, and deceleration).
+The remainder of this paper seeks to motivate emissions from warp drives by computing preliminary sig-
+
+2
+nal estimates and outlining a research plan resulting in
+searches for more complete and realistic signals. Section 2 presents a brief overview of the state of warp drive
+research in the literature, followed by recommendations
+for next steps leading to modeling of a drive’s emissions.
+Section 3 outlines categories of emissions from a warp
+drive and the resulting signatures incident on an observing instrument, providing several examples of estimated signatures carried via electromagnetic, gravitational, and massive particle messengers. Section 4 outlines a research program to model physical warp drives,
+simulate synthetic emissions over the course of a realistic journey as they would appear in a telescope or other
+instrument, and mount searches starting close to the
+Earth and working further out into the Galaxy. Section 5 closes the paper with a summary and next steps
+to initiating the research program.
+2. A BRIEF PRIMER ON WARP DRIVE
+
+RESEARCH
+The topic of super-luminal travel in general, and warp
+drives in particular, has been a topic of fascination for
+scientists and the public alike for over a century (Rosen
+1967; Wells 1901; Smith & Garby 2011; Campbell 1956).
+Warp drives as a topic of scientific study became widely
+recognized three decades ago with a collection of papers
+initiated by Alcubierre (1994) as a means of using the intrinsic dynamics of space–time as governed by Einstein’s
+general relativity (GR) to transport a spacecraft at arbitrary speed as opposed to purely inertial mechanisms.
+The first two and a half decades that followed added numerous analyses of and improvements to the Alcubierre
+solution as well as multiple novel space–times (Everett
+1996; Pfenning & Ford 1997; Hiscock 1997; Krasnikov
+1998; Olum 1998; Broeck 1999; Millis 1999; Visser et al.
+2000; Loup et al. 2001; Natário 2002; Gauthier et al.
+2002; Lobo & Crawford 2003; Lobo & Visser 2004; Lobo
+2008; Finazzi et al. 2009; McMonigal et al. 2012), some
+of which used approaches to gravity outside that of typical GR in three space and one time dimensions (Obousy
+& Cleaver 2008; White 2013; DeBenedictis & Ilijić 2018).
+We will confine our treatment of space–time dynamics
+to GR in 3+1 dimensions unless otherwise stated.
+For reference, we here subscribe to the description of
+a warp drive space–time as a nested bubble-like configuration with an innermost extended yet compact region
+that is (nearly) flat such that it is safe for passengers,
+enclosed by another compact region that is arbitrarily
+curved, and lastly surrounded by an asymptotically flat
+or hyperbolic vacuum region. This definition aligns well
+with the prescription given by Bobrick & Martire (2021)
+and Fuchs et al. (2024). The space–time metric describ-
+
+ing the warp bubble geometries is most often decomposed according to the Arnowitt-Deser-Misner (ADM)
+formalism (Arnowitt et al. 1959). This decomposes the
+infinitesimal path length as
+ds2 = gαβ dxα dxβ
+2
+
+(1)
+i
+
+
+
+2
+
+i
+
+i
+
+j
+
+= − N − N Ni dt − 2Ni dx dt + hij dx dx ,
+where the time coordinate t stratifies space–time into
+space-like hypersurfaces, the space metric components
+hij evaluated at t provide the intrinsic geometry of
+that hypersurface, and the similarly-evaluated shift vector components N i at t provide the coordinate threevelocity of the hypersurface’s normal. The time-like
+unit normal one-form is therefore proportional to the
+coordinate time element n∗ = N dt. Einstein summation notation is used throughout this paper, with Greek
+indices running over space–time components and Latin
+indices over space components. The lowering of Latin
+indices is performed using the hypersurface metric h unless otherwise stated. Natural units G = c = 1 are used
+for simplicity of form. The geometries researched in
+this period were largely of the “Natario class” (Natário
+2002) where the lapse function N is set to unity and
+the hypersurface metric is set to be flat. hij = δij in
+Cartesian coordinates where δ(··) is the Kronecker delta
+function. The non-flat geometry is encoded in the threecomponent shift vector, Ni .
+There have been many justified critiques regarding the
+feasibility of these early space–times, the most prominent noting that the geometries must largely be sourced
+from a form of negative energy density, which has no
+known macroscopic source in particle physics (Olum
+1998; Visser et al. 2000; Lobo & Crawford 2003; Santiago et al. 2021). Other concerns include the immense
+(absolute value) energy requirements to create a bubble, the difficulty associated with constructing a bubble
+from a nearly flat space–time plus source stress-energymomentum (SEM) up to the super-luminal phase, where
+the transported central observers are expected to become surrounded by a horizon, and the difficulties of
+driving the super-luminal phase back to the nearly flat
+space–time. Some significant progress was made to reduce the energy magnitude requirements (Broeck 1999;
+Loup et al. 2001; Krasnikov 2003; Obousy & Cleaver
+2008; White 2013), but the remaining challenges persisted to the beginning of this decade.
+The challenge of physicality of a warp drive’s sourcing media has been revisited in the last several years
+(Lentz 2021; Bobrick & Martire 2021; Fell & Heisenberg
+2021; Huey 2023; Fuchs et al. 2024) with a focus on
+producing geometries that require only positive energy
+sources and eventually satisfying the set of guidelines
+
+3
+known as the energy conditions (null, weak, strong, and
+dominant) (Misner et al. 1973). A warp drive satisfying all four energy conditions Fuchs et al. (2024) would
+be far more feasible in a laboratory setting, though the
+high energy requirements and construction mechanism
+of a bubble remain as challenges. While human efforts to
+design let alone construct a complete warp bubble in the
+lab are yet to be seen, perhaps a sufficiently advanced
+ETI has resolved these challenges and made warp drives
+or similar into a practical means of transport. The next
+section considers emissions that may be produced during
+the operation of a warp drive.
+3. PRELIMINARY ESTIMATES OF
+
+TECHNO-SIGNATURES
+There already exists some discussion of technosignature emissions from warp drives and other crafts
+undergoing extreme speeds and/or momentum transfers
+in the literature (McMonigal et al. 2012; Sellers et al.
+2022). These treatments respectively consider emissions
+from interaction of the Alcubierre metric with an external stress-energy medium such as the ISM and gravitational wave (GW) emissions intrinsic to the acceleration of a massive craft. This section aims to outline
+a broader set of emissions caused by warp drives and
+provide some preliminary estimates of their form and
+intensity. Here the emission types are organized into
+two categories: intrinsic emissions originating from internal processes of the bubble, and extrinsic emissions
+which involve interaction of the bubble with its environment and parameters both external and internal to the
+bubble. The range of detectability of emissions in each
+messenger type is also estimated to help guide potential
+searches.
+Bubbles are comprised of stress-energy-momentum
+and space–time curvature coupled via Einstein’s equation
+G = 8πT
+(2)
+where G = R − 1/2gR is the Einstein two-tensor written in terms of the Ricci curvature tensor which itself
+can be considered as a function of the space–time metric
+and its first and second derivatives, and T is the SEM
+tensor of the physical fields. Emissions are any measurable excitations that propagate away from the bubble.
+They may take on the form of but are not limited to
+electromagnetic, gravitational, or massive particle radiation, and may transition between species as the local
+physics allows.
+Let us prescribe a simple bubble-observer system from
+which to measure emissions, Fig. 1. The region of space–
+time away from the warp bubble will be taken as nearly
+flat meaning that the trajectories of emissions will be un-
+
+perturbed by the space–time geometry once outside of
+the bubble’s proximity, say outside a given distance from
+the bubble centroid r > Rb . The observation frame will
+be taken as inertial, though it is straightforward to correct for a terrestrial or nearby space-based observation
+platform in this limit. The observation frame’s parameterization of time will be used to clock the emissions
+once they have entered the near-flat region outside the
+bubble. The spatial trajectory of the bubble centroid
+relative to the observation point will be parameterized
+in the observer time parameter as ⃗rs (t) = x̂xs (t) + ŷd
+with the point of closest approach occurring at t = 0,
+implying xs (0) = 0. Emissions broadcast at a particular
+time tE and traveling at speed vE relative to the observation point will reach the observation point if moving
+undisturbed in a straight line at
+vE p 2
+tO = tE +
+d + xs (tE )2 .
+(3)
+c
+All of this appears rather straightforward and even uninteresting until one considers the order of emissions as
+seen by the observer. For simplicity of this demonstration we take the bubble to move with constant speed
+xs (t) = vs t, also L1 , L2 > 0, L1 , L2 ≫ d, and consider only light-like moving emissions, see Fig. 2 and
+Fig. 3. To correct for finite start and stop points
+of a bubble, the emission times (tE ) are truncated to
+L1 /vs < tE < L2 /vs . Further, emission speeds lower
+than light speed imply an affine re-scaling of the observations time axis. For speeds vs > vE , the angular distribution of the observed signal will evolve bi-modally
+as the observatory records emissions that occurred at
+two different times on either side of the time/angle of
+first light. One signal moves in the apparent direction
+of travel of the bubble and presents emissions occurring forward in time while the other mode moves opposite and presents emissions in a reversed order. This
+second mode is purely due to the craft’s motion which
+exceeds the emission’s motion once separated from the
+bubble. It should be noted that not all finite bubble
+trajectories will produce bi-modal emissions at v > vE ,
+only those passing
+through the extremal emission time
+p
+2 − 1|. The next subsection discusses
+tE = −d/vs | vs2 vE
+opportunities for intrinsic emissions and presents several
+simplified example forms.
+3.1. Intrinsic Emissions
+We now consider emissions due to intrinsic processes
+of a ‘bare’ bubble in an otherwise empty (flat) environment. Emissions from this bare bubble are expected
+during all phases of a craft’s warp-enabled journey: acceleration, coasting, and deceleration. What we call acceleration consists of the formation of the warp bubble
+
+4
+
+Figure 3. Apparent emission angles viewed along an observer’s timeline for light-like emissions from bubbles moving with prescribed constant speed with distance of closest
+approach set to d = 1. The left-most point of each constantspeed path is referred to as the angle of first light for the
+observatory. The light-speed craft is highlighted in red.
+Figure 1. Illustration of the bubble-observer system. The
+space–time well outside of the bubble is assumed to be effectively flat and will be parameterized using the rest frame of
+the observatory. The time of closest approach of the bubble
+to the observer is parameterized as t = 0 and its distance
+|∆x(t = 0)| = d. The craft’s starting point along its trajectory is L1 and its endpoint at L2 > L1 relative to the point
+of closest approach.
+
+and apparent change in speed of the craft as viewed
+from an inertial frame in the asymptotically flat space–
+time outside the bubble. The coast phase has the bubble centroid moving with effectively constant velocity.
+The deceleration phase has the bubble weaken and diffuse and the craft change velocity, likely to match the
+destination’s reference frame. While we may speculate
+the coast phase will last the majority of a journey, the
+acceleration and deceleration phases are expected to be
+more dynamic and prone to strong, complex, and bursty
+radiative losses. Tracking the generation of emissions
+throughout a warp bubble’s lifecycle will ultimately require detailed numerical models evolving configurations
+of SEM and curvature practical for an ETI warp drive,
+which we do not have at this time. In Section 4 we will
+outline first steps towards building these whole-journey
+models, but for the remainder of this section we estimate
+signals during the coast phase.
+3.1.1. Gravitational Waves
+
+Figure 2. Emission times viewed along an observer’s timeline for light-like emissions from bubbles moving with prescribed constant speed with distance of closest approach set
+to d = 1. The left-most point of each constant-speed path is
+referred to as the time of first light for the observatory. The
+light-speed craft is highlighted in red.
+
+Fluctuations in the space–time metric are capable of
+propagating across space–time in the far field in the form
+of waves of strain in the separation between nearby freefalling objects. We use the weak field limit for simplicity
+to linearize the Einstein equation in perturbations over
+the flat Minkowski metric η, expressed in components
+as
+gµν = ηµν + hµν ,
+(4)
+despite the expectation that the linear limit is a poor approximation for bubbles reaching a significant fraction
+
+5
+of the speed of light let alone exceeding it. A full nonlinear treatment of the system is necessary to produce
+waveforms of strong-gravity bubbles. The waveforms
+below are intended only as a preliminary estimate of
+the waveforms to be searched for. The underlying equations of weak field gravity are well established in the
+literature and many GR textbooks (Misner et al. 1973;
+Wald 1984; Schutz 2009; Carroll 2019). The equation for
+the space–time metric perturbation h propagating in the
+weak field limit reduces to the transverse-traceless (TT)
+components, which in integral form comes to
+
+hTµνT (t, ⃗x) ≈ 4
+
+Z
+
+d3 y
+
+Tµν (t − R, ⃗y )
+,
+R
+
+(5)
+
+where R = |⃗x −⃗y | is the flat-space displacement between
+source and observation points, Tµν are the SEM tensor
+components, and the integral domain is over the past
+light cone of the observation point. In the far-field limit,
+where the distance r from the SEM source is much larger
+than Y the extent of the source, r ≫ Y , the above
+integral can be expanded and retaining only the longrange (O(1/r)) terms provides
+
+hTµνT (t, ⃗x) ≈
+(6)
+
+
+Z
+T
+(t
+−
+r,
+⃗
+y
+)
+∂
+T
+(t
+−
+r,
+⃗
+y
+)⃗
+x
+·
+⃗
+y
+µν
+0 µν
+4 d3 y
+−
++ O(1/r2 ),
+r
+r2
+
+where the partial derivative is with respect to the time
+argument of the SEM tensor. The first term of the integrand can be reduced to an expression of the energy
+density’s time-dependent quadrupole moment, however
+the second term in general does not. In vacuum, hT T
+has up to two independent components referred to as
+the polarizations of free GWs, h+ and h× , which can be
+matched directly to components of the stress tensor in
+Eqn. 5.
+In the absence of a fully articulated geometry+SEM
+model of a physical warp drive we must make several
+prescriptive assumptions about the form of the SEM.
+Let us assume for the purpose of demonstration that
+the SEM has an oscillatory component, perhaps due to
+a resonance, such that the stress energy can be parameterized to repeat at regular intervals T as viewed outside
+the bubble about its moving centroid Tµν (t, ⃗y − ⃗vs t) =
+Tµν (t + nT, ⃗y − ⃗vs (t + nT )) (n ∈ Z), which gives the
+integrand a degree of regularity. For this estimate computation, let us approximate the relevant parts of the
+stress tensor as components parallel and perpendicular
+
+with the direction of motion of the bubble
+S∥ (t, ⃗y ) = Tij (t, ⃗y )v̂si v̂sj = S∥ δ 3 (⃗y − ⃗vs t) cos
+
+
+
+S⊥ (t, ⃗y ) = Tij (t, ⃗y )ϕ̂is ϕ̂js = S⊥ δ 3 (⃗y − ⃗vs t) cos
+
+2πt
+T
+
+
+
+
+,
+
+(7)
+
+2πt
++θ ,
+T
+(8)
+
+where θ is a constant phase offset, δ(·) is a Dirac delta
+distribution used to localize the stress to the bubble
+center, and ϕ̂s is the craft-centered unit vector in the
+azimuthal direction relative to the craft’s direction of
+motion. For some additional structure, the period of oscillation will be set inversely proportional to the speed of
+the craft T = To c/vs . Some example estimated gravitational waveforms and their frequency spectra are shown
+in Fig. 4.
+3.1.2. Electromagnetic Waves
+We next estimate the electromagnetic emissions
+caused by the accompanying oscillatory movement of
+charges in the bubble. The integral expression for the
+electromagnetic (spatial) vector potential in the Lorentz
+gauge modified from Jackson (1999) for curved space–
+times is
+Z
+⃗
+p
+J(t − R, ⃗y )
+⃗ ⃗x) = µ0
+A(t,
+d3 y |g|(t − R, ⃗y )
+,
+(9)
+4π
+R
+where J⃗ is the electric current
+p density, µ0 is the permeability of free space, and |g| is the metric’s contribution to the volume measure. Similar to the GW
+case, the far field and weak (gravity) limit simplifies the
+expression to
+⃗
+A(t, ⃗x) =
+(10)
+"
+#
+Z
+⃗ − r, ⃗y ) ∂0 J(t
+⃗ − r, ⃗y )⃗x · ⃗y
+µ0
+J(t
+d3 y
+−
++ O(h, 1/r2 ).
+4π
+r
+r2
+The electric and magnetic fields may be computed from
+the vector potential in this limit via the vacuum Maxwell
+⃗ = ∇
+⃗ × A/µ
+⃗ 0 and ∂t E
+⃗ = ∇
+⃗ × H/ϵ
+⃗ 0.
+equations H
+The energy flux from the radiating fields is given by
+⃗ = E
+⃗ × H.
+⃗ For this example, the movement of the
+S
+currents are taken to be dominated by electric and magnetic dipoles with strengths respectively proportional to
+the parallel and perpendicular stresses which source the
+bubble, with oscillation period twice that of the stress
+Te = 2T . Estimated electromagnetic waveforms and
+their frequency spectra can be seen in Fig. 5. Note
+that while the theory of classical electromagnetism is
+itself linear and Eqn. 9 applies in the strong gravity
+
+6
+limit when expressed covariantly, the example electromagnetic waveforms also degrade in accuracy for higher
+speed bubbles and the electromagnetic waveforms in this
+regime must also come from a full non-linear treatment
+of strong-gravity bubbles.
+3.1.3. High Energy Emissions
+For the emission of shorter wavelength media such as
+nucleons, electrons, neutrinos, higher energy photons,
+etc., from the sourcing SEM, we must be aware of the
+bubble geometry and the distribution of each species in
+the sourcing SEM. It is beyond the scope of this work to
+provide a self-consistent treatment of the system here,
+and we feel that the level of speculation necessary to
+provide a preliminary estimate for the resonance example will leave the example largely uninformative so we
+omit it here for later work.
+3.2. Extrinsic Emissions
+
+Figure 4. Sample resonant gravitational waveforms measured in the h+ polarization according to the basis set in
+Fig. 1 and with distance of closest approach set to d = 1.
+(Top) Time-resolved waveforms as seen at the observation
+point. Sub-luminal waveforms are observed at all times,
+while luminal and super-luminal waveforms have a time of
+‘first light.’ (Center) Evolution of observed waveform spectra, noting that superluminal-waveforms are composed of
+two waves angular-ly separated viewing the bubble evolving
+forward in emission time (lower frequency) and backward in
+emission time (higher frequency). (Bottom) Strain intensity
+evolution of the waveform, with separated branches for the
+super-luminal cases. The light-speed craft is highlighted in
+red. Waveform amplitudes and spectral densities have been
+normalized to the maxima of the light-speed craft.
+
+A warp bubble ‘dressed’ via interacting with its surroundings may produce scattering emissions. The interaction may be with compact objects which the bubble passes close to along its trajectory such as planets,
+stars and stellar remnants, etc. More often the bubble
+will encounter and pass through diffuse material such
+as the interstellar medium (ISM), dark matter, neutrino
+backgrounds, gravitational wave backgrounds, etc. This
+subsection concentrates on interaction with diffuse nongravity components. The precise outcome of the scattering will depend on the details of the bubble geometry
+and its response to the environmental influence, but for
+the sake of demonstration several approximations are
+made: scatters will be net isotropic as viewed by the
+observer’s rest frame; the strength of the scatter is dependent on the effective cross-sectional area of the bubble normal to its direction of motion; and the bubble
+geometry and therefore the scatterings will be time independent to avoid possible periodic leakage of radiation
+into the passenger region. Also, inspired by McMonigal
+et al. (2012), media that intersects the bubble and is
+scattered outwards will be given a ‘boost‘ in total energy as viewed from the observation frame amounting
+to
+(⃗vs − ⃗vp ) · v̂s
+b=1+
+,
+(11)
+vp
+where ⃗vp is the ISM constituent’s velocity.
+The ISM consists of ionic, atomic, and molecular
+gases, collections of dust, cosmic rays, and electromagnetic radiation across the frequency spectrum. Electromagnetic radiation is distributed in frequency spanning
+from the radio to gamma ray bands, for which we will
+use the model given by (Gnedin et al. 2016) as representative over the sample trajectory. When disturbed by
+
+7
+a bubble the net spectral distribution of scattered media in this simple model is of similar shape to the base
+spectrum but boosted in frequency and intensity, Fig. 6.
+Ambient massive particles besides neutrinos (ionic,
+atomic, and molecular gases, dust, etc.) will be scattered by the warp drive, but have a very limited mean
+free path (λmf p ≪ 1 pc) and for high-speed warp bubbles will create a shock in the ISM, radiating and propagating in a way that is beyond the scope of this paper
+to estimate.
+We limit our discussion of this signature to the overall
+power estimate in Section 3.3.
+The neutrino background permits itself to a cleaner
+signature as it propagates relatively undisturbed after
+scattering. In general we should be discussing all degrees of neutrinos, whether in the mass normal basis
+or the flavor normal basis, but as the neutrinos’ fundamental masses remain unknown we will for purposes
+of demonstration consider only a singular species of
+neutrino/anti-neutrino and project spectra to match.
+Estimates of the scattered neutrinos for several subspectra (cosmic neutrino background, diffuse supernova
+neutrino background, cosmogenic, and the ambient high
+energy neutrinos measured by Ice Cube) Vitagliano
+et al. (2020) are found in Fig. 7 assuming a dominant
+neutrino mass of 0.1 eV.
+There are other ambient fields expected in interstellar
+space including dark matter, dark energy, and the gravitational wave background, though we do not consider
+them here.
+3.3. Signature Intensity and Observable Range
+Figure 5. Sample resonant electromagnetic waveforms as
+measured by a ẑ antenna according to the basis set in Fig. 1
+and with distance of closest approach set to d = 1. (Top)
+Time-resolved waveforms as seen at the observation point.
+Sub-luminal waveforms are observed at all times, while luminal and super-luminal waveforms have a time of ‘first
+light.’ (Center) Evolution of observed waveform spectra, noting that superluminal-waveforms are composed of two waves
+angular-ly separated viewing the bubble evolving forward in
+emission time (lower frequency) and backward in emission
+time (higher frequency). (Bottom) Power intensity evolution of the waveform, with separated branches for the superluminal cases. The light-speed craft is highlighted in red.
+Waveform amplitudes and spectral densities have been normalized to the maxima of the light-speed craft.
+
+The above estimates on the form of emission signatures are by themselves insufficient to determine the
+range of sensitivity for an observatory. For that we
+require two more attributes: the signature intensity
+and the statistical model for detection qualification of
+a given observatory-signature pair. For simplicity we
+use a signal-to-noise ratio statistic which contrasts the
+signature’s average recorded intensity with the associated measurement uncertainty. Unique details of waveform evolution, spectral and angular shape, etc. are
+omitted from consideration here in favor of a plain comparison of signal intensity to random background. A
+threshold SNR of unity will be used as reference, with a
+simple relation available to scale to a more stringent
+level of confidence. The reference distance is set at
+100 lyr between the observatory and the point of closest approach for the bubble path, with a bubble path
+length of 1 lyr. As the signal duration and observed
+intensity may vary significantly with orientation of the
+bubble path in addition to the speed of the bubble, we
+
+8
+
+Figure 6. Estimated observed emissions of ISM photons
+scattered by a craft moving at constant velocity. (Upper)
+Photon power spectrum at observation time t = 1. (Lower)
+Evolution of the observed maximum flux intensity over time.
+The light-speed craft is highlighted in red.
+
+Figure 7. Estimated observed emissions of a simplified ambient neutrino distribution by a craft moving at constant velocity. (Upper) Incident mass spectrum at observation time
+t = 1. (Lower) Evolution of the observed maximum flux intensity over time. The light-speed craft is highlighted in red.
+
+simplify by constraining the path as parameterized in
+Fig. 1 with d = 100 lyr, L1 = L2 = 0.5 lyr. In the
+limit of vs ≫ c√the duration of the signal converges
+to ∆t = (100 − 1002 + 0.52 )yr ≈ 1.25 × 10−3 yrs or
+about 11.4 hours. The regime of bubble speed much
+larger than light (vs ≫ c) will be used for the below estimates as the average intensity scalings reduce to power
+laws. The length scale of the reference bubble is set to
+D = 1 km, and the timescale To of the bubble resonator
+will be naively set as the flat–space light crossing time
+To = D/c.
+
+pending on the target and detecting instrument (Green
+Bank Telescope Support Staff 2024). Telescopes in the
+visible bands such as the NEID observatory telescopes
+have thermal noise levels on the order of 300 Kelvin
+(Robertson et al. 2019), or the order of 104 Janskys in
+spectral density.
+By comparison the estimated observed flux from scattered ISM photons is expected to be quite weak. The
+energy density of photons propagating in the ISM is on
+the order of ργ ∼ 1 eV/cc, implying the incident flux
+from scattered photons to be
+
+3.3.1. Electromagnetic Signals
+Observatories sensitive to electromagnetic radiation
+are numerous and operate across a wide range of the
+frequency spectrum. Sources and intensity of noise also
+vary across the spectrum. We focus here on the radio and visible bands as preliminary estimates of signal
+strength and availability of archival data from groundbased observatories hint that these regions hold the best
+chances of producing an observation.
+Radio telescopes such as the Green Bank Telescope
+measure their noise spectral density in the GHz band at
+the level of tens of micro-Janskys to milli-Janskys de-
+
+FEM −ISM ∼
+
+(12)
+ v   D 2  ρ   100 lyr 2  ϵ 
+s
+γ
+γ
+3 × 10−7 Jy · Hz
+,
+c
+km
+eV /cc
+r
+1.0
+where ϵγ is fraction of encountered photons scattered.
+Note this radiation is spread across the spectrum according to the distribution given in Fig. 6.
+The energy flux from scattered ISM gas and dust components is significantly higher than that of stray photons as the energy density is measured on the order of
+ρm ∼ 1 GeV/cc. If the excess energy from the scattered
+gas and dust interacted quickly with the surrounding
+ISM and re-radiated as light, the produced photon flux
+
+9
+would be
+
+If the losses to gravitational radiation from the internal resonance are on the same order as the resonant
+FISM −rerad ∼
+(13)
+electromagnetic losses of 0.1% for the 1 lyr journey, the
+
+2 
+
+ v   D 2  ρ
+ϵm local space–time strain intensity is expected to be much
+100 lyr
+m
+s
+,
+3 × 102 Jy · Hz
+c
+km
+GeV /cc
+r
+1.0 weaker than modern observatories’ best sensitivity
+where ϵm is fraction of encountered matter scattered.
+This flux would also be spread across the spectrum
+though we do not provide an estimate for the distribution here.
+The intensity from the example intrinsic resonant
+emissions are more difficult to estimate given the unknown SEM requirements on warp bubbles in practice. The estimates of Lentz (2021); Bobrick & Martire (2021), and Fuchs et al. (2024) show energy requirements in the EB ∼ (f ew)×10−1 M⊙ for a fiducial bubble
+of 100 m radius moving at light speed. For such bubbles, a loss to EM emissions of only 0.1% over a 1 lyr
+journey would amount to a total energy greater than the
+rest mass of Earth. A more economically optimistic figure of a sourcing SEM for a well-designed bubble of the
+fiducial light speed and size D = 1 km would be that it
+has the average density of atmosphere (10−3 g/cc) will
+be taken as 109 kg. The estimated flux density from
+electromagnetic dipole losses for the economical bubble,
+encapsulating all dependencies on the dipole strength,
+emissivity, etc. in a reference loss coefficient ϵl , are then
+fEM −res ∼
+
+(14)
+ v 2  100 lyr 2  ϵ   M 
+s
+l
+2 × 106 Jy
+,
+c
+r
+10−4
+109 kg
+where we have assumed a resonance width of 1 Hz. The
+dipole resonance will emit at an estimated center frequency of fe ∼ 0.5vs /D ≈ 1.3 × 105 (vs /c) Hz. The observed frequency will be much higher, in excess of two
+orders of magnitude, with an asymptote at the point of
+first light pushing the frequencies into the GHz range
+coincident with Green Bank. Note though that the flux
+density decreases proportionally (Fig. 5).
+3.3.2. Gravitational Signals
+Operating gravitational wave observatories differ from
+electromagnetic ones in that they directly measure and
+quantify their uncertainty in the metric strain, not in
+analogous gravitational power. In the far field this translates to a slower fall off of sensitivity with distance from
+the source (∼ 1/r) compared to the inverse square scaling law of power measurements.
+The uncertainty of the observatories also vary with incident wave frequency, but their region of highest sensitivity of 10−23 −10−20 Hz−1/2 spans the frequency range
+of approximately 30 − 105 Hz (Buikema et al. 2020).
+
+hGW −res ∼
+7 × 10−29 Hz −1/2
+
+ v   100 lyr   ϵ 1/2  M 
+s
+l
+,
+c
+r
+10−4
+109 kg
+(15)
+
+where again we have assumed a resonance width of 1 Hz,
+and the estimate center frequency of the quadrupole resonance is fe ∼ vs /D ≈ 2.6 × 105 (vs /c) Hz. Similar to
+the electromagnetic resonance, the observed frequencies
+of the gravitational waveform are raised by multiple orders of magnitude in this regime, placing the incident
+waveform out of band of current interferometric observatories.
+4. PROPOSED RESEARCH PLAN FOR WARP
+
+BUBBLE SEARCHES
+The previous section named numerous possible
+sources of warp drive emission signatures, presenting
+preliminary forms of several intrinsic and extrinsic signals and estimates for their detectability range using
+current instruments. Unfortunately, these signal models
+are as-of-yet too crude to form the basis of a definitive
+search. This section outlines a research plan to (1) elevate the modeling and simulation of warp bubbles and
+their emissions to a useful level and (2) perform searches
+for the resulting signatures using observatories over the
+most promising regions of the electromagnetic spectrum.
+4.1. Improved Warp Drive Emission Models
+The increased interest in warp drives this decade has
+produced significant insights into the classes of solutions available using GR and the sourcing SEM that
+may produce physical warp drives (Section 2). One
+such set of insights to be incorporated in this research
+plan is the likely need to expand beyond the Natario
+class of geometries to accommodate the energy conditions and positive mass theorem to include a passenger craft (Santiago et al. 2021; Helmerich et al. 2024;
+Fuchs et al. 2024). This increases the number of dynamical degrees in the geometry, namely the lapse function
+N and hypersurface metric component hij , complicating the design of candidate space–times. Fortunately
+the set of tools for analyzing fully non-linear and selfconsistent GR geometry+SEM and warp drives in particular has grown (Martı́n-Garcia 2002; Helmerich et al.
+2024) in addition to extant numerical relativity simulation codes (Brandt et al. 2020; Andrade et al. 2021).
+
+10
+The articulated geometry+SEM solutions will ideally
+span the three major phases of travel of a craft: creation and apparent acceleration, coast, and apparent
+deceleration and diffusion. While the coasting phase,
+the only phase for which we have provided estimated
+signatures, is expected to dominate the duration of a
+journey of significant length, the acceleration and deceleration phases are crucial to understanding how the
+bubble forms around a craft, establishes itself to propagate at a given velocity, and dissolves to end the journey.
+These phases are expected to produce the most intense
+and unique signals of the journey. Also, these endpoint
+signals are expected to occur in the vicinity of objects
+such as star systems and planets, highlighting regions of
+interest for the astronomy community, especially astrobiologists.
+Not all physics and engineering challenges to warp
+drives must be solved in order to build models sufficient for a technosignature search. Though we wish for
+precise renderings of the warp drive, a simple and likely
+non-optimal model of geometry+SEM will be sufficient
+for early searches. We set out the base elements to building warp bubble emissions models as follows:
+• Warp drive models will be comprised of both
+geometric and SEM degrees and will be selfconsistently simulated under full dynamical conditions
+• Trajectories will span all phases of travel (acceleration, coast, deceleration)
+• The bubble must be sufficiently stable to complete
+the journey with little risk to the passengers
+• Journeys will be computed both in near vacuum
+as well as in an ISM-like environment
+• SEM-efficient bubbles will be prioritized
+Acceptable simulations will have emissions computed
+from the radiative leakages out of the simulation’s
+space–time domain for each messenger type. Performing a simulation for each bubble design, size, speed, etc.,
+to generate emissions models is inefficient. The creation
+and use of semi-analytic template models informed by
+simulations and parameterized over the most relevant
+inputs will allow for rapid searches over broad ranges of
+time and spectra.
+4.2. Technosignature Search
+Implementing the emissions templates into a search
+will begin with archived observational data then shift to
+observing time. To confine the scope to a manageable
+
+parameter space, we will only search for electromagnetic
+emission signals from stellar systems with at least one
+confirmed exoplanet. An optimized search strategy will
+maximize the likelihood of observing a signature around
+an active system. The leading parameters contributing
+to this likelihood are source distance from Earth, craft
+speed, orientation, and dimensions, and spectrum region
+(Fig. 8).
+For our archival search we will use the publicly available Keck Observatory archive, Green Bank Observatory archive, and European Southern Observatory
+(ESO) archive. The Keck Observatory operates in the
+0.3-5 micron range, providing us with observational data
+in optical and near-infrared region of the spectrum, the
+Green Banks Observatory operates in the radio part of
+the spectrum (0.1 - 116 GHz), and the ESO telescopes
+in the radio, optical, and infrared.
+We hypothesize that intrinsic and extrinsic emissions
+associated with a super-luminal craft will not look the
+same and will appear the strongest in different regions
+of the EM spectrum. By using multiple archives we are
+able to account for these differences and improve the
+chances of detecting at least one of the emission types.
+We will also search for bi-modal features (described in
+Section 3) unique to a craft moving at super-luminal
+speeds. We are currently unaware of any natural phenomenon that could produce such a signal and the
+feature is distinct from other proposed technosignatures
+(Haqq-Misra et al. 2022). However, the bi-modal feature has a small observing time window and we expect it
+will be difficult to achieve a high enough signal-to-noise
+ratio (SNR ≈ 100-200, (Tellis & Marcy 2015)) to be
+confident of a positive detection.
+Archival Search Campaign:
+• Use Keck Observatory, Green Bank Observatory, and European Southern Observatory public
+archives
+• Focus on EM spectra emissions in the optical,
+near-infrared, and radio
+• Study stellar systems with at least one confirmed
+exoplanet
+Our observing campaign will utilize the Keck Observatory, Allen Telescope Array, and possibly the Green
+Bank Observatory. This multi-observatory approach
+follows the multi-spectrum strategy from the Archival
+Search to improve the chances of detecting an intrinsic
+or extrinsic super-luminal craft emission.
+Expanding the Search - Active Observations
+
+11
+
+Figure 8. Illustration of six key parameters and metaparameters to be optimized over for sensitivity of a search
+for bubble technosignatures.
+
+• Observing with the Keck Observatory, Allen Telescope Array, and Green Banks Observatory
+• Expand on potential areas of interest from
+Archival Search by shifting to narrow band
+searches
+5. SUMMARY
+
+In this paper we have motivated emissions from warp
+drives and outlined a broad research plan for their
+search. Preliminary estimates of the observable sig-
+
+natures from the operation of a coasting warp bubble
+in our galaxy show multiple unique characteristics such
+as spatial and spectral bi-modality in the superluminal
+case which evolves over hours, days, or many years depending on the distance, speed, and orientation of the
+path. We have identified emissions that may be observable beyond a range of 100 lyr using current observatories, reducing the degeneracy of signatures with naturally occurring phenomena. These emissions are also
+expected to occur over multiple messenger types (electromagnetic, gravitational, massive particles) revealing
+an opportunity to increase confidence in a signal’s identity via multi-messenger corroboration. The formulated
+research plan seeks to undertake a near-term search for
+warp bubble technosignatures by (1) creating template
+models of emissions from physical warp drives in realistic environments over all phases of travel and (2) conducting searches for realistic signatures beginning in the
+electromagnetic spectrum.
+
+6. ACKNOWLEDGEMENTS
+
+This project was funded in part by an internal investment at Pacific Northwest National Laboratory, which is
+operated by Battelle for the U.S. Department of Energy.
+We also acknowledge consultation, through private communication, with Stephen Kane, Ravi Kopparapu, and
+Evan Sneed.
+
+REFERENCES
+Alcubierre, M. 1994, Classical and Quantum Gravity, 11,
+L73, doi: 10.1088/0264-9381/11/5/001
+Andrade, T., Salo, L. A., Aurrekoetxea, J. C., et al. 2021,
+Journal of Open Source Software, 6, 3703,
+doi: 10.21105/joss.03703
+Arnowitt, R., Deser, S., & Misner, C. W. 1959, Phys. Rev.,
+116, 1322, doi: 10.1103/PhysRev.116.1322
+Bobrick, A., & Martire, G. 2021, Classical and Quantum
+Gravity, 38, 105009, doi: 10.1088/1361-6382/abdf6e
+Brandt, S. R., Brendal, B., Gabella, W. E., et al. 2020,
+Zenodo, doi: 10.5281/zenodo.3350841
+Broeck, C. V. D. 1999, Classical and Quantum Gravity, 16,
+3973, doi: 10.1088/0264-9381/16/12/314
+Buikema, A., Cahillane, C., Mansell, G. L., et al. 2020,
+PhRvD, 102, 062003, doi: 10.1103/PhysRevD.102.062003
+Campbell, J. 1956, Islands of Space (Fantasy Press).
+https://search.worldcat.org/title/3613703
+Carroll, S. M. 2019, Spacetime and Geometry: An
+Introduction to General Relativity (Cambridge
+University Press)
+
+DeBenedictis, A., & Ilijić, S. 2018, Classical and Quantum
+Gravity, 35, 215001, doi: 10.1088/1361-6382/aae326
+Everett, A. E. 1996, Phys. Rev. D, 53, 7365,
+doi: 10.1103/PhysRevD.53.7365
+Fell, S. D. B., & Heisenberg, L. 2021, Classical and
+Quantum Gravity, 38, 155020,
+doi: 10.1088/1361-6382/ac0e47
+Finazzi, S., Liberati, S., & Barceló, C. 2009, Phys. Rev. D,
+79, 124017, doi: 10.1103/PhysRevD.79.124017
+Fuchs, J., Helmerich, C., Bobrick, A., et al. 2024, Classical
+and Quantum Gravity, 41, 095013,
+doi: 10.1088/1361-6382/ad26aa
+Gauthier, C., Gravel, P., & Melanson, J. 2002,
+International Journal of Modern Physics A, 17, 2761,
+doi: 10.1142/S0217751X02011886
+Gnedin, N. Y., Glover, S. C., Klessen, R. S., et al. 2016,
+Star Formation in Galaxy Evolution: Connecting
+Numerical Models to Reality, 85
+
+12
+Green Bank Telescope Support Staff. 2024, Proposer’s
+Guide for the Green Bank Telescope.
+https://www.gb.nrao.edu/scienceDocs/GBTpg.pdf
+Haqq-Misra, J., Schwieterman, E. W., Socas-Navarro, H.,
+et al. 2022, Acta Astronautica, 198, 194,
+doi: https://doi.org/10.1016/j.actaastro.2022.05.040
+Helmerich, C., Fuchs, J., Bobrick, A., et al. 2024, Classical
+and Quantum Gravity, 41, 095009,
+doi: 10.1088/1361-6382/ad2e42
+Hiscock, W. A. 1997, Classical and Quantum Gravity, 14,
+L183, doi: 10.1088/0264-9381/14/11/002
+Huey, G. 2023, Membrane Models as a Means of Propulsion
+in General Relativity. https://arxiv.org/abs/2311.07193
+Jackson, J. D. 1999, Classical electrodynamics, 3rd edn.
+(New York, NY: Wiley).
+http://cdsweb.cern.ch/record/490457
+Krasnikov, S. 2003, Phys. Rev. D, 67, 104013,
+doi: 10.1103/PhysRevD.67.104013
+Krasnikov, S. V. 1998, Phys. Rev. D, 57, 4760,
+doi: 10.1103/PhysRevD.57.4760
+Lentz, E. W. 2021, Classical and Quantum Gravity, 38,
+075015, doi: 10.1088/1361-6382/abe692
+Lobo, F., & Crawford, P. 2003, Weak Energy Condition
+Violation and Superluminal Travel, ed.
+L. Fernández-Jambrina & L. M. González-Romero, Vol.
+617, 277
+Lobo, F. S. N. 2008, Classical and Quantum Gravity
+Research, 1. https://arxiv.org/abs/0710.4474
+Lobo, F. S. N., & Visser, M. 2004, Classical and Quantum
+Gravity, 21, 5871, doi: 10.1088/0264-9381/21/24/011
+Loup, F., Waite, D., & Halerewicz, E., J. 2001, arXiv
+e-prints, arXiv:grqc/0107097.
+https://arxiv.org/abs/{gr-qc/0107097}
+Martı́n-Garcia, J. M. 2002, xAct: Efficient tensor computer
+algebra for the Wolfram Language. http://www.xact.es/
+McMonigal, B., Lewis, G. F., & O’Byrne, P. 2012, Physical
+Review D, 85, doi: 10.1103/physrevd.85.064024
+Millis, M. G. 1999, Acta Astronautica, 44, 175 ,
+doi: https://doi.org/10.1016/S0094-5765(99)00045-4
+Misner, C. W., Thorne, K., & Wheeler, J. 1973,
+Gravitation (San Francisco: W. H. Freeman)
+NASA, T. W. P. 2019, NASA and the Search for
+Technosignatures: A Report from the NASA
+Technosignatures Workshop.
+https://arxiv.org/abs/1812.08681
+Natário, J. 2002, Classical and Quantum Gravity, 19, 1157,
+doi: 10.1088/0264-9381/19/6/308
+
+Obousy, R. K., & Cleaver, G. 2008, Journal of the British
+Interplanetary Society, 61, 364.
+https://arxiv.org/abs/0712.1649
+Olum, K. D. 1998, Phys. Rev. Lett., 81, 3567,
+doi: 10.1103/PhysRevLett.81.3567
+Pfenning, M. J., & Ford, L. H. 1997, Classical and Quantum
+Gravity, 14, 1743, doi: 10.1088/0264-9381/14/7/011
+Robertson, P., Anderson, T., Stefansson, G., et al. 2019,
+Journal of Astronomical Telescopes, Instruments, and
+Systems, 5, 015003, doi: 10.1117/1.JATIS.5.1.015003
+Romanovskaya, I. K. 2022, International Journal of
+Astrobiology, 21, 163–187,
+doi: 10.1017/S1473550422000143
+Rosen, E. 1967, Kepler’s Somnium. The dream, or
+posthumous work on lunar astronomy.
+Santiago, J., Schuster, S., & Visser, M. 2021, arXiv e-prints,
+arXiv:2105.03079. https://arxiv.org/abs/2105.03079
+Schutz, B. 2009, A First Course in General Relativity, 2nd
+edn. (Cambridge University Press)
+Sellers, L., Bobrick, A., Martire, G., Andrews, M., &
+Paulini, M. 2022, arXiv e-prints, arXiv:2212.02065,
+doi: 10.48550/arXiv.2212.02065
+Sheikh, S., Berea, A., Davis, R., et al. 2021, Bulletin of the
+AAS, 53
+Smith, E., & Garby, L. 2011, The Skylark of Space
+(Floating Press).
+https://books.google.com/books?id=IyS5waUvUqwC
+Tellis, N. K., & Marcy, G. W. 2015, Publications of the
+Astronomical Society of the Pacific, 127, 540
+Visser, M., Bassett, B., & Liberati, S. 2000, Nuclear
+Physics B - Proceedings Supplements, 88, 267 ,
+doi: https://doi.org/10.1016/S0920-5632(00)00782-9
+Vitagliano, E., Tamborra, I., & Raffelt, G. 2020, Rev. Mod.
+Phys., 92, 045006, doi: 10.1103/RevModPhys.92.045006
+Wald, R. M. 1984, General Relativity (The University od
+Chicago Press)
+Wells, H. 1901, The First Men in the Moon (Bowen-Merrill
+Company).
+https://books.google.com/books?id=Hlk4AAAAYAAJ
+White, H. 2013, Journal of the British Interplanetary
+Society, 66, 242
+Zubrin, R. 1994, in American Institute of Physics
+Conference Series, Vol. 301, Space Nuclear Power and
+Propulsion: Eleventh Symposium (AIP), 1407–1413,
+doi: 10.1063/1.2950156
+
+

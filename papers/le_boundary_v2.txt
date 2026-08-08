@@ -1,0 +1,1775 @@
+PAPER
+
+On the boundary cost of source-consistent warp shells
+An T. Le1,2,3
+1 Center for Environmental Intelligence, VinUniversity, Hanoi, Vietnam
+2 College of Engineering and Computer Sciences, VinUniversity, Hanoi, Vietnam
+3 Intelligent Autonomous Systems, TU Darmstadt, Germany
+
+arXiv:2605.25417v2 [gr-qc] 20 Jun 2026
+
+E-mail: an.lt@vinuni.edu.vn; an@robot-learning.de
+
+Abstract
+Recent constructions report warp-drive spacetimes that satisfy the classical energy
+conditions at subluminal speeds, but such reports are typically made in a single (Eulerian)
+frame and for metrics built without a prescribed matter source. We assess admissibility
+frame-independently, from the Hawking–Ellis algebraic type of T a b and its exact,
+observer-cap-free Type-I eigenvalue slacks, and source-first, prescribing the matter and
+solving the Einstein constraints for the metric. We introduce two such shells, a shift-free
+S-shell and a tilted T-shell whose shift solves the momentum constraint, and grade eight
+constructions spanning the canonical warp-drive classes against a five-criterion standard
+(regularity, constraint satisfaction, an explicit matter model, frame-independent
+energy-condition margins, and global diagnostics) that responds to the source-consistency
+critique of Barzegar, Buchert, and Vigneron. None passes the full standard, and in every
+case the energy-condition failure is localized at the smooth source–vacuum transition rather
+than in the matter-filled bulk, which is Hawking–Ellis Type I and compliant. The boundary
+failure separates into a geometric Type-I dominant-energy deficit fixed by the source-profile
+regularity and independent of the bubble velocity, and a kinematic Type-IV onset (the
+stress-energy admits no rest frame) whose imaginary eigenvalue grows linearly with the
+matter tilt, instantiating the shift-vorticity mechanism of the companion certifier. A
+frame-independent scan over shell compactness and thickness (600 configurations) finds no
+admissible shell. Yet a structure-preserving symplectic geodesic-integrated averaged null
+energy condition stays positive for every source-prescribed shell, robust in sign across impact
+parameter and resolution, so the pointwise boundary failures do not appear in the average.
+Keywords: warp drive, energy conditions, general relativity, exact solutions, Einstein constraints
+
+1
+
+Introduction
+
+The search for physically viable warp-drive spacetimes has been reinvigorated by constructions that
+report satisfaction of the classical energy conditions (ECs) at subluminal bubble velocities [1–4].
+These reports must be set against a body of no-go results: Pfenning and Ford [5] showed that the
+original Alcubierre construction requires negative energy of order 1011 visible-universe masses for
+its original bubble parameters (the bound is parameter-dependent); Ford and Roman [6]
+established quantum-inequality bounds; Flanagan and Wald [7] analyzed the averaged null energy
+condition (ANEC); and Lobo and Visser [8] derived fundamental limitations on warp-drive
+spacetimes. Together these establish a baseline obstruction: non-trivial spacetime transport
+conflicts with the pointwise classical energy conditions in the absence of exotic matter
+sources [9, 10], and superluminal transport in particular requires negative energy by the Olum [11]
+no-go. The source-first shells we construct are therefore subluminal throughout; the
+frame-independent certifier we apply to them is nonetheless valid at all warp speeds, since it never
+builds an Eulerian normal (Sec. 3.1). A companion paper [12] introduced warpax, a JAX-based
+toolkit that certifies energy-condition margins over the family of timelike observers using the
+Hawking–Ellis algebraic classification [13, 14] together with continuous optimization. That work
+found that single-frame (Eulerian) analysis can miss 15–28% of DEC-violating grid points, which is
+why we treat frame-independent certification as the relevant test rather than an optional
+refinement. In short, the companion paper [12] builds and validates the frame-independent certifier
+and characterizes the metric-first drives; the present paper takes that certifier as given and asks the
+orthogonal, source-first question of whether a warp metric solves a well-posed Einstein system for
+interpretable matter, grading constructions against a source-consistency standard.
+The 2021–2024 wave of subluminal positive-energy proposals (Lentz’s diamond soliton [16], the
+Bobrick–Martire general framework [1], and the Fuchs et al. constant-velocity shell [2]) revived the
+1
+
+question of whether subluminal constructions can satisfy the classical energy conditions in the
+Eulerian frame; recent extensions place warp bubbles in de Sitter backgrounds that satisfy the
+averaged conditions under matched expansion [17]. Each construction has since been scrutinized.
+Santiago, Schuster, and Visser [18] established that generic warp drives violate the null energy
+condition, and that observer-dependent EC margins can mask Eulerian-frame compliance;
+Celmaster and Rubin [20] identified algebraic errors in the Lentz WEC derivation; and the
+Barzegar–Buchert–Vigneron classification and follow-up [21, 22] argued that the metric-first
+(G-method) constructions on which most of these proposals rest carry structural problems that go
+beyond pointwise EC tests, which we take up below.
+This paper addresses source consistency: whether a warp metric solves a well-posed Einstein
+system for physically meaningful matter, not merely whether it satisfies the energy conditions. The
+formal critiques of Barzegar, Buchert, and Vigneron [21–23] argue that unrestricted metric-first
+construction (prescribing gab and computing Tab = Gab /8π) can produce “fantastic” stress-energy
+tensors that do not correspond to physically meaningful matter. Their analysis identifies specific
+pathologies: a required orthogonality of the matter flow to the time slice, a vanishing spatial Ricci
+tensor that excludes genuine spatial curvature, and coordinate-dependent velocity fields that carry
+no covariant meaning. Each of these challenges the interpretation of the construction as real
+matter. Energy-condition satisfaction alone is therefore insufficient; an admissible construction
+must solve the Einstein constraint equations for an interpretable source model.
+We make four contributions. First, we propose a five-criterion admissibility standard (regularity,
+Einstein constraint satisfaction, an explicit matter model, frame-independent energy-condition
+margins, and global diagnostics; Sec. 2) that responds to the Barzegar–Buchert–Vigneron critique
+by demanding physical interpretability of the matter rather than only EC satisfaction of the
+metric. Second, we construct two source-first shell ansätze, the shift-free S-shell (Sec. 6) and the
+T-shell with a constraint-derived shift (Sec. 7), whose metric potentials follow from a quasi-static
+reduction of the Einstein constraints for a prescribed matter model and are then verified against
+the full constraints (Fig. 1); both satisfy the Hamiltonian constraint to ϵH ∼ 10−6 , well below the
+energy-condition margins, with positive interior EC margins and only a residual boundary failure.
+Third, we report an independent frame-independent verification of the Fuchs constant-velocity
+shell [2] (Sec. 4): reproducing the construction via iterative Gaussian-kernel smoothing [24, 25], we
+find 22 of 25 transition-tail Type IV violations that are not visible to an Eulerian analysis [18], and
+applying the same standard to the Rodal [3], Lentz [16], Alcubierre, Natário, and Van den Broeck
+proposals (Sec. 5) leaves none passing. Fourth, a 20 × 15 scan over compactness and thickness for
+both shells (600 grid points, Sec. 8) finds no admissible configuration, consistent with the
+Lobo–Visser obstruction [8] across this surveyed family under the stricter frame-independent
+standard. Taken together, these results relocate the binding energy-condition cost from the
+matter-filled bulk to the smooth source–vacuum boundary, where it separates into a
+velocity-independent geometric deficit and a tilt-driven kinematic Type-IV onset; this boundary
+cost, not bulk compliance, is what obstructs an admissible subluminal warp shell.
+Throughout we work in geometric units (G = c = 1) with signature (− + ++).
+
+2
+
+Admissibility standard
+
+In response to the Barzegar–Buchert–Vigneron critique, we formalize physical viability through five
+criteria; a warp-shell candidate is admissible only if it satisfies all five.
+A. Regularity. The metric must satisfy gab ∈ C 2 for thick-shell constructions, so that the
+Einstein tensor is classically well-defined. For thin shells, the Israel junction conditions and the
+associated surface stress-energy replace the bulk Gab [26].
+B. Constraint satisfaction. The Hamiltonian and momentum constraints encode energy and
+momentum conservation on the initial slice, and the initial data (γij , Kij ) must satisfy both:
+H = R(γ) + K 2 − Kij K ij − 16πE = 0 ,
+Mi = Dj (K
+
+j
+
+j
+i − δi K) − 8πSi = 0 .
+
+(1)
+(2)
+
+We compute normalized residuals ϵH and ϵM following the conventions of Ref. [12] (see Sec. 3).
+Metric-first constructions satisfy (1)–(2) tautologically, because one defines Tab = Gab /8π;
+criterion B is therefore informative only when the source is prescribed independently and the metric
+potentials are obtained by solving the constraints, as in the S-shell and T-shell ansätze of Secs. 6–7.
+C. Explicit matter model. The source must represent physical matter (an anisotropic fluid,
+an elastic shell, or a scalar/vector field), not an abstract stress-energy tensor. This criterion
+responds directly to Barzegar et al. [21]: the G-method exhibits a stress-energy tensor without
+constraining the matter it represents.
+2
+
+(b) S-shell (vs = 0)
+
+(c) T-shell (v0 = 0.1)
+
+20
+
+1.00
+
+10
+
+0.95
+
+βi ≡ 0
+
+R
+
+0
+
+R1
+
+0.90
+
+R2
+
+0.85
+
+−10
+
+0.80
+
+−20 peak |β x | = 0.1
+−20
+
+lapse α(x, y, z=0)
+
+y
+
+(a) Alcubierre
+
+peak |β x | = 0.0071
+0
+
+x
+
+20
+
+−20
+
+0
+
+x
+
+20
+
+−20
+
+0
+
+20
+
+x
+
+Figure 1. The three constructions on the z = 0 slice. Color field: lapse α(x, y, z=0) (shared colorbar). White
+arrows: shift vector field β i , auto-scaled per panel for legibility, so the annotated peak |β x | (not the arrow length)
+carries the cross-panel magnitude comparison. Dashed circles: characteristic radii. (a) Alcubierre (kinematic,
+metric-first; vs = 0.1, R = 20, σ = 2): unit lapse with a gauge-engineered shift bubble of radius R; transport is
+encoded entirely in β i . (b) S-shell (source-first, static): lapse depression in the spherical shell [R1 , R2 ] derived from
+the Hamiltonian constraint for a prescribed isotropic source; the shift vanishes by construction. (c) T-shell
+(source-first, kinematic): the same source-derived lapse pocket as the S-shell, with the shift β x a solution of the
+momentum constraint for a tilted matter 4-velocity (v0 = 0.1). Its peak shift (0.0071) is more than an order of
+magnitude below Alcubierre’s (0.1), consistent with being constraint-derived rather than postulated by a coordinate
+ansatz.
+
+D. Frame-independent EC margins. We certify the NEC, WEC, and DEC margins
+frame-independently with warpax, from the Hawking–Ellis algebraic classification of T a b [13, 14].
+At Type I points the margins are the eigenvalue slacks (3); these are exact and free of any
+observer-rapidity cap, because the certifier constructs no Eulerian normal and no timelike tetrad
+and so depends on no preferred observer. At non-Type-I points no invariant rest frame exists; the
+non-Type-I regions that arise in these constructions are Hawking–Ellis Type IV, whose
+stress-energy has no timelike eigenvector and whose WEC/DEC infimum over observers is
+unbounded below (−∞). We therefore report such regions by their algebraic type and
+imaginary-eigenvalue scale rather than a frame-dependent magnitude. Because the eigenvalues of
+T a b are Lorentz invariants, this certification is well defined at all warp speeds, including vs ≥ 1; we
+reserve the term observer-robust for these cap-free Type-I slacks. A capped multi-start optimizer
+over the bounded rapidity ζ ≤ ζmax = 5 (maximum Lorentz factor γmax = cosh ζmax ≈ 74) is
+retained only as a one-sided severity diagnostic at these Type-IV points (Sec. 3.1); the cap-free
+verdict is the algebraic type. All margins must be non-negative at every radial probe across the
+support of non-negligible stress-energy: the bulk shell [R1 , R2 ] for compact-support constructions,
+extended to the immediate smoothing tail where matter remains non-negligible (for the
+Gaussian-smoothed Fuchs construction, 25 exterior probes covering r ∈ [R2 , R2 + ∼6σ]). We omit
+the strong energy condition (SEC) from criterion D because cosmologically realistic
+positive-pressure and dark-energy components routinely violate it, and because anisotropic stresses
+generically violate SEC without rendering the matter unphysical [9, 10].
+E. Global and invariant diagnostics. Positive ADM mass [19], passenger-cavity tidal forces
+below a safety threshold, and at least one invariant transport observable (geodesic deviation, null
+round-trip asymmetry, or blueshift hazard; necessarily absent for the static, shift-free S-shell
+baseline, where the verdict rests on mass and tidal forces). Asymptotic 1/r falloff is verified
+separately as a diagnostic: it holds exactly for the source-first shells, which have compact matter
+support and an exactly Schwarzschild exterior, and approximately for the Gaussian-smoothed
+Fuchs construction whose smoothing tail extends matter beyond R2 .
+
+3
+
+Methods
+
+3.1 Energy-condition certification
+Criterion D is evaluated by the frame-independent certifier of warpax [12]: at each grid point we
+form the mixed tensor T a b , classify it algebraically (Hawking–Ellis), and read the Type-I eigenvalue
+slacks (3) directly, with no observer search entering the verdict. The certifier itself (the
+automatic-differentiation curvature chain, the Hawking–Ellis classification, the closed-form worst
+observer, and the three-solver, 50-digit Type-IV hardening gate) is developed and validated in the
+companion [12] and is used here unchanged; the methodological additions of the present paper are
+the source-consistency layer required by criteria B–E: Hamiltonian and momentum constraint
+residuals, (an)isotropic TOV equilibrium, Israel–Darmois surface stress-energy, ADM mass with
+3
+
+asymptotic-falloff verification, and the invariant transport diagnostics. We restate only the minimal
+certifier facts needed to read this paper. At a Type I point the worst observer is known in closed
+form: a boost of rapidity ζ along principal axis i measures ρobs (ζ) = ρ + (ρ + pi ) sinh2 ζ, so when
+every ρ + pi ≥ 0 the rest frame realizes the least energy density and the slacks (3) are the exact
+cap-free worst-observer margins, while if some ρ + pi < 0 the WEC/DEC infimum over observers is
+−∞; the DEC slack ρ − |pi | is the necessary and sufficient Type-I criterion, a Lorentz invariant.
+The same divergence holds at the Type-IV points that arise here, which carry no rest frame, so we
+report their algebraic type and imaginary-eigenvalue scale rather than a capped optimizer
+minimum (a ζmax = 5 value, where quoted, is an explicitly labeled one-sided diagnostic).
+From the Type I eigenvalues (ρ, p1 , p2 , p3 ) of T a b the signed margins are
+
+NEC = min(ρ + pi ),
+WEC = min ρ, min(ρ + pi ) ,
+i
+
+i
+
+DEC = min(ρ − |pi |),
+
+(3)
+
+i
+
+positive when the condition holds. At non-Type-I points these eigenvalue slacks are undefined (no
+rest frame); the bounded-rapidity optimizer there returns only the labeled one-sided severity
+diagnostic, never a certified margin.
+3.2 Source-first shell construction
+Both source-first shells are built on the spherical 3+1 (ADM) line element
+ds2 = −α(r)2 dt2 + γij (dxi + β i dt)(dxj + β j dt),
+
+(4)
+
+with lapse α = eΦ(r) , spatial metric γij = δij + (e2Λ(r) − 1) r̂i r̂j where r̂i = xi /r is the unit radial
+covector, and shift β i that vanishes for the S-shell and is purely β x (r) for the T-shell. We prescribe
+a tilted perfect-fluid source with 4-velocity ua = Γ (na + v a ), v a na = 0, Γ = (1 − v 2 )−1/2 , where na
+is the unit normal to the time slice; its Eulerian projections are
+E = Γ2 (ρ + p v 2 ),
+
+Si = Γ2 (ρ + p) vi ,
+
+Sij = Γ2 (ρ + p) vi vj + p γij .
+
+(5)
+
+The S-shell is the v = 0, isotropic limit (E = ρ, Si = 0).
+Spherical reduction of the Hamiltonian constraint (1) gives the radial potential in closed form,
+Z r
+1
+,
+m(r) = 4π
+E(r′ ) r′2 dr′ ,
+(6)
+e2Λ(r) =
+1 − 2m(r)/r
+0
+and the lapse follows from quasi-static hydrostatic (TOV) equilibrium,
+dΦ
+m + 4πr3 peff
+=
+,
+dr
+r (r − 2m)
+
+
+Φ(rmax ) = 21 ln 1 − 2M/rmax ,
+
+(7)
+
+integrated inward from the Schwarzschild exterior, with peff = pr for the S-shell and
+peff = Γ2 (ρ + p) v 2 + p for the T-shell. The S-shell radial pressure itself solves the isotropic
+(pt = pr ) TOV equation dpr /dr = −(ρ + pr )(m + 4πr3 pr )/[r(r − 2m)] with pr (R2 ) = 0. For the
+T-shell we do not postulate the shift; we obtain it from the momentum constraint (2), whose ℓ = 1
+(dipole) radial projection is the linear boundary-value problem
+β ′′ + A(r) β ′ + B(r) β = 8π α Sx ,
+
+A = 2r + 2Φ′ − 2Λ′ ,
+
+B = − r22 ,
+
+(8)
+
+with β ′ (0) = 0 (regularity) and β(rmax ) = 0 (asymptotic flatness), solved as a tridiagonal system.
+Here B = −2/r2 is the −ℓ(ℓ + 1)/r2 centrifugal eigenvalue of the vector Laplacian for the ℓ = 1
+dipole pattern; the constant-Cartesian-direction shift projects onto this harmonic only after an
+angular average, so Eq. (8) is an approximation bounded a posteriori by the full three-dimensional
+momentum residual ϵM (Appendix A). The constraint solvers are formulated as pure tridiagonal
+boundary-value problems, giving end-to-end differentiability of the metric potentials with respect
+to the source profiles.
+The source profiles are parameterized with Bernstein polynomials of compact support on
+[R1 , R2 ],
+
+
+n−1
+X
+r − R1
+,
+(9)
+ρ(r) = ρ0
+cρa Ban−1
+R2 − R 1
+a=0
+with cρ0 = cρn−1 = 0, so the Bernstein density has strict compact support on [R1 , R2 ] (zero at the
+shell edges), and analogous expansions for the pressures and the velocity profile. The default
+4
+
+single-metric configurations instead use a constant-density core joined to vacuum by a C 2
+smoothstep S(t) = 6t5 − 15t4 + 10t3 (S, S ′ , S ′′ matched at the endpoints) of width
+w = 0.05 (R2 − R1 ), which extends the support slightly to [R1 − w, R2 + w]. In either case the EC
+certification probes the shell and its immediate near-exterior r ≳ R2 , where the constraint-derived
+shift still carries momentum flux as the matter thins. The velocity profile v(r) is the proper
+(orthonormal-frame) speed measured by the Eulerian observer, so the tilt enters through v 2 = v(r)2
+on the symmetry axis.
+The normalized constraint residuals are scale-invariant ratios,
+ϵH =
+
+|H|
+max(|R| + K 2 + K
+
+ij
+
+K ij + 16π|E|, 1)
+
+,
+
+ϵM =
+
+∥Mi ∥
+,
+max(∥Mi + 8πSi ∥ + ∥8πSi ∥, 1)
+
+(10)
+
+evaluated against the prescribed Eulerian source (E, Si ) of Eq. (5). Each denominator term carries
+the same dimensions as the constraint. The floor (unity in the geometric units set by R2 )
+regularizes near-vacuum regions where numerator and denominator both collapse; for the
+weak-field shells studied here the in-shell matter scale 16πE ∼ 5 × 10−3 lies below this floor, so the
+floor dominates and the quoted ϵH , ϵM are floor-normalized, effectively absolute residuals rather
+than relative ones (the relative momentum residual ∥Mi ∥/∥8πSi ∥ is correspondingly larger,
+∼ 6 × 10−4 for the T-shell). Their smallness is thus an absolute statement; the inner-edge violation
+is established not by residual magnitude but by the robustness analysis of Sec. 8. Equations (6)–(8)
+are the spherically reduced system we solve to construct the metric potentials; the residuals (10)
+are then evaluated against the full ADM constraints (1)–(2), so the shift-generated
+extrinsic-curvature and angular contributions that the radial reduction does not capture appear in
+ϵH and ϵM . In particular, the constraint solver uses the on-axis proper speed v(r), for which
+v 2 = v(r)2 on the symmetry axis. A constant-Cartesian-direction realization v i = v x x̂i carries the
+angle-dependent proper speed v 2 = [1 + (e2Λ − 1)(x/r)2 ] (v x )2 , so off the axis the Eulerian source
+terms E and peff acquire angular structure that the spherical reduction does not capture; this
+axisymmetric-as-spherical approximation is bounded a posteriori by the full three-dimensional
+residuals reported below (ϵH ∼ 3 × 10−6 , ϵM ∼ 4 × 10−4 ). For the default T-shell the
+extrinsic-curvature part of the Hamiltonian, K 2 − Kij K ij , is negligible against 16πE throughout
+the shell: on the static slice Kij = (2α)−1 (Di βj + Dj βi ) is O(∂β), and the constraint-derived shift
+is tiny (|β x | ≲ 7 × 10−3 ), so both K 2 and Kij K ij are O((∂β)2 ) and stay many orders of magnitude
+below the matter term, as confirmed by the full 3D residual ϵH ∼ 3 × 10−6 that includes the exact
+K-terms. This is why the static reduction is a controlled approximation. We probe constraint
+residuals with a 2% geometric margin from each shell boundary to avoid transition-region artifacts,
+while EC certification probes the full shell domain [R1 , R2 ] including the boundaries. The
+frame-independent eigenvalue classification furnishes the verdict at every probe; the multi-start
+BFGS optimizer (nstarts = 8 in the scan, 16 for single-metric runs) is evaluated alongside it only as
+the labeled non-Type-I severity diagnostic. We apply this framework to existing and new
+warp-shell proposals, beginning with the Fuchs constant-velocity shell.
+
+4
+
+Fuchs shell verification
+
+This section verifies the Fuchs et al. constant-velocity physical warp shell [2], which employs
+anisotropic pressures, a non-unit lapse, and a smooth density profile inside a compact shell
+(R1 = 10, R2 = 20, bubble velocity vs = 0.02) and which the authors report as satisfying all
+classical energy conditions in the Eulerian frame. We reproduce the construction in warpax,
+following the original five-step procedure: (i) a constant-density initial guess, (ii) a TOV-derived
+isotropic pressure, (iii) iterative smoothing with differential kernel widths (σρ /σP ≈ 1.72, applied
+four times), (iv) metric-function computation from Carroll Eqs. 5.143/5.152 [28], and
+(v) Schwarzschild boundary matching. A Gaussian
+kernel replaces the original MATLAB moving
+√
+average (variance-matched as σgauss = sMA / 12) to obtain equivalent boundary regularization
+with cleaner spectral properties [24, 25]; we return to this substitution below. We then evaluate the
+result under the full admissibility standard (Table 2).
+The canonical Gaussian-smoothed Fuchs metric passes criterion A (regularity, with C 2
+continuity checked on a 50-point radial sweep) and criterion E (positive integrated ADM mass
+M = 2.51, converged once the Gaussian tail decays by r ≈ 25). Under the remaining criteria:
+Constraint satisfaction (criterion B). Evaluated against its prescribed (smoothed) source, the
+canonical Fuchs metric satisfies the Hamiltonian constraint to ϵH ≈ 3 × 10−8 and the momentum
+constraint to ϵM ≈ 4 × 10−4 across the radial sweep: it is built from the smoothed profiles through
+the TOV relations, so the constraint is met to solver precision, even tighter than the source-first
+shells of Sec. 7 on its finer analytic grid. The un-smoothed constant-density intermediate is by
+5
+
+contrast far from a constraint solution, so the iterative smoothing is what renders the metric
+constraint-consistent.
+Source consistency (criterion C). The matter model is explicit (an anisotropic fluid), so
+criterion C, which asks for a physical matter ansatz rather than full metric–source stress
+agreement, is met; what we quantify here is the finer degree of that agreement, and the pointwise
+mismatch is large. We compute the relative residual between the metric-derived stress-energy
+(metric)
+(source)
+Tab
+= Gab /8π and the prescribed source Tab
+at every radial probe. The residual peaks at
+∼ 640× the local Tab norm in the constant-density pre-smoothing intermediate. This quantifies the
+Barzegar et al. [21] tension: the prescribed source and the metric-implied source disagree by nearly
+three orders of magnitude before smoothing. The smoothing reduces this to a relative residual of
+≈ 0.4 at the inner edge (≈ 0.14 shell-averaged) for the canonical metric, smaller but still
+appreciable, because the smoothed isotropic prescription does not reproduce the metric-implied
+anisotropic stress. This separates the shift-free S-shell below, whose deep-interior source residual
+stays at the 10−3 level (mean 3.7 × 10−4 , away from the source–vacuum endpoints), from the tilted
+T-shell, which retains an O(10−1 ) interior mismatch comparable to Fuchs: its constraint-derived
+shift matches the energy and momentum densities but not the full spatial stress (Sec. 7).
+Frame-independent EC margins (criterion D). Inside the bulk shell (r ∈ [10, 20], 13 probe
+points) every probe is Hawking–Ellis Type I with positive cap-free DEC slacks (∼ 8 × 10−5 ): the
+bulk is energy-condition compliant for all observers. In the smoothing tails the density falls off
+while the metric retains structure, and 22 of 25 exterior probes (r > R2 ) turn Type IV: the
+stress-energy has no timelike eigenvector, so no observer finds a local rest frame and the failure
+there is unconditional. A Type-IV point has no invariant margin (the observer infimum is −∞), so
+we report the tail by its type fraction rather than a magnitude; for reference a ζmax = 5-capped
+optimizer returns minr (WEC, DEC) ≈ −7.9 × 10−3 at r ≈ 23.9, but this is a one-sided diagnostic,
+not a frame-independent margin.
+Our frame-independent evaluation agrees with the Eulerian analysis in the bulk interior: the
+smoothed bulk interior is EC-compliant. The certification adds information in the smoothing tails
+(r > R2 ), where we identify Type IV violations that an Eulerian observer does not see. This is the
+Santiago–Schuster–Visser mechanism [18] at work. The location of the binding EC failure therefore
+shifts under frame-independent certification: it is absent in the Eulerian bulk interior and present
+in the smoothing transition tail. This refines the wall-restricted Fuchs certification of the
+companion [12], which gates the probes to the matter-supported wall and there finds the shell
+Type I and energy-condition compliant; our finer sweep extends into the smoothing tail r > R2
+that the wall gate excludes, where the Type-IV violations appear.
+Because the reported violation lives in the smoothing tail, we checked that it does not depend
+on our Gaussian substitution for the original MATLAB moving average. Repeating the verification
+with an exact variance-matched moving-average (boxcar) kernel reproduces the same tail: 22 of 25
+exterior probes remain Hawking–Ellis Type IV at the same radius r ≈ 23.9 (the capped severity
+diagnostic shifts only marginally, to ≈ −8.2 × 10−3 from −7.9 × 10−3 ). The kernel-independent fact
+is the persistence of the Type-IV tail, not the capped number. The transition-tail violation is
+therefore a property of the iterative smoothing, not an artifact of the kernel choice.
+
+5
+
+Existing proposals under the admissibility standard
+
+Before introducing the source-first shells, we apply the same five-criterion standard to the existing
+subluminal proposals of Rodal and Lentz and to the foundational Alcubierre, Natário, and Van den
+Broeck baselines. The failures established here are what motivate a source-first approach.
+Rodal irrotational drive [3]. This construction uses an irrotational (curl-free) shift vector
+derived from a scalar potential, with unit lapse and flat spatial metric. The irrotational property
+guarantees a globally Hawking–Ellis Type I classification (the lone globally Type-I drive in the
+companion’s invariant exoticity ranking [12]) and reduces the peak NEC/WEC violation by a
+factor of ∼ 38 relative to the Alcubierre baseline [3]. Evaluated against the standard: criterion A
+passes (C ∞ tanh profiles); criterion B is satisfied tautologically to machine precision (ϵH ∼ 10−6 ),
+since the metric is prescribed and Tab := Gab /8π. Criterion C is not applicable: no source model is
+prescribed independently, and the stress-energy follows the G-method in the sense of Refs. [8, 21].
+For criterion D, 9/50 probes violate NEC and 46/50 violate DEC under frame-independent
+certification: the construction concentrates EC failure in the DEC channel even though its peak
+invariant energy-density deficit is ∼ 38× smaller than Alcubierre’s [3]. A recent follow-up by
+Rodal [29] confirms that residual NEC/WEC/DEC/SEC violations persist for irrotational Type I
+backgrounds even under area-metric birefringent screening, and that fast walls are disfavored,
+6
+
+consistent with our finding. That work reports a cubic low-velocity scaling of the screening tilt, a
+distinct quantity from the linear growth of our T-shell’s Type-IV imaginary-eigenvalue onset
+(Sec. 7). Criterion E fails with MADM = 0 by construction (compact support, no 1/r falloff).
+Lentz diamond soliton [16]. The Lentz soliton uses a diamond-pattern (L1 -norm) shift field
+with unit lapse and flat spatial metric. The original construction claims WEC satisfaction, but
+Celmaster and Rubin [20] have since identified algebraic errors in that derivation. We use the
+WarpFactory-style piecewise implementation [30]. Criterion A is met by the smooth shape function,
+though the L1 distance introduces C 1 kinks in the WarpFactory implementation at the diamond
+axes, the origin of the boundary spike below; criterion B is tautologically satisfied (metric-first);
+criterion C is not applicable. For criterion D, our verification finds 1/50 NEC, 1/50 WEC, 1/50
+SEC, and 2/50 DEC violations
+p at the diamond boundary (r ≈ R = 100), after we regularize the
+on-axis derivative of ρ⊥ = y 2 + z 2 in the diamond shape function to avoid a coordinate-chart
+singularity. The remaining 49 probes are Type I, but the worst-margin magnitudes at the L1
+corner are dominated by a curvature spike (≲ −1016 for NEC, ≲ −1036 for DEC) generated by the
+WarpFactory piecewise-linear distance function, whose discontinuous derivatives concentrate
+curvature at the boundary. Repeating the certification with a C 2 (Euclidean-distance) shape
+function removes the Type IV point entirely and collapses the worst margins to the optimizer noise
+floor (≳ −10−17 ), so the 1016 –1036 magnitudes are an artifact of the L1 distance’s discontinuous
+derivatives, not an intrinsic property of a smoothed Lentz construction. The finding agrees with
+the independent Eulerian analysis of Celmaster and Rubin [20]. Criterion E fails with MADM = 0.
+Reference metric-first baselines. To anchor the comparison across classes we also evaluate
+three foundational warp metrics at comparable parameters (vs = 0.1, R = 20, σ = 2): the original
+Alcubierre construction [31], the zero-expansion Natário variant [32], and the conformal-factor
+Van den Broeck microsphere [33]. Each is metric-first and inherits the structural pathologies
+discussed by Barzegar et al. [21]: criterion B is tautologically satisfied since Tab := Gab /8π,
+criterion C is not applicable absent a source prescription, and criterion E fails with Mtotal = 0 by
+compactness. Criterion D fails in every case under frame-independent certification: on a 50-point
+radial sweep we find NEC/WEC/DEC violations at 18/22/25 points (Alcubierre), 29/30/35 points
+(Natário), and 16/24/25 points (Van den Broeck), with Hawking–Ellis Type II–IV regions in all
+three. These results are consistent with the Pfenning–Ford [5] quantum-inequality bounds, the
+Olum [11] subluminality result, and the Lobo–Visser limitations [8]. The detailed all-observer type
+structure, velocity scaling, and exoticity ranking of these metric-first walls are developed in the
+companion certifier paper [12]; here we evaluate them only as failing reference baselines against the
+source-consistency standard.
+None of these six existing constructions passes the standard: the Natário-class metrics
+(Alcubierre, Natário, Van den Broeck, Rodal, Lentz) lack both a source model and positive ADM
+mass, while the Fuchs shell has both but fails criterion D in its smoothing tail. This is the gap the
+source-first shells are designed to close.
+
+6
+
+Source-first construction: S-shell
+
+These failures motivate constructions derived directly from the Einstein constraints for a prescribed
+matter model. We introduce two such ansätze: the S-shell (this section, flow-orthogonal, zero shift)
+and the T-shell (Sec. 7, tilted flow with constraint-derived shift). Both address the
+Barzegar–Buchert–Vigneron critique directly in the realistic Synge G-method spirit: we fix the
+matter, then solve for the metric using the equations of Sec. 3.2.
+In the S-shell (Class I) the matter 4-velocity is aligned with the hypersurface normal na . The
+spatial metric is non-flat, the lapse non-unit (α ≈ 0.78 in the interior), and the shell carries
+perfect-fluid isotropic pressure (pt = pr ) from hydrostatic balance; we defer anisotropic extensions
+to future work. Given source profiles ρ(r) and p(r), we integrate the Hamiltonian constraint (6) for
+Λ(r) and obtain the lapse from the TOV equilibrium (7). Because we derive the metric potentials
+from the source rather than prescribing them, the constraint residual is limited only by solver
+discretization: against the prescribed source we find ϵH ≈ 2 × 10−6 across the shell, with ϵM ≡ 0
+identically (zero shift implies zero Eulerian momentum density). The full source-consistency
+residual, the relative mismatch between Gab /8π and the prescribed stress that the constraints alone
+do not control, is a distinct and larger quantity; for the isotropic S-shell it stays at the 10−3 level in
+the deep interior (mean 3.7 × 10−4 ), rising toward unity only at the source–vacuum endpoints
+where the stress vanishes. Zero shift (β i = 0) means the S-shell carries no transport utility, but it is
+
+7
+
+a physically clean baseline: with no shift the stress-energy is Hawking–Ellis Type I everywhere, so
+every margin is a cap-free eigenvalue slack, consistent with the result that a static spacetime is
+Hawking–Ellis Type I throughout the domain of outer communication [15]. Deep-interior DEC
+slacks are positive (worst ≈ +9.4 × 10−5 ), but a Type-I DEC deficit persists at the inner edge
+r = R1 with slack ≈ −4.4 × 10−4 (Fig. 3), of the same sign and magnitude as the T-shell inner-edge
+value (Sec. 7). This deficit is a geometric invariant of the source–vacuum transition: it is unchanged
+to five significant figures under the metric smoothing width, is essentially independent of bubble
+velocity in the T-shell, and is set only by the regularity class of the source profile, falling from
+−4.4 × 10−4 for the smoothstep density to −2.2 × 10−4 (parabolic) and −1.2 × 10−4 (Bernstein), a
+factor of ∼3.7, yet no finite-regularity polynomial family removes it. Its independent recurrence in
+the shift-free S-shell ties the deficit to the transition geometry itself rather than to the shift.
+
+7
+
+Source-first construction: T-shell
+
+We extend the S-shell to a tilted-flow construction, the T-shell (Class II): the matter 4-velocity ua
+tilts relative to the hypersurface normal na , generating a nonzero Eulerian momentum density Si .
+We do not postulate the shift vector β x ; we obtain it from the momentum constraint (8) as the
+boundary-value solution for a prescribed velocity profile vx (r). This addresses the
+Barzegar–Buchert–Vigneron critique [21, 22] that many warp constructions employ a coordinate
+shift ansatz rather than genuine covariant matter motion: in the T-shell the shift is a derived
+consequence of how the matter flows, not a free design choice.
+For the default configuration (R1 = 10, R2 = 20, ρ0 = 10−4 , v0 = 0.1) we find (Table 2, Fig. 4):
+• Constraint residuals against the prescribed source: ϵH ≈ 3 × 10−6 and ϵM ≈ 4 × 10−4 (both
+floor-normalized, hence effectively absolute; Sec. 3.2). The momentum residual is comparable
+to the binding inner-edge Type-I DEC slack of order 10−4 , but the robustness study of Sec. 8
+shows the violation sign survives as both residuals are reduced, so the residuals do not
+account for the boundary failures. The full source-consistency residual is a separate, larger
+quantity: unlike the isotropic S-shell (10−3 deep interior), the tilted T-shell retains a
+deep-interior mismatch of mean ≈ 0.16, because the constraint-derived shift reproduces the
+energy and momentum densities but not the prescribed spatial stress.
+• EC margins in the deep interior: all NEC, WEC, and DEC margins are positive at probe
+points with 2% boundary offsets (r ∈ [10.2, 19.8]), worst DEC margin ≈ +9.3 × 10−5 .
+• EC at the shell edges: the matter-filled bulk [R1 , R2 ] is Hawking–Ellis Type I throughout,
+and carries one observer-independent violation, a Type-I DEC deficit at the inner edge
+r = R1 with the cap-free eigenvalue slack ≈ −4.4 × 10−4 (geometric, of the same sign and
+magnitude as the shift-free S-shell value; see below). The outer transition behaves differently:
+there the matter density falls to zero while the constraint-derived shift still carries momentum
+flux, and the stress-energy crosses to Hawking–Ellis Type IV (no rest frame) in the
+low-density edge r ≳ R2 , which we report by its type rather than by an observer-capped
+magnitude. The binding cap-free numbers are therefore the inner-edge slack −4.4 × 10−4 and
+the deep-interior worst Type-I DEC +9.3 × 10−5 .
+• Maximum shift: |β x |max = 0.00714.
+• ADM mass: M = 3.12; Hawking–Ellis Type I in the matter-filled bulk [R1 , R2 ] and Type IV
+in the low-density transition edges (and in the inner vacuum r < R1 , a uniform-shift gauge
+artifact).
+The inner-boundary DEC residue is a generic feature of smooth-transition shells: the rapid
+change in matter profiles at the shell–vacuum interface generates curvature contributions that the
+frame-independent certification detects as a cap-free Type-I DEC deficit. The effect is absent in the
+deep interior where profiles vary slowly. We vary the velocity parameter down to the formally static
+limit, v0 ∈ {0, 0.01, 0.05, 0.1, 0.2} at fixed source amplitude. The r = R1 boundary DEC margin
+changes by only ∼ 3% across this range (−4.42 to −4.55 × 10−4 ), and the v0 = 0 and v0 = 0.01
+endpoints agree to four significant figures. The inner-boundary failure is therefore geometric in
+origin, driven by the spatial-curvature contribution of the smooth transition, rather than
+kinematic. The outer transition, by contrast, is kinematic and algebraic. As the matter density
+falls through the edge, the momentum flux qx of the constraint-derived shift comes to dominate the
+energy block of T a b ; the local discriminant (ρ + px )2 − 4qx2 turns negative and the stress-energy
+crosses from Type I to Type IV (no rest frame). The opened imaginary-eigenvalue part is linear in
+8
+
+the tilt (a log–log fit of the outer-edge (r ≥ R2 ) imaginary scale over v0 ∈ {0.01, 0.05, 0.1, 0.2} gives
+slope 1.01 ± 0.01, and it vanishes identically at v0 = 0), so the tilted shell instantiates, in a
+source-consistent setting, the shift-vorticity → Type-IV mechanism that the companion certifier
+establishes for the metric-first drives [12]; the Type-IV labels are confirmed by the three-solver gate.
+The T-shell is thus Type-I and EC-compliant in the matter-filled bulk, carries a cap-free Type-I
+DEC deficit at the inner edge, and turns Type-IV at the low-density outer transition; to assess
+whether this is tunable or generic, we scan the parameter space over compactness and thickness.
+
+8
+
+Parameter scan
+
+We scan the T-shell parameters over compactness C = M/R2 ∈ [0.01, 0.20] and thickness ratio
+∆R/R2 ∈ [0.3, 0.8] on a 20 × 15 grid (R2 = 20 fixed). At each grid point we set the density from
+the target compactness and evaluate the default Bernstein profiles with v0 = 0.1.
+Our principal result is negative: we find no configuration in the surveyed range that achieves
+strict frame-independent EC admissibility across the full shell domain [R1 , R2 ]. Figure 4(d) colors
+each grid point by the signed worst frame-independent EC margin (the gauge-dependent transport
+proxy max |β x | is discussed in Sec. 9). All 300 grid points show at least one DEC-negative probe,
+concentrated at the shell boundaries.
+A companion 20 × 15 scan of the shift-free S-shell on the same grid (Fig. 3(d)) again finds 0/300
+EC-feasible configurations, with cap-free Type-I DEC slacks spanning
+|margin| ∈ [2 × 10−7 , 2.2 × 10−4 ]. Both scans use the frame-independent Hawking–Ellis certifier at
+every probe (no observer search) and extend the probes into the near-exterior r ≳ R2 , where the
+constraint-derived shift still carries momentum flux as the matter thins (criterion D). Across the
+smooth Bernstein default profiles surveyed here, every grid point of both classes is Hawking–Ellis
+Type I with a negative DEC slack; the coarse 15-probe grid resolves the sign of the violation
+robustly but under-resolves the boundary-peak magnitude. The dedicated single-metric runs of
+Secs. 6–7 (canonical smoothstep profiles, dense probing) therefore report the larger resolved
+inner-edge value (−4.4 × 10−4 ) and, for the T-shell, the outer-edge Type-IV onset that the
+constraint-derived shift drives once it is strong enough to flip the discriminant (ρ + px )2 − 4qx2 . The
+boundary cost of transport is thus a change of algebraic type (Type-I → Type-IV) for the
+dedicated tilted configuration, while the scan establishes the obstruction across the surveyed
+family: no configuration in either class is admissible.
+Grid convergence is checked at two representative T-shell grid points,
+(C, ∆R/R2 ) = (0.01, 0.336) and (0.20, 0.80), over ngrid ∈ {256, 512, 1024} (Table 1): the
+frame-independent certifier returns a worst margin that is both sign-stable and magnitude-stable
+(negative at every resolution, with none of the optimizer-restart noise a multi-start search would
+introduce). Across the surveyed grid the cap-free Type-I DEC slack varies from |margin| ∼ 10−8 in
+the low-compactness corner to ∼ 10−6 at high compactness for the T-shell, and reaches ∼ 10−4 for
+the S-shell, all under-resolved relative to the dedicated single-metric inner-edge value −4.4 × 10−4
+(Sec. 6).
+This quantifies how tightly the EC constraint binds: source-first shells with moderate
+compactness are limited not by the matter model or by constraint satisfaction but by the
+Lorentz-invariant DEC slack at the transition boundaries. In the dedicated tilted configuration the
+binding violation crosses to the algebraic Type IV character of the Fuchs smoothing tail (Sec. 4),
+which points to a common geometric origin in the curvature contributions of the smooth
+source–vacuum transition.
+Robustness of the boundary violation. Because the binding margin and the constraint
+residual both peak at the transition, we checked that the violation is not a numerical artifact. At
+both binding configurations the sign of the worst frame-independent DEC slack stays negative
+across grid resolutions ngrid ∈ {256, 512, 1024} and a change of source-profile family (C 2
+smoothstep versus parabolic compact support). The constraint residual and the margin magnitude
+are in fact anticorrelated (Pearson ≈ −0.66): switching to a smoother (parabolic) source profile
+lowers the constraint residual yet drives the worst DEC margin more negative, which confirms that
+the violation is a geometric feature of the smooth transition rather than a residue of finite
+constraint error. A complementary angular check at the inner boundary, which samples the worst
+min(NEC, WEC, DEC) over the full 2-sphere of spatial directions and observer boosts rather than
+along the symmetry axis alone, returns the axial value (−4.45 × 10−4 at r = R1 ) as the global
+worst over the sphere to within 0.02%, so for this x-axisymmetric geometry the binding direction
+lies on the symmetry axis that the radial probe follows.
+
+9
+
+Table 2 consolidates the five-criterion evaluation for all eight proposals. None passes the full
+standard. The Fuchs shell is the only metric-first proposal with positive ADM mass, but it fails
+criterion D in the smoothing-tail transition. The source-first S-shell and T-shell achieve the best
+constraint satisfaction and positive interior EC margins, but retain inner-boundary DEC violations.
+The Natário-class metrics (Alcubierre, Natário, Van den Broeck, Rodal, Lentz) lack both a source
+model and positive ADM mass.
+
+worst EC margin
+
+constraint residual
+
+Fuchs
+
+S-shell
+
+T-shell
+
+10−4 (a)
+
+10−4 (b)
+
+10−4 (c)
+
+10−6
+
+10−6
+
+10−6
+
+10−8
+
+10−8
+
+10−8
+
+10−10
+
+10−10
+
+10−10
+
+10−3 (d)
+
+10−3 (e)
+
+10−3 (f)
+
+10−5
+
+10−5
+
+10−5
+
+M ≡ 0
+
+0
+
+0
+
+0
+
+−10
+
+−5
+
+−10
+
+−5
+
+−10
+
+−5
+
+−10
+
+−3
+
+−10
+
+−3
+
+−10−3
+
+10
+
+20
+
+30
+
+10
+
+20
+
+r
+
+30
+
+10
+
+r
+H (Hamiltonian, top row)
+
+20
+
+30
+
+r
+M (momentum, top row)
+
+Figure 2. All three constructions pass the interior energy conditions; EC failure is localized to the boundary in
+every case. Top row: normalized constraint residuals (Eq. 10), evaluated against the prescribed Eulerian source, vs.
+radial coordinate (log scale): the Hamiltonian ϵH (solid) and momentum ϵM (dashed); dotted line: ϵH = 10−5
+reference. The Hamiltonian residual sits at ∼ 10−6 (S/T-shells) and ∼ 10−8 (Fuchs); the momentum residual is ≡ 0
+for the shift-free S-shell but reaches ∼ 4 × 10−4 for the Fuchs and T-shell shells, the same order as the
+inner-boundary DEC margin, so not every residual sits far below the EC margins. Bottom row: worst EC severity
+min(NEC, WEC, DEC): the cap-free Type-I slack where Type-I, and the ζmax = 5 optimizer diagnostic
+(nstarts = 16) at non-Type-I points (symlog, signed; zero line: admissibility threshold), plotted for r ≥ R1 (the
+T-shell inner vacuum carries a uniform-shift gauge artifact, excluded here as in Fig. 4). Failure locations: Fuchs in
+the smoothing tail r > R2 ; S/T-shells at the C 2 shell junctions, with the T-shell also dipping at the outer boundary
+r ≈ R2 (kinematic, from the shift). Shaded bands mark the shell region [R1 , R2 ].
+
+Table 1. Grid-resolution robustness of the worst frame-independent EC slack at two representative T-shell grid
+points across ngrid ∈ {256, 512, 1024}. The Hawking–Ellis certifier (no multi-start optimizer) gives a worst Type-I
+DEC slack that is both sign-stable and magnitude-stable at each resolution. The coarse 15-probe scan grid with
+smooth Bernstein profiles under-resolves the boundary peak, so these magnitudes are far below the dedicated
+single-metric inner-edge value −4.4 × 10−4 (Sec. 6); the robust statement is the negative sign at every resolution.
+
+9
+
+(C, ∆R/R2 )
+
+ngrid =256
+
+ngrid =512
+
+ngrid =1024
+
+sign
+
+(0.01, 0.336)
+(0.20, 0.800)
+
+−3.0 × 10−8
+
+−3.0 × 10−8
+
+−3.0 × 10−8
+
+−2.1 × 10−6
+
+−3.7 × 10−6
+
+−3.5 × 10−6
+
+−
+−
+
+Discussion
+
+Frame-independent vs. Eulerian analysis. Our Fuchs verification pins down where the
+Santiago–Schuster–Visser observer-dependence mechanism [18] bites for a concrete construction.
+For the Gaussian-smoothed Fuchs metric the bulk shell interior [R1 , R2 ] is genuinely EC-compliant
+under both Eulerian and frame-independent certification (0/13 interior violations, all
+Hawking–Ellis Type I). The frame-independent certifier detects violations in the smoothing tails
+(r > R2 ), where the iterative kernel deposits a residual matter halo that is locally Type IV: 22 of
+25 exterior probes have no rest frame, so the energy-condition failure there is unconditional; the
+ζmax = 5 severity diagnostic reaches −7.9 × 10−3 at r ≈ 23.9, a one-sided diagnostic rather than an
+invariant margin. An Eulerian-only analysis of these exterior points misses the violations because
+
+10
+
+Swarp (r)
+
+1.0
+
+1.0
+
+0.8
+
+0.8
+
+0.6
+
+0.84
+
+0.4
+
+0.82
+0.80
+0.78
+0
+
+10
+
+20
+
+×10−4
+
+0.4
+0.2
+
+0.0
+30
+
+0.0
+0
+
+10
+
+EC margin (signed)
+
+SEC
+
+DEC
+
+0.8
+
+(c)
+
+0
+−6
+
+−10−5
+
+binding DEC
+violation
+
+−10−4
+10
+
+30
+
+phase diagram (0/300 EC-feasible)
+best
+
+−10−2
+
+(d)
+
+10−6
+
+−10
+
+20
+
+r
+
+−4
+
+10−5
+
+pt
+
+0.6
+
+0.2
+
+thickness ratio ∆R/R2
+
+10
+
+WEC
+
+pr
+
+(b)
+
+r
+NEC
+
+ρ
+
+15
+
+20
+
+25
+
+0.7
+−10−4
+
+0.6
+−10−6
+
+default
+
+0.5
+
+−10−8
+
+0.4
+0.3
+
+r
+
+0.05
+
+0.10
+
+0.15
+
+0.20
+
+worst EC margin
+
+lapse α(r)
+
+0.86
+
+stress-energy
+
+(a)
+
+0.88
+
+shape Swarp (r)
+
+α(r)
+
+−10−10
+
+compactness C = M/R2
+
+Figure 3. S-shell (Class I) default configuration (R1 = 10, R2 = 20, ρ0 = 10−4 , β i ≡ 0). (a) Lapse α(r) (left axis)
+and warp shape indicator Swarp (r) (right axis; the dimensionless C 2 shape function, 1 in the interior and 0 in the
+exterior); the shift vanishes by construction. (b) Isotropic source profiles ρ(r), pr (r) = pt (r). (c) Pointwise
+NEC/WEC/DEC/SEC margins vs. r (symlog; frame-independent Type-I slacks, with the ζmax = 5 optimizer
+diagnostic at non-Type-I points). The binding constraint is the boundary DEC violation at r = R1 (margin
+≈ −4.5 × 10−4 ) from the C 2 smoothstep junction; the inner vacuum region r < R1 is omitted. (d) (C, ∆R/R2 )
+heatmap of the signed worst EC margin from the 20 × 15 scan (R2 = 20 fixed; symlog, negative-only; the
+frame-independent certifier finds 0/300 admissible). Gold star: scan best-margin point. Black square: default
+parameters used in (a)–(c). Shaded band in (a)–(c): shell region [R1 , R2 ].
+
+Table 2. Five-criterion admissibility comparison across eight warp-drive proposals, spanning the four construction
+classes (Alcubierre–Natário, conformal Van den Broeck, metric-first Fuchs/Lentz/Rodal, and source-first S/T-shells).
+Symbols: ✓ pass, × fail, n/a not applicable; “tauto”: tautologically satisfied for metric-first constructions where
+Tab ≡ Gab /8π. Criterion B reports the Hamiltonian (ϵH ) and momentum (ϵM ) constraint residuals against the
+prescribed source for the three constructions with an explicit matter model; these are floor-normalized (effectively
+absolute, Sec. 3.2), and the T-shell ϵM ≈ 4 × 10−4 is the same order as its inner-edge DEC slack. EC interior probes
+use r ∈ [10.2, 19.8]; the verdicts are frame-independent (Hawking–Ellis), with the binding transition failure in the
+smoothing tail r > R2 for Fuchs and at the inner edge r = R1 (a Type-I DEC deficit) for the S/T-shells, the T-shell
+additionally turning Type-IV at its low-density outer edge. The Fuchs column is the canonical Gaussian-smoothed
+shell (Sec. 4). Alcubierre, Natário, and Van den Broeck are verified at vs = 0.1, R = 20, σ = 2. “Total mass” is
+MADM : zero by 1/r-falloff absence for the Natário-class metrics, and the integrated ADM mass for the
+source-prescribed shells. Verdict “Partial” ≡ criteria A–C and E satisfied but D (energy conditions) fails at the
+transition; no construction meets the full standard.
+Criterion
+
+Alcubierre
+
+Natário
+
+VdB
+
+Lentz
+
+Rodal
+
+Fuchs
+
+S-shell
+
+T-shell
+
+A. Regularity
+B. ϵH
+B. ϵM
+C. Matter model
+D. EC interior
+D. EC transition
+E. Total mass
+
+✓
+tauto
+tauto
+n/a
+×
+×
+0
+
+✓
+tauto
+tauto
+n/a
+×
+×
+0
+
+✓
+tauto
+tauto
+n/a
+×
+×
+0
+
+✓
+tauto
+tauto
+n/a
+× [20]
+× [20]
+0
+
+✓
+tauto
+tauto
+n/a
+×
+×
+0
+
+✓
+3×10−8
+4×10−4
+✓
+✓ (0/13)
+tail r>R2
++2.51
+
+✓
+2×10−6
+≡0
+✓
+✓
+r=R1
++3.09
+
+✓
+3×10−6
+4×10−4
+✓
+✓
+r=R1 , edge IV
++3.12
+
+Verdict
+
+Fail
+
+Fail
+
+Fail
+
+Fail
+
+Fail
+
+Partial
+
+Partial
+
+Partial
+
+11
+
+β x (r)
+
+α(r)
+
+×10−3
+
+(a)
+
+0.88
+
+1.0
+
+pr
+
+0.80
+
+stress-energy
+
+−4
+
+0.82
+
+shift β x (r)
+
+−2
+
+0.84
+
+(b)
+
+0.6
+0.4
+0.2
+
+−6
+
+0.78
+
+0.0
+10
+
+20
+
+30
+
+0
+
+10
+
+20
+
+r
+NEC
+
+WEC
+
+SEC
+
+DEC
+
+10−3
+
+0.8
+
+(c)
+
+10−5
+10−6
+0
+−10−6
+−10−5
+−10−4
+−10−2
+10
+
+phase diagram (0/300 EC-feasible)
+−10−2
+
+(d)
+thickness ratio ∆R/R2
+
+EC margin (signed)
+
+10−4
+
+30
+
+r
+
+binding DEC
+violation
+
+0.7
+−10−4
+
+0.6
+−10−6
+
+default
+
+0.5
+
+−10−8
+
+0.4
+best
+
+15
+
+20
+
+0.3
+
+25
+
+r
+
+0.05
+
+0.10
+
+0.15
+
+0.20
+
+worst EC margin
+
+0
+
+−10−3
+
+pt
+
+0.8
+
+0.86
+
+lapse α(r)
+
+0
+
+ρ
+
+×10−4
+
+−10−10
+
+compactness C = M/R2
+
+Figure 4. T-shell (Class II) default configuration (R1 = 10, R2 = 20, ρ0 = 10−4 , v0 = 0.1). (a) Lapse α(r) (left
+axis) and constraint-derived shift β x (r) (right axis); the shift is a solution of the momentum constraint, not a free
+design choice. (b) Isotropic source profiles ρ(r), pr (r) = pt (r). (c) Pointwise NEC/WEC/DEC/SEC margins
+(symlog; frame-independent Type-I slacks, with the ζmax = 5 optimizer diagnostic at non-Type-I points) in the shell
+and near exterior. The binding cap-free violation is the inner-edge Type-I DEC deficit (≈ −4.4 × 10−4 ); near r = R2
+the matter thins and the stress-energy turns Hawking–Ellis Type IV (no invariant margin), driven by the
+constraint-derived shift’s momentum flux. The inner vacuum region r < R1 carries a uniform-shift gauge artifact
+(discussed in Sec. 9); the EC verdict is gauge-invariant in the shell and near exterior shown here. (d) (C, ∆R/R2 )
+heatmap of the signed worst EC margin from the 20 × 15 scan (the frame-independent certifier finds 0/300
+admissible). Markers as in Fig. 3.
+
+Table 3. Criterion-E global/invariant diagnostics for all eight constructions, evaluated uniformly: ADM mass
+MADM (a surface integral at r = R2 that equals the ADM mass at infinity because the exterior is exactly
+Schwarzschild for the source-prescribed shells; zero by 1/r-falloff absence for the Natário-class metrics), cavity tidal
+acceleration Ageo , and the null round-trip asymmetry δτ as the representative invariant transport observable. All
+quantities are in geometric units (G = c = 1). The E verdict is set by positive ADM mass (the binding sub-criterion);
+the cavity tidal accelerations Ageo all fall below the passenger-safety threshold of criterion E (Sec. 2). “∼ 0” denotes
+a value vanishing by symmetry or below the numerical resolution (≲ 10−12 ): δτ vanishes for the shift-free S-shell and
+for the flat-interior Lentz/Van den Broeck rays, whereas a nonzero δτ certifies genuine, gauge-invariant transport.
+Construction
+
+MADM
+
+Ageo (cavity)
+
+δτ
+
+E
+
+Alcubierre
+Natário
+Van den Broeck
+Lentz
+Rodal
+Fuchs
+S-shell
+T-shell
+
+0
+0
+0
+0
+0
++2.51
++3.09
++3.12
+
+1.2 × 10−3
+1.8 × 10−7
+∼0
+∼0
+2.2 × 10−11
+1.3 × 10−8
+∼0
+6.2 × 10−7
+
+−2.6
+−41
+∼0
+∼0
+−40
+−1.8
+∼0
+−0.80
+
+×
+×
+×
+×
+×
+✓
+✓
+✓
+
+12
+
+the Type IV regions permit positive Eulerian-frame margins while no Lorentz observer makes the
+stress-energy globally positive.
+Constraint satisfaction and its separation from the EC verdict. Evaluated against the
+prescribed Eulerian source, all three shells satisfy the Einstein constraints to solver precision
+(Fig. 2, top row): ϵH ≈ 3 × 10−8 for the canonical Fuchs metric and ≈ 2–3 × 10−6 for the
+S/T-shells, with ϵM ≲ 4 × 10−4 . (The matter magnitude 16πE ∼ 5 × 10−3 , returned by a vacuum
+residual that omits the source term, should not be mistaken for the constraint residual.) The
+Hamiltonian residual ϵH lies well below the energy-condition margins: roughly one-and-a-half
+orders for the S/T-shells and three-and-a-half for Fuchs against the ∼ 10−4 interior margins, and
+further below the larger boundary violations. The momentum residual ϵM ≈ 4 × 10−4 , however, is
+comparable to the inner-boundary DEC margin; for the inner boundary the case against a
+numerical artifact therefore rests not on residual magnitude but on the robustness analysis of
+Sec. 8, where reducing the residual through a smoother source prescription leaves the violation in
+place and, if anything, deepens it (residual and margin are anticorrelated, Pearson ≈ −0.66). The
+binding outer-boundary violation (∼ 10−2 ) is in any case more than an order of magnitude above
+both residuals. For the source-first shells the residual is the pure discretization error of a
+TOV/momentum-constraint solver acting on prescribed profiles; for the metric-first Fuchs shell it is
+the post-smoothing remainder of a procedure that began with constant-density profiles, and its full
+stress still carries an O(0.4) source mismatch (Sec. 4). The constraint residual is not the same as
+full source consistency: only the shift-free S-shell, whose isotropic source solves the spherical
+equilibrium exactly, drives the full deep-interior mismatch down to the 10−3 level; the tilted
+T-shell, whose constraint-derived shift matches the energy and momentum densities but not the
+prescribed spatial stress, retains an O(10−1 ) interior mismatch comparable to Fuchs.
+Transition-zone EC failure as a generic phenomenon. The central finding across our
+verification is that every smooth source–vacuum transition we examined fails the multi-observer
+DEC, but the location of the failure depends on the construction: (i) for the Gaussian-smoothed
+Fuchs, the failure is in the smoothing tail r > R2 , where 22 of 25 probes are Type IV (no rest
+frame; capped severity diagnostic ∼ 10−3 ); (ii) for the S/T-shells with compact support and a C 2
+source–vacuum junction, the only observer-independent failure is a cap-free Type-I DEC deficit at
+the inner edge r = R1 with slack ∼ −4.4 × 10−4 , and the tilted T-shell additionally turns Type IV
+at its low-density outer edge (the discriminant (ρ + px )2 < 4qx2 where matter thins, the
+shift-vorticity mechanism); (iii) none of the 600 grid points (300 T-shell + 300 S-shell, Figs. 3(d)
+and 4(d)) achieves strict frame-independent EC admissibility. Alternative transition profiles (C k
+with k > 2, or thin-shell limits via Israel junctions [9, 26]) are candidate strategies for moving the
+failure location, but no construction we are aware of removes it entirely. Anisotropic stress is
+unlikely to close the inner-edge deficit on its own: the Fuchs shell already carries a fully anisotropic
+pressure and still fails criterion D, with the binding violation merely relocated to its smoothing tail
+rather than removed. A tangential-pressure degree of freedom pt ̸= pr relaxes the angular DEC
+slack ρ − |pt |, but the binding deficit here is in the radial channel ρ − |pr | set by the source-profile
+regularity at the transition, so anisotropy is expected to move the cost between channels rather
+than eliminate it.
+Prescription residues and the scaling toward EC feasibility. The transition-zone failures
+separate cleanly into two contributions (Fig. 6). First, the tilted T-shell’s outer edge is a kinematic,
+algebraic effect: the constraint-derived shift’s imaginary-eigenvalue part (the Type-IV onset) grows
+linearly with the matter tilt, log–log slope 1.01 ± 0.01 on the outer edge (r ≥ R2 ) over
+v0 ∈ {0.01, . . . , 0.2} and zero at v0 = 0, identifying it as the shift-vorticity → Type-IV mechanism
+that the companion establishes for the metric-first drives [12]. Second, the inner-edge Type-I DEC
+deficit is a geometric invariant: it does not vary with v0 or with the metric smoothing width, and
+depends only on the regularity class of the source profile, falling from −4.4 × 10−4 (smoothstep) to
+−2.2 × 10−4 (parabolic) and −1.2 × 10−4 (Bernstein), a factor of ∼3.7, yet staying nonzero for
+every finite-regularity polynomial family we tried. Both behaviors are quantitatively consistent
+with the iterative-smoothing residues of Fuchs et al. [2], who reduce their Eulerian-frame residues
+to a ∼ 10−6 floor through four passes of moving-average filtering on ρ and p; this Eulerian floor is
+distinct from, and does not preclude, the frame-independent tail margin (∼ −8 × 10−3 ) we report
+in Sec. 4. We do not claim a fully EC-feasible classical construction here; the data are consistent
+with prescription-dependent residues that can be suppressed by combining (a) smaller v0 ,
+(b) smoother analytic source profiles, and (c) iterative source smoothing in the style of [2]. The
+13
+
+present data do not establish that the residues can be driven to zero in the continuum or
+optimized-profile limit; whether such a limit admits a fully EC-feasible classical state, or instead
+requires a quantum field-theoretic treatment respecting ANEC and the relevant quantum
+inequalities [5, 6, 34], remains open.
+Gauge dependence of transport. The coordinate shift β x is not a gauge-invariant observable.
+The maximum values in our scan (∼ 0.003 at high compactness) represent tiny perturbations of
+Minkowski spacetime and should not be read as physically meaningful warp effects. Invariant
+transport diagnostics (the null round-trip asymmetry δτ following Fuchs et al. Section 5.1 [2], the
+geodesic deviation Ageo , and the blueshift hazard B) are implemented in warpax and evaluated
+independently for all eight constructions (Table 3). For the T-shell at default parameters (R1 =10,
+R2 =20, ρ0 =10−4 , v0 =0.1) we obtain δτ ≈ −0.795 (geometric units) along a null round-trip from
+x = −25 to x = +25; raising v0 → 0.2 yields δτ ≈ −1.67 (a factor of ∼ 2.1 per v0 doubling,
+near-linear in the bubble velocity with a ∼ 5% sub-linear correction), which confirms that the shift
+produces a gauge-invariant transport signal rather than a coordinate artifact. The Fuchs light-ray
+experiment likewise yields a non-zero δτ for the warp shell and δτ = 0 for a static shell. Future
+work should parameterize the design space by these invariant observables.
+Geodesic-integrated ANEC for the source-prescribed shells. The pointwise transition
+failures need not appear in the averaged null energy condition. We evaluate the ANEC along the
+actual null geodesic of each shell using the structure-preserving symplectic null-geodesic integrator
+of warpax [12] (Tao-2016 extended phase space, Yoshida-4), whose construction and the off-cone
+failure of adaptive Runge–Kutta on long bubble crossings are established there. For the
+source-prescribed shells the on-cone witness max |gab k a k b | stays ≲ 2 × 10−4 at the integration
+resolution used, decreasing to ∼ 3 × 10−5 under refinement;
+we adopt 10−4 as the on-cone tolerance
+R
+a b
+and report only the invariant sign. The line integral Tab k k dλ is positive for every
+source-prescribed shell (Fig. 5): Fuchs ≈ +1.9 × 10−3 , S-shell ≈ +2.9 × 10−3 , and T-shell
+≈ +4.6 × 10−3 at v0 = 0.1 (rising to +5.4 × 10−3 at v0 = 0.2). Only the sign of the integral is
+invariant under k a → λk a , and a scan confirms it is positive at every impact parameter b ∈ [10−3 , 5]
+and integration resolution tested. The metric-first baselines (Alcubierre and its variants) are not
+shown: they carry no positive-mass source and violate the NEC pointwise (Sec. 5; the
+Pfenning–Ford bound [5]), so an averaged null ray is not the relevant test there. A full average over
+a representative family of geodesics, and a curved-space quantum inequality, remain for future
+work [36]; with that caveat, the positive geodesic-integrated sign is consistent with the semiclassical
+expectation that averaged conditions can survive where pointwise ones fail (Flanagan–Wald [7]; the
+ANEC has a rigorous Minkowski-QFT proof by Faulkner et al. [34], and a classical
+curved-spacetime proof under the null convergence condition by Kontou and Olum [35]), so the
+pointwise transition failures of Secs. 4–7 do not appear in this average.
+Outlook across proposals. Across the six metric-first proposals, no existing subluminal
+construction satisfies the full standard. The Natário-class metrics (Rodal, Lentz) have a simpler
+algebraic structure but lack both a source model and positive ADM mass. A physically
+interpretable source model is the feature the Barzegar–Buchert–Vigneron analysis [21, 22] identifies
+as essential; positive ADM mass is the additional global diagnostic we impose (criterion E), for
+which the notion of mass in a warp-drive spacetime is analyzed by Schuster, Santiago, and
+Visser [19]. The Fuchs shell has both but fails the multi-observer EC certification. A natural next
+step is to combine the source-first methodology of the T-shell with the ADM-mass engineering of
+the Fuchs approach, and to extend the source-first treatment to the Fell–Heisenberg [37] and
+membrane [38] models. Two recent results bear on this outlook. The constraint-derived T-shell
+shift is obtained from the momentum constraint for a tilted matter flow rather than postulated, in
+the same source-respecting spirit as the Rodal [3] construction that reduces its peak NEC/WEC
+stress and the de Sitter Garattini–Zatrimaylov [17] construction that satisfies the averaged
+conditions under matched expansion; yet our results indicate that such bulk improvements do not
+cure the transition-boundary DEC failure. The thin-shell membrane route of Huey [38], in which
+an Israel–Darmois surface layer [26] carries the energy-condition burden, is complementary to our
+thick-shell (R2 − R1 = 10) treatment: the boundary deficit we localize is what a thin-shell junction
+repackages as surface stress, so comparing the two is a direct test of whether the failure is
+removable or merely relocated. The negative-energy excursions we find are in any case classical;
+quantum energy inequalities [6, 36] bound their magnitude and fix the scale below which a
+semiclassical treatment must replace the classical one.
+14
+
+Tab k ak b
+
+0.001
+
+Fuchs: ∫Tabk ak b dλ = +1.9e − 03
+S-shell: ∫Tabk ak b dλ = +2.9e − 03
+T-shell: ∫Tabk ak b dλ = +4.6e − 03
+
+0.006
+
+magnitude (geometric units)
+
+along the symplectic null geodesic
+
+0.007
+
+0.005
+0.004
+0.003
+0.002
+
+0.000
+−30
+
+−20
+
+−10
+x
+
+0
+10
+(geometric units)
+
+20
+
+30
+
+Figure 5. Null-energy contraction Tab ka kb along the
+symplectic null geodesic of each construction; shaded
+band: shell crossing r ∈ [R1 , R2 ].R The legend reports the
+geodesic-integrated line integral Tab ka kb dλ along the
+symplectic null geodesic (on-cone witness ≲ 10−4 ),
+positive for every source-prescribed shell; only its sign is
+invariant (Sec. 9).
+
+10−4
+
+10−5
+
+Type-IV imag.\ scale (kinematic onset)
+slope = 1 (linear in v0)
+Type-I DEC floor, smoothstep (4.4e − 04)
+Type-I DEC floor, parabolic (2.2e − 04)
+Type-I DEC floor, Bernstein (1.2e − 04)
+Fuchs Eulerian floor ∼ 10−6 (ref.)
+
+10−6
+
+10−2
+
+matter tilt v0
+
+10−1
+
+Figure 6. Two separated contributions to the T-shell
+transition. The v0 -independent floor is the cap-free
+inner-edge Type-I DEC slack, set by the source-profile
+regularity class (smoothstep, parabolic, Bernstein;
+lowered by ∼3.7× from smoothstep to Bernstein). The
+v0 -linear contribution is the Type-IV onset at the
+low-density outer edge: the opened imaginary eigenvalue
+part grows linearly with v0 (log–log slope 1.01 ± 0.01 on
+the outer edge r ≥ R2 , zero at v0 = 0). Any capped
+ζmax = 5 DEC value shown for the Type-IV edge is a
+one-sided diagnostic, not an invariant margin. The
+Fuchs et al. [2] ∼10−6 Eulerian smoothing floor is shown
+for reference.
+
+Limitations. The analysis is restricted to subluminal, static initial data on a single time slice at
+fixed v0 = 0.1 with default Bernstein profiles; the EC verdicts are invariant under joint rescaling of
+(R1 , R2 , MADM ) at fixed (C, ∆R/R2 ), so R2 = 20 is representative without loss of generality. Time
+evolution, dynamical stability, full averaged-EC integrals over geodesic families, and direct
+quantum-inequality comparisons [5–7, 10] are out of scope. The pointwise NEC/DEC violations at
+the smooth shell boundaries may or may not appear in averaged integrals along arbitrary null
+geodesics; the geodesic-integrated positivity reported here is for a single null geodesic, not yet a full
+geodesic-family ANEC average. The source-first shells are built from the spherically reduced
+(static) constraint system; we have verified that the neglected extrinsic-curvature terms are
+negligible (Sec. 3) and that the boundary verdict is unchanged under full 2-sphere angular
+sampling (Sec. 8), but a fully three-dimensional, K-coupled solve for strongly tilted (v0 → 1) flows
+remains for future work. The on-axis (axisymmetric-as-spherical) reduction of the tilted source has
+a controlled angular error: the radial stress of the x-tilted flow is pr (θ) = p + Γ2 (ρ + p)v 2 cos2 θ, so
+the on-axis value used in the spherical TOV exceeds the spherical average by 23 Γ2 (ρ + p)v 2 , an
+induced lapse-gradient error δΦ′ = 4πr2 δpr /(r − 2m) of order 10−2 (ρ + p) at v0 = 0.1, consistent
+with the measured momentum residual ϵM ≈ 4 × 10−4 . Because that reduction treats the
+angle-dependent source on-axis (Sec. 3), genuinely angular (non-spherical) source profiles are
+likewise unexplored and could, in principle, shift the ∼ 10−4 geometric boundary floor that the
+purely radial prescriptions produce. Alternative profile shapes or matter-model classes (scalar,
+vector, electromagnetic, elastic shell) could reveal pockets of EC feasibility we have not captured.
+
+10
+
+Conclusions
+
+We have proposed a five-criterion admissibility standard for subluminal positive-energy warp shells
+and applied it, with frame-independent (Hawking–Ellis) energy-condition certification, to six
+existing proposals and two new source-first constructions. None satisfies the full standard. The
+binding constraint is not energy-condition satisfaction in the bulk interior, where the metric-first
+Fuchs shell and the source-first S/T-shells alike achieve positive NEC, WEC, and DEC margins; it
+is the smooth source–vacuum transition. Our frame-independent 20 × 15 scans of both classes find
+0 of 600 configurations admissible, consistent with the Lobo–Visser obstruction [8] across this
+surveyed family under the stricter all-observer standard.
+The transition failure separates into a geometric and a kinematic part. The inner-edge Type-I
+DEC deficit (∼ −4.4 × 10−4 at r = R1 ) is geometric: it is independent of bubble velocity, persists
+in the static v0 = 0 limit, recurs identically in the shift-free S-shell, and depends only on the
+source-profile regularity class. The tilted T-shell adds a kinematic, algebraic failure at its
+
+15
+
+low-density outer edge, where the constraint-derived shift’s momentum flux flips the discriminant
+and opens an imaginary-eigenvalue (Type-IV) part linear in v0 that vanishes at v0 = 0,
+instantiating the shift-vorticity mechanism in a source-consistent shell. Source consistency is itself
+partial: the isotropic S-shell reproduces its prescribed stress to the 10−3 level in the deep interior,
+but the tilted T-shell, whose shift solves only the energy and momentum constraints, retains an
+O(10−1 ) spatial-stress mismatch comparable to the metric-first Fuchs shell and to the ∼ 640×
+pre-smoothing divergence that concretely instantiates the Barzegar–Buchert–Vigneron critique.
+At the averaged level the picture is more favorable: the structure-preserving symplectic
+geodesic-integrated null energy line integral (on-cone witness ≲ 10−4 ) is positive for all three
+source-prescribed shells, robustly across impact parameter and resolution, so pointwise failures
+localized to thin transition layers need not appear in the average, in keeping with the semiclassical
+expectation that an averaged null energy condition is the load-bearing constraint after
+renormalization [34], with quantum inequalities [5, 6, 36] bounding the negative-energy excursions.
+Whether the transition residue can be driven to zero in the continuum or optimized-profile limit, or
+instead requires a quantum treatment, remains open; alternative transition profiles, thin-shell Israel
+junctions [26], anisotropic and non-fluid matter models, and a full geodesic-family ANEC are the
+natural next tests. General relativity is elegant in its geometric formulation, but the admissibility
+of a warp spacetime turns on a harder, constructive question: whether physical matter can source
+the metric within the classical energy conditions. The source-first methodology developed here is
+deliberately of that constructive kind; it complements the metric-first conventions dominant in the
+literature, and future warp-shell proposals may benefit from being designed and reported against
+an explicit admissibility standard of this kind.
+
+A
+
+Reduction of the momentum constraint to the shift equation
+
+For the T-shell we prescribe the matter and obtain the shift from the momentum constraint rather
+than postulating it; we record the reduction used in Sec. 3.2. The spatial metric and lapse are
+γij = δij + (e2Λ(r) − 1) r̂i r̂j and α = eΦ(r) , with the shift along a fixed Cartesian axis, β i = β(r) x̂i .
+On the static slice (∂t γij = 0) the extrinsic curvature is
+Kij =
+
+
+1
+Di βj + Dj βi ,
+2α
+
+(11)
+
+and the momentum constraint reads Dj (K j i − δij K) = 8πSi with Si = Γ2 (ρ + p) vi from Eq. (5).
+Substituting the ansatz, the trace and divergence of Kij depend on r through Φ, Λ and on the
+single radial profile β(r). Contracting with x̂i and using the spherical symmetry of γij , the radial
+projection of the constraint gives the linear second-order equation
+β ′′ + A(r) β ′ + B(r) β = 8π α Sx ,
+
+A=
+
+2
++ 2Φ′ − 2Λ′ ,
+r
+
+2
+B = − 2,
+r
+
+(12)
+
+with primes denoting d/dr. The 2/r term in A is the flat-space radial weight and 2Φ′ − 2Λ′ carry
+the lapse and radial-potential gradients; B = −2/r2 is the −ℓ(ℓ + 1)/r2 centrifugal eigenvalue of
+the vector Laplacian for the ℓ = 1 (dipole) pattern. We stress that the constant-Cartesian-direction
+field β i = β(r)x̂i is not curl-free; its vorticity ∂[i βj] ∝ β ′ is precisely what turns the tilted shell
+Type IV at its low-density edge (Sec. 7), so Eq. (12) is the radial equation of the ℓ = 1 vector
+harmonic, and the constant-direction ansatz projects onto it only after the angular average. We
+therefore treat Eq. (12) as the ℓ = 1 generator of the shift and validate it a posteriori against the
+full three-dimensional momentum constraint, whose normalized residual ϵM ≈ 4 × 10−4 (below)
+bounds the angular components the dipole projection does not solve directly. Equation (12) is
+solved as a tridiagonal boundary-value problem with β ′ (0) = 0 (regularity) and β(rmax ) = 0
+(asymptotic flatness). We verify the reduction a posteriori: substituting the solved metric into the
+full covariant constraint Mi = Dj (K j i − δij K) − 8πSi , evaluated by automatic differentiation
+independently of Eq. (12), leaves a normalized residual ϵM ≈ 4 × 10−4 across the shell (Sec. 7).
+Because ϵM is the norm ∥Mi ∥ over all three components, the angular components that the dipole
+ansatz does not solve directly are bounded by this residual rather than assumed to vanish. The
+ℓ = 1 reduction is therefore an approximation to the full three-dimensional momentum constraint,
+controlled a posteriori to ϵM ≈ 4 × 10−4 ; this residual is comparable to the binding inner-edge
+DEC slack, so we do not treat it as exact, and the robustness analysis of Sec. 8, not the residual
+magnitude, establishes the boundary violation.
+
+16
+
+Data availability
+All computations, scans, and figures are reproducible from the warpax toolkit
+(https://github.com/anindex/warpax); see the README section “Reproducing results” for the
+script-by-script recipe.
+
+Acknowledgments
+This work is financially supported by VinUniversity under the Environmental Intelligence (CEI)
+Grant (No. VUNI.CEI.FS 0009). The author thanks the JAX, Equinox, and Optimistix
+development teams for the software infrastructure underlying this work. Computations used
+JAX [27] with Equinox [39], Optimistix [40], Diffrax [41], and interpax for cubic interpolation of
+the numerical shell profiles.
+
+References
+[1] Bobrick A and Martire G 2021 Class. Quantum Grav. 38 105009 (Preprint 2102.06824)
+[2] Fuchs J, Helmerich C, Bobrick A, Sellers L, Melcher B and Martire G 2024 Class. Quantum
+Grav. 41 095013 (Preprint 2405.02709)
+[3] Rodal J 2026 Gen. Relativ. Gravit. 58 1 (Preprint 2512.18008)
+[4] Garattini R and Zatrimaylov K 2024 Phys. Lett. B 856 138910 (Preprint 2408.04495)
+[5] Pfenning M J and Ford L H 1997 Class. Quantum Grav. 14 1743–1751 (Preprint
+gr-qc/9702026)
+[6] Ford L H and Roman T A 1996 Phys. Rev. D 53 5496–5507 (Preprint gr-qc/9510071)
+[7] Flanagan E E and Wald R M 1996 Phys. Rev. D 54 6233–6283 (Preprint gr-qc/9602052)
+[8] Lobo F S N and Visser M 2004 Class. Quantum Grav. 21 5871–5892 (Preprint
+gr-qc/0406083)
+[9] Visser M 1995 Lorentzian Wormholes: From Einstein to Hawking (New York: AIP Press)
+[10] Kontou E A and Sanders K 2020 Class. Quantum Grav. 37 193001 (Preprint 2003.01815)
+[11] Olum K D 1998 Phys. Rev. Lett. 81 3567–3570 (Preprint gr-qc/9805003)
+[12] Le A T 2026 Observer-robust energy condition verification for warp drive spacetimes (Preprint
+2602.18023)
+[13] Hawking S W and Ellis G F R 1973 The Large Scale Structure of Space-Time (Cambridge
+University Press)
+[14] Martín-Moruno P and Visser M 2018 Class. Quantum Grav. 35 125003 (Preprint 1802.00865)
+[15] Martín-Moruno P and Visser M 2021 Phys. Rev. D 103 124003 (Preprint 2102.13551)
+[16] Lentz E W 2021 Class. Quantum Grav. 38 075015 (Preprint 2006.07125)
+[17] Garattini R and Zatrimaylov K 2025 Positive-energy warp drive in a De Sitter universe
+(Preprint 2502.13153)
+[18] Santiago J, Schuster S and Visser M 2022 Phys. Rev. D 105 064038 (Preprint 2105.03079)
+[19] Schuster S, Santiago J and Visser M 2023 Gen. Relativ. Gravit. 55 14 (Preprint 2205.15950)
+[20] Celmaster W and Rubin S 2025 Violations of the weak energy condition for Lentz warp drives
+(Preprint 2511.18251)
+[21] Barzegar H, Buchert T and Vigneron Q 2026 General formalism, classification, and
+demystification of the current warp-drive spacetimes (Preprint 2602.16495)
+[22] Buchert T and Frackowiak A 2026 Universe 12 132 (Preprint 2605.03653)
+[23] Barzegar H and Buchert T 2025 Universe 11 293 (Preprint 2407.00720)
+[24] Weickert J 1998 Anisotropic Diffusion in Image Processing (Stuttgart: Teubner-Verlag)
+17
+
+[25] Getreuer P 2013 Image Processing On Line 3 286–310
+[26] Israel W 1966 Nuovo Cimento B 44 1–14 erratum ibid. 48, 463 (1967)
+[27] Bradbury J, Frostig R, Hawkins P, Johnson M J, Leary C, Maclaurin D, Necula G, Paszke A,
+VanderPlas J, Wanderman-Milne S and Zhang Q 2018 JAX: composable transformations of
+Python+NumPy programs https://github.com/jax-ml/jax
+[28] Carroll S M 2004 Spacetime and Geometry: An Introduction to General Relativity
+(Addison-Wesley)
+[29] Rodal J 2026 Weakly birefringent screening disfavors fast Hawking–Ellis Type I warp drives
+via low-velocity cubic tilt scaling arXiv:2603.21352v2 (24 March 2026) (Preprint 2603.21352)
+[30] Helmerich C, Fuchs J, Bobrick A, Sellers L, Melcher B and Martire G 2024 Class. Quantum
+Grav. 41 095009 (Preprint 2404.03095)
+[31] Alcubierre M 1994 Class. Quantum Grav. 11 L73–L77 (Preprint gr-qc/0009013)
+[32] Natário J 2002 Class. Quantum Grav. 19 1157–1166 (Preprint gr-qc/0110086)
+[33] Van Den Broeck C 1999 Class. Quantum Grav. 16 3973–3979 (Preprint gr-qc/9905084)
+[34] Faulkner T, Leigh R G, Parrikar O and Wang H 2016 J. High Energy Phys. 2016 038
+(Preprint 1605.08072)
+[35] Kontou E A and Olum K D 2015 Phys. Rev. D 92 124009 (Preprint 1507.00297)
+[36] Kontou E A 2024 Universe 10 291 (Preprint 2405.05963)
+[37] Fell S D B and Heisenberg L 2021 Class. Quantum Grav. 38 155020 (Preprint 2104.06488)
+[38] Huey G 2024 Class. Quantum Grav. 41 135007 (Preprint 2311.07193)
+[39] Kidger P and Garcia C 2021 Equinox: neural networks in JAX via callable PyTrees and
+filtered transformations (Preprint 2111.00254)
+[40] Rader J, Lyons T and Kidger P 2024 Optimistix: modular optimisation in JAX and Equinox
+(Preprint 2402.09983)
+[41] Kidger P 2021 On Neural Differential Equations Ph.D. thesis University of Oxford
+
+18
+
+

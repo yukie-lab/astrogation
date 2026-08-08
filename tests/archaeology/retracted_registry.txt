@@ -1,0 +1,8 @@
+# [v2-retracted] トークン登録簿
+# tests/test_v2_retracted_guard.py が src/**/*.py をこのトークンで走査する
+# (小文字化して部分一致)。誤検出しない程度に特徴的なトークンのみ登録する。
+# 追加は人間承認またはゲート成果物での記録を伴うこと。
+bifurcation
+d_v2
+v2_d(
+abs_d_ge_four_thirds

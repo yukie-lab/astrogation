@@ -1,0 +1,2495 @@
+PHYSICAL REVIEW D 99, 104081 (2019)
+
+Interstellar travels aboard radiation-powered rockets
+André Füzfa*
+Namur Institute for Complex Systems (naXys), University of Namur,
+Rue de Bruxelles 61, B-5000 Namur, Belgium
+(Received 21 February 2019; published 31 May 2019)
+We model accelerated trips at high velocity aboard light sails (beam-powered propulsion in general) and
+radiation rockets (thrust by anisotropic emission of radiation) in terms of Kinnersley’s solution of general
+relativity and its associated geodesics. The analysis of radiation rockets relativistic kinematics shows that the
+true problem of interstellar travel is not really the amount of propellant nor the duration of the trip but rather its
+tremendous energy cost. Indeed, a flyby of Proxima Centauri with an ultralight gram-scale laser sail would
+require the energy produced by a 1 GW power plant during about one day, while more than 15 times the
+current world energy production would be required for sending a 100 tons radiation rocket to the nearest star
+system. The deformation of the local celestial sphere aboard radiation rockets is obtained through the null
+geodesics of Kinnersley’s spacetime in the Hamiltonian formulation. It is shown how relativistic aberration
+and the Doppler effect for the accelerated traveler differ from their description in special relativity for motion
+at constant velocity. We also show how our results could interestingly be extended to extremely luminous
+events like the large amount of gravitational waves emitted by binary black hole mergers.
+DOI: 10.1103/PhysRevD.99.104081
+
+I. INTRODUCTION
+We would like to start this article by applying to physics
+Albert Camus’s words from his essay [1]. There is but one
+truly serious physical problem and that is interstellar
+travel. All the rest—whether or not spacetime has four
+dimensions, whether gravity is emergent or can eventually
+be quantized—comes afterwards1. It is not that such
+questions are not important nor fascinating—and actually
+they could quite likely be related to the above-mentioned
+crucial problem—but interstellar travel is the most appealing physical question for a species of explorers such as
+ours. Interstellar travel, although not theoretically impossible, is widely considered as practically unreachable. This
+topic has also been often badly hijacked by science-fiction
+and pseudo-scientific discussion when not polluted by
+questionable works.
+A simplistic view of the problem of interstellar travel
+is as follows. On one hand, the distance to the closest
+star system—Alpha Centauri—is roughly 4 orders of
+*
+
+andre.fuzfa@unamur.be
+There is but one truly serious philosophical problem and that
+is suicide. (…) All the rest—whether or not the world has three
+dimensions, whether the mind has nine or twelve categories—
+comes afterwards.
+1
+
+Published by the American Physical Society under the terms of
+the Creative Commons Attribution 4.0 International license.
+Further distribution of this work must maintain attribution to
+the author(s) and the published article’s title, journal citation,
+and DOI.
+
+2470-0010=2019=99(10)=104081(18)
+
+magnitude larger than the approximately 4.5 billion km
+toward planet Neptune. On the other hand, the highest
+velocity a man-made object has ever reached so far [2] is
+only of the order 10 km=s. Consequently, it would roughly
+take more than 100 millennia to get there with the
+same technology. To cross interstellar distances that are
+of order of light years (1 light year being approximately
+9.5 × 1012 km) within human timescales, one must reach
+relativistic velocities, i.e., comparable to the speed of light.
+However, from the famous Tsiolkovsky rocket equation,
+ 
+mi
+Δv ¼ ve log
+ð1Þ
+mf
+(with Δv being the variation of rocket velocity during
+ejection of gas with exhaust velocity ve and mi;f being the
+initial and final total mass), any space vehicle accelerated
+by ejecting some mass that eventually reaches a final
+velocity Δv of 10; 000 km=s of the speed of light c with
+an exhaust velocity ve of 1 km=s, typical of a chemical
+rocket engine, would require an initial mass of propellant
+mi about 104000 larger than the payload mf . To reduce the
+initial mass mi to 100 times the mass of the payload mf
+with the final velocity Δv ∼ 0.1 × c requires exhausting
+mass at a speed of approximately 6 × 103 km=s, about 4
+orders of magnitude higher than with current conventional
+rocketry. With this quick reasoning, where Eq. (1) is based
+on Newtonian dynamics, one would conclude that interstellar travel would require either 10 000 times longer trips
+or 10 000 times faster propulsion. There have been many
+
+104081-1
+
+Published by the American Physical Society
+
+ANDRÉ FÜZFA
+
+PHYS. REV. D 99, 104081 (2019)
+
+suggestions (sometimes based on questionable grounds)
+and engineering preliminary studies for relativistic spaceflight, and we refer the reader to Ref. [3] and references
+therein for an overview. Recently, there has been some
+renewed interest on relativistic spaceflight using photonic
+propulsion, along with the Breakthrough Starshot project
+[4] aiming at sending nanocraft toward Proxima Centauri
+by shooting high-power laser pulses on a light sail to which
+the probe will be attached.
+According to us, such a quick analysis as above somehow hides the most important problem—the energy cost—
+really preventing interstellar travel from becoming a
+practical reality. Both issues of the duration of the trip
+and the propellant can be fixed, at least in principle. First,
+time dilation in an accelerated relativistic motion reduces
+the duration of any interstellar trip [5], though this requires
+delivering an enormous total amount of energy to maintain
+some acceleration all throughout the trip. Second, space
+propulsion can be achieved without using any (massive)
+propellant (and without any violation of Newton’s third
+law): light and gravitational waves are carrying momenta,
+and their emission exerts some reaction recoil of the source.
+General relativity allows modeling the accelerated motion
+of a particle emitting or absorbing radiation anisotropically
+through a special class of exact solutions called the photon
+rocket spacetimes.
+In 1969, Kinnersley published in Ref. [6] a generalization
+of Vaidya’s metric, which is itself a generalization of the
+Schwarzschild exterior metric. Vaidya’s solution [7] represents the geometry of spacetime around a pointlike mass in
+inertial motion that is either absorbing or emitting radiation,
+through a null dust solution of Einstein’s equation:
+Rμν ¼ κΦkμ kν
+
+ð2Þ
+
+(with Rμν being the Ricci tensor, Φ being a scalar field
+describing the radiation flux, and kμ being a null vector field).
+Kinnersley’s solution [6] describes spacetime around such a
+radiating mass undergoing arbitrary acceleration due to
+anisotropic emission and contains four arbitrary functions
+of time: the mass of the point particle m and the three
+independent components of the 4-acceleration aμ of the
+particle’s worldline. It further appeared that Kinnersley’s
+solution was only a special case of a more general class of
+exact solutions of general relativity, the Robinson-Trautman
+spacetimes (cf. Ref. [8] for a review). The term “photon
+rockets” for such solutions was later coined by Bonnor in
+Ref. [9], although it would be preferable to use the term
+“radiation rocket” to avoid any confusion with quantum
+physics vocabulary [10]. The literature on radiation rockets
+focused mainly on exploring this class of exact solutions or
+extending Kinnersley’s solution (see Refs. [8,11,12] and
+references therein), notably through solutions for gravitational wave–powered rockets [13], (anti-)de Sitter background [12], and photon rockets in arbitrary dimensions [14].
+Another interesting point about Kinnersley’s solution is the
+
+fact that there is no gravitational radiation emission (at least at
+the linear level) associated to the acceleration of the point
+mass by electromagnetic radiation, as explained in Ref. [15].
+In Ref. [14], the first explicit solutions of photon rockets
+were given, as was a detailed presentation of several useful
+background Minkowski coordinates for describing the
+general motion of the particle rocket. The solutions given
+in Ref. [14] for straight flight includes the case of hyperbolic motion (constant acceleration) and another analytical
+solution, both in the case of an emitting rocket, for which
+the rocket mass decreases. The case of light sails (either
+solar or laser-pushed sails, i.e., a photon rocket which
+absorbs and reflects radiation) is not considered while, as
+we show here, can be described by the same tool. Geodesic
+motion of matter test particles is also briefly discussed in
+Ref. [14] to confirm the absence of gravitational aberration
+investigated in Ref. [16].
+In the present paper, we apply Kinnersley’s solution to the
+modeling of relativistic motion propelled either by anisotropic emission or absorption of radiation. This encompasses
+many photonic propulsion proposals like blackbody rockets
+[17] (in which a nuclear source is used to heat some material
+to high temperature and its blackbody radiation is then
+appropriately collimated to produce thrust), antimatter rockets, or light sails [3]. Spacetime geometry in traveler’s frame
+is obtained through the resolution of energy-momentum
+conservation equations, which results in decoupled rocket
+equations for the acceleration and the mass functions, while
+standard approach using Einstein equations deals with a
+single constraint mixing together the radiation source characteristics and the kinematical variables. This approach
+also allows working directly with usual quantities such as
+emissivity, the absorption coefficient, and the specific
+intensity of the radiation beam acting on the particle to
+derive the corresponding relativistic kinematics. We provide
+simple analytical solutions for the case of constant radiative
+power. We also rederive the relativistic rocket equation once
+obtained in Ref. [18] by a more simplistic analysis with basic
+special relativity. We then apply the radiation rocket kinematics to three detailed toy models of interstellar travel:
+(i) the Starshot project, an interstellar flyby of a gram-scale
+probe attached to a light sail that is pushed away by a groundbased laser, and (ii,iii) single and return trips with an emission
+radiative rocket of mass scale 100 t. We show how the
+unreachable energy cost of the latter strongly speaks in
+favor of the former. Then, from the associated spacetime
+geometry around the traveler, we investigate light geodesics
+through Hamiltonian formulation. Incoming and outgoing
+radial trajectories of photons are obtained and used to
+compute frequency shifts, for instance in telecommunications between the traveler, his home, and his destination. We
+then investigate the deviation of the angle of incidence of
+incoming photons—as perceived by the traveler as it moves.
+We show how local celestial sphere deformation evolves with
+time in a different way for either an emission or an absorption
+rocket and in a different way than in special relativity,
+
+104081-2
+
+INTERSTELLAR TRAVELS ABOARD RADIATION …
+
+PHYS. REV. D 99, 104081 (2019)
+
+establishing how this effect constitutes a crucial question for
+interstellar navigation which cannot be captured by special
+relativity alone.
+The layout of this paper is as follows. In Sec. II, we set
+the basics of radiation rockets in general relativity before
+we introduce our procedure to establish explicit solutions
+given incoming (respectively outgoing) radiation corresponds to absorption (respectively emission) rocket(s).
+Relativistic photon rocket equations, analytical solutions,
+as well as numerical solutions for more realistic cases are
+derived. We then apply these solutions to three toy models
+of interstellar travel: flyby with a light sail and a single and
+return interstellar trips with an emission rocket. Section III
+is devoted to the study of geodesics in Kinnersley spacetime using Hamiltonian formulation. Relativistic aberration
+and the Doppler effect for the accelerated observer are
+obtained and compared to the case of an observer moving at
+constant speed as described by special relativity.
+Visualizations of interstellar panoramas for accelerated
+travelers resulting from relativistic aberration, the
+Doppler effect, and relativistic focusing are presented.
+We finally conclude in Sec. IV by emphasising key
+implications of our results for the problem of interstellar
+travel as well as introducing another possible application of
+the present results to the astrophysical problem of gravitational wave recoil by binary black hole mergers.
+
+According to the equivalence principle, the accelerated
+traveler experiences a local gravitational field. The geometry of spacetime can be described in the comoving
+coordinates ðc · u; r; θ; φÞ by the following metric,
+
+II. SPACETIME GEOMETRY AROUND
+RADIATION ROCKETS
+A. Deriving the radiative rocket equations
+In what follows, we build explicit solutions of the photon
+rocket spacetime. We first review some basics of so-called
+photon rockets in general relativity and refer the reader to
+Refs. [6,9,12,14,15] for alternative nice presentations.
+Our procedure to determine spacetime geometry around
+radiation rockets requires two frames and associated
+coordinates. The first observer O is located far from the
+radiation rocket so that the gravitational attraction of the
+(variable) rocket mass can be neglected and corresponds to
+an inertial frame with associated Cartesian coordinates
+ðXμ Þμ¼0;…;3 ¼ ðcT; X; Y; ZÞ, where c is the speed of light
+and is left to facilitate dimensional reasoning for the reader.
+The second observer O0 is the traveler embarked on the
+radiation rocket, using comoving spherical coordinates
+ðxν Þν¼0;…;3 ¼ ðc · τ; r; θ; φÞ, with τ being the proper time
+of the traveler.
+We will assume throughout this paper that the trajectory
+of the rocket follows a straight path along the direction Z in
+O coordinates so that the traveler’s worldline L is given
+either by L ≡ ðcTðτÞ; 0; 0; ZðτÞÞ in O’s coordinates or
+L ≡ ðc · τ; r ¼ 0Þ (and with any θ; φ) in O0 coordinates.
+The tangent vector field to the worldline L will be denoted
+by λμ ¼ dXμ =ðcdτÞ in O and λ0μ ¼ dxμ =ðcdτÞ in O0 .
+
+
+
+M
+ds2 ¼ c2 1 − 2 − 2αr cosðθÞ − α2 r2 sin2 ðθÞ du2
+r
+ 2cdudr ∓ 2αr2 sinðθÞcdudθ
+− r2 ðdθ2 þ sin2 ðθÞdφ2 Þ;
+
+ð3Þ
+
+where the signs in the second line above stand for the cases
+of retarded or advanced time coordinates u, respectively.
+One can indeed associate each point Xμ of Minkowski
+space to a unique retarded or advanced point XμL on the
+worldline L which is at the intersection of the past/future
+light cone of Xμ and the worldline L. It should be noticed
+that in both limits of a vanishing mass M → 0 or far away
+from the point rocket r → ∞, the null coordinate u takes
+the value of the proper time τ of observers aboard the rocket
+located at r ¼ 0 in those comoving coordinates (we also
+refer the reader to Ref. [14] for a more detailed discussion).
+The retarded and advanced metrics will be used in Sec. III
+for computing incoming and outgoing geodesics toward/
+from XμL . The above metric is of course singular at the
+traveler’s location r ¼ 0, and the geometric quadratic
+invariants only depend on mass M (see Ref. [9]).
+Therefore, when M ¼ 0, one retrieves Minkowski spacetime but viewed by an accelerated observer.
+Spacetime geometry (3) around the radiative rocket is
+totally specified by the two functions of time MðuÞ and
+αðuÞ. The first function MðuÞ ¼ 2GmðuÞ=c2 , where G is
+Newton’s constant, implements the gravitational effect of
+the inertial mass m of the radiative rocket. The second
+function αðuÞ is related to the 4-acceleration of the radiative
+rocket in the following way [19]. Let λ_ μ ¼ dλμ =ðcdτÞ be
+the 4-acceleration of the worldline L, and since the unit
+tangent vector λμ is timelike (ημν λμ λν ¼ 1), we have that
+λ_ μ λμ ¼ 0 or in other words that λ_ μ is a spacelike vector. The
+μ
+function αðτÞ is then given by α2 ¼ −λ_ μ λ_ μ ¼ −λ_0 λ_0 μ ≥ 0.
+As we shall see below, both mass M and “acceleration” α
+functions will be linked together through the relativistic
+rocket equations.
+One can move from traveler’s comoving coordinates O0
+to inertial coordinates O through the transformation (see
+also Refs. [9,12,14] for the retarded case)
+8
+>
+>
+T ¼ T L ðτÞ þ r · ½ coshðψÞ þ cosðθÞ · sinhðψÞ
+>
+>
+>
+< X ¼ r · sinðθÞ · cosðφÞ
+;
+>
+Y ¼ r · sinðθÞ · sinðφÞ
+>
+>
+>
+>
+: Z ¼ ZL ðτÞ þ r · ½ sinhðψÞ þ cosðθÞ · coshðψÞ
+
+104081-3
+
+ð4Þ
+
+ANDRÉ FÜZFA
+
+PHYS. REV. D 99, 104081 (2019)
+
+where the couple ðT L ðτÞ; ZL ðτÞÞ is the functions specifying
+the worldline L of the traveler in inertial coordinates O,
+ψ ¼ ψðτÞ is the rapidity, and the case þ (−) is for the
+retarded (advanced) metric, respectively. It must be kept in
+mind that this transformation is only valid for negligible
+radiative mass m, or at infinite distance from the rocket, and
+reduces to Eq. (3) in the limit M → 0. Performing the
+transformation of metric (3) with m ¼ 0 to Minkowski
+metric ημν ¼ diagðþ1; −1; −1; −1Þ yields
+
+ν
+∂ μ T μν
+ðradÞ ¼ −F
+
+dT L
+¼ coshðψðτÞÞ
+dτ
+
+ð5Þ
+
+dZL
+¼ c · sinhðψðτÞÞ
+dτ
+
+ð6Þ
+
+λT ¼
+λZ ¼
+
+αðτÞ ¼ − _
+ψ;
+
+ð7Þ
+
+where a dot denotes a derivative with respect to c · τ. The
+tangent vector λμ ¼ dXμ =ðcdτÞ ≡ X_ μ in inertial coordinates is normalized, ημν λμ λν ¼ 1, and the (absolute value of
+the) norm of the 4-acceleration is given by _λμ _λμ ¼ ψ_ 2.
+The usual approach to photon rockets is to pass by
+Einstein’s equations, which reduces here to only one
+equation since the only nonvanishing component of the
+Ricci tensor for the metric (3) is written as
+
+
+dM
+3αM cosðθÞ ∓
+;
+cdτ
+r
+
+2
+R11 ¼ 2
+
+ð9Þ
+
+
+
+Z
+dτ
+
+
+
+
+d
+ðmðτÞλμ Þδ4 ðXμ − XμL ðτÞÞ ;
+dτ
+
+where XμL ðτÞ represents the location of the radiation rocket
+in spacetime coordinates of inertial frame O. On the other
+hand, radiation’s stress-energy conservation
+
+_
+mc2 ¼ λμ f μ
+mc2 λ_ μ ¼ f μ − λβ f β λμ ;
+
+ð10Þ
+
+where a dot now denotes a derivative with respect to τ and
+where we have used a contraction with λμ together with
+λμ λμ ¼ 1. The radiation reaction 4-force f μ is given by (see
+also Ref. [20])
+
+ð8Þ
+
+On the one hand, we have that for a point particle of mass m
+2
+∂ μ T μν
+ðmÞ ¼ c
+
+with f μ the radiation reaction 4-force, which has units
+power. With these definitions, the conservation equation (9)
+yields the relativistic radiation rocket equations (10), (11)
+
+f μ ðτÞ ¼
+
+and one can further verify that the scalar curvature R
+identically vanishes. Equation (8) therefore puts a single
+constraint between the radiation flux function Φ of Eq. (2)
+and the kinematical functions of the mass M, its derivative
+_ ¼ dM=ðcdτÞ, and the 4-acceleration α of the radiation
+M
+rocket. A decoupled set of radiation rocket equations would
+be more suitable for physical modeling since we would like
+to derive directly the worldline L and the associated
+spacetime geometry (3) from ingoing and outgoing radiation characteristics.
+To achieve this, we follow Ref. [15] and consider total
+energy-momentum conservation in inertial frame O, which
+is written as
+μν
+∂ μ ðT μν
+ðmÞ þ T ðradÞ Þ ¼ 0:
+
+defines the radiation reaction 4-force density acting on the
+rocket (see also Ref. [20]). The time component F 0 gives
+c−1 times the net rate per unit volume of radiative energy
+flowing into or escaping the particle, while the spatial
+components F i give the thrust per unit volume that is
+imparted to the rocket. For a pointlike radiative distribution,
+one can write down
+Z
+μ
+F ¼ dτf μ δ4 ðXμ − XμL ðτÞÞ
+
+Z∞ I
+
+f½AI − Eðτ; ν; θ; φÞnμ ðθ; φÞg · dν · dΩ
+
+ð11Þ
+
+0
+
+with ν the radiation frequency, dΩ ¼ sinðθÞ · dθ · dφ being
+the solid angle element, A being the absorption coefficient
+(with dimensions of an area in m2 ), I being the specific
+intensity [with dimensions W=ðm2 Hz SterÞ], and E being
+the emission coefficient [with dimensions W=ðHz SterÞ]
+and nμ ¼ ð1; ⃗nðθ; φÞÞ is a dimensionless null 4-vector with
+⃗nðθ; φÞ pointing outward the rocket, in the direction ðθ; φÞ
+of the unit 2-sphere:
+⃗nðθ; φÞ ¼ ðsinðθÞ cosðφÞ; sinðθÞ sinðφÞ; cosðθÞÞT :
+In Eq. (11), the component f T gives the power that is either
+entering the rocket f T > 0 (for a light sail or in other words
+an absorption rocket) or fleeing the rocket f T < 0 (for an
+emission rocket), while the components f i are c times the
+thrust imparted by the radiation flux to the rocket. The
+kinematic part of radiation rocket equations, Eqs. (10),
+actually describes general relativistic motion in the presence of some 4-force field f μ (see also Ref. [5]). Therefore,
+specifying the radiation flux that is either emitted, reflected,
+or absorbed by the radiative rocket and the associated
+momentum gained by the rocket allows one to solve the
+kinematical equations (10), determining both the traveler’s
+worldline L and the spacetime geometry through Eq. (3).
+We now focus on explicit solutions in the next paragraph.
+
+104081-4
+
+INTERSTELLAR TRAVELS ABOARD RADIATION …
+
+PHYS. REV. D 99, 104081 (2019)
+ 2
+
+ m − m20 
+;
+ΔV ¼ c 2
+m þ m20 
+
+B. Straight accelerated motion of light sails, absorption,
+and emission radiation rockets
+For a straight motion along the Z axis, one has X ¼
+Y ¼ λX ¼ λY ¼ 0 together with Eqs. (5) and (6) so that the
+relativistic rocket equations (10) reduce to
+
+
+_
+mc2 ¼ coshðψÞf T − sinhðψÞf Z
+mc2 ψ_ ¼ − sinhðψÞf T þ coshðψÞf Z :
+
+ð12Þ
+
+The 3-velocity (i.e., velocity in the Newtonian sense) of the
+radiation rocket with respect to the inertial observer O is
+λZ
+given by V Z ¼ dZ
+dT ¼ c λT ¼ c tanhðψÞ, while the Newtonian
+3-acceleration with respect to the inertial observer O is
+Z
+given by a ¼ dV
+ψ= cosh3 ðψÞ (a dotted quantity repdT ¼ c _
+resenting here the derivative of this quantity with respect to
+proper time τ).
+One can advantageously reformulate the system (12)
+in terms of dimensionless quantities by considering the
+characteristic scale for the proper time given by τc ¼
+m0 c2 =jPj with m0 being the inertial mass of the radiation
+rocket at start and P being is the scale of the power driving
+the rocket and that is either entering (P > 0) or leaving the
+rocket (P < 0). Using s ¼ τ=τc as a dimensionless time
+variable, one can rewrite Eq. (12) as follows,
+
+
+M0 ¼ PðτÞ:½coshðψÞ − sinhðψÞT ðτÞ
+Mψ 0 ¼ PðτÞ:½− sinhðψÞ þ coshðψÞT ðτÞ;
+
+ð13Þ
+
+where a prime denotes a derivative with respect to s,
+M ¼ m=m0 , PðτÞ ¼ f T =jPj is a dimensionless function
+describing the power either entering or leaving the rocket,
+and T ¼ f Z =fT ¼ TðτÞ:c=fT is a dimensionless function
+associated to the thrust (in Newtons) driving the radiation
+rocket.
+Actually, there are two types of radiation rockets:
+absorption rockets, for which PðτÞ > 0, and emission
+rockets, for which PðτÞ < 0. Light or solar sails belong
+to the former, while a simple case of the latter consists of a
+system propelled by anisotropic radiative cooling (see also
+Ref. [17] for general introduction to the idea). If the thrust is
+directly proportional to the driving power, i.e., T ¼ 1, the
+first of the relativistic rocket equation (13) reduces to
+M0 ¼ PðτÞ: expð∓ ψÞ:
+Therefore, in the case of a purely absorbing rocket
+PðτÞ > 0, the rocket mass m is monotonically increasing,
+while in the case of a purely emitting rocket PðτÞ < 0, the
+rocket mass m is monotonically decreasing. Furthermore, it
+can be shown from Eqs. (13) with T ¼ 1 that the
+3-velocity of the radiation rocket with respect to the inertial
+observer O, V Z ¼ c tanhðψÞ verifies
+
+Z
+
+ð14Þ
+
+which is nothing but a relativistic generalization of the
+Tsiolkovsky equation (1), as obtained for the first time by
+Ackeret in Ref. [18] from basic special relativity.
+Let us now consider the simplistic case where the driving
+power is constant, PðτÞ ¼ 1 and the thrust is directly
+proportional to this power, T ðτÞ ¼ 1. Under these
+assumptions, one can easily obtain the following analytical
+solution of the system (13):
+M ¼ ð1 þ 2Pe−P:T ψ 0 · ðs − s0 ÞÞ1=2
+
+ð15Þ
+
+ψ ¼ ψ 0 þ P:T log M;
+
+ð16Þ
+
+where s0 ; ψ 0 the initial dimensionless time and rapidity
+respectively, P ¼ 1 (þ1 for the absorption rocket and −1
+for the emission one) and T ¼ 1 gives the direction of
+acceleration (þ1 acceleration toward þZ and −1 backward
+Z). One can easily check that Eqs. (15) and (16) of course
+satisfy Ackeret’s equation (14). For an absorption rocket,
+the velocity will reach that of light c asymptotically and
+with an infinitely large inertial mass, while an emission
+rocket (P ¼ −1) will reach the speed of light c after a finite
+proper time ðsrel − s0 Þ ¼ e−T ψ 0 =2 where its inertial mass
+identically vanishes.
+However, Eqs. (15) and (16) describe the radiation
+rocket powered by a constant source, which is too
+simplistic. First, since the intensity of a light beam
+decreases with the inverse of the distance to the source,
+the feeding power of a light sail will decrease as PðτÞ ∼
+Z−2 ðτÞ unless the remote power source is increased
+accordingly, which is unpractical. Second, one could also
+consider an emission rocket propelled by directed blackbody radiation coming from the decay heat of some
+radioactive material, in which case the power source will
+decay as PðτÞ ¼ expð−s=SÞ with decay time S (in units of
+characteristic proper time τc ). More realistic physical
+models of radiation rockets will therefore involve the
+time dependance of the rocket’s driving power and thrust
+P, T ðτÞ. Then, kinematics must be obtained in general
+through numerical integration of Eqs. (13).
+We can now give two couples of simple models of light
+sails and emission rockets. For the light sails, let us assume
+the following: (i) The power function is given by PðτÞ ¼
+ð1 þ ZðτÞ=Zc Þ−2 with Zc ¼ c:τc being a characteristic scale
+and ZðτÞ being given by Eq. (6). (ii) The thrust function
+T ¼ ð1 þ ϵÞ where the sign gives the direction of acceleration and where ϵ is the reflectivity of the sail. A perfectly
+absorbing sail, a black one, exhibits ϵ ¼ 0, while a perfectly
+reflecting white one has ϵ ¼ 1. For the emission rockets, we
+can assume i) that the output power is constant [see
+solutions (15) and (16) with P ¼ −1] or ii) that the output
+
+104081-5
+
+PHYS. REV. D 99, 104081 (2019)
+1
+0.9
+
+0.8
+
+0.8
+
+0.7
+
+0.7
+
+0.6
+
+0.6
+
+0.4
+
+0.3
+
+0.3
+
+0.2
+
+0.2
+
+0.1
+0
+0
+
+2
+
+3
+
+4
+
+0
+
+5
+
+0
+
+Emission Rocket with constant power
+Emission Rocket with decaying power
+
+1.2
+White Light Sail =1
+Black Light Sail =0
+
+2.5
+
+1.15
+2
+1.1
+1.5
+
+0.1
+
+White Light Sail =1
+Black Light Sail =0
+
+1
+
+3.5
+
+1.3
+1.25
+
+0.5
+
+0.4
+
+1.35
+
+3
+
+T/
+
+0.5
+
+4
+
+T/
+
+1
+0.9
+
+V Z (c)
+
+V Z (c)
+
+ANDRÉ FÜZFA
+
+Emission Rocket with constant power
+Emission Rocket with decaying power
+
+1
+
+2
+
+( )
+
+3
+
+4
+
+1.05
+
+1
+0
+
+5
+
+10
+
+20
+
+( )
+
+c
+
+c
+
+30
+( c)
+
+40
+
+50
+
+60
+
+1
+0
+
+5
+
+10
+
+15
+
+( c)
+
+FIG. 1. Evolution of the 3-velocity V Z with respect to the
+inertial observer O with the traveler’s proper time τ for absorption
+(left) and emission (right) rockets.
+
+FIG. 3. Time dilation effect, shown as the ratio of duration for
+inertial observer O to traveler O0 ’s proper time T=τ, for
+absorption (left) and emission (right) rockets.
+
+power decays with proper time, PðτÞ ¼ −expð−s=SÞ, with
+S being the power decay time, as would happen if the
+emission rocket was powered by the radiative cooling of
+some radioactive material. In these cases (i) and (ii),
+T ¼ 1. Figures 1–4 present the kinematics of these four
+radiation rockets.
+The evolution of a rocket’s velocity, starting from rest,
+and of the rocket’s inertial masses as the traveler’s proper
+time evolves are given in Figs. 1 and 2, respectively. The
+light sails will only reach some fraction of the speed of light
+c asymptotically, while their inertial masses eventually
+freeze. The emission rocket with constant driving power
+reaches c after some finite proper time, at which its inertial
+mass vanishes. Once c is reached, the proper time of the
+traveler freezes and ceases to elapse. If the driving power is
+decaying exponentially with time, the emission rocket
+asymptotically reaches only some fraction of c, while its
+inertial mass finally freezes. In the figures, we have used
+the following value of the power decay time S ¼ 1=3.
+The acceleration of the rockets causes time dilation for
+the travelers as illustrated in Fig. 3. Light sails reach
+asymptotically a time dilation factor T=τ of around 4 for
+ϵ ¼ 1 (white sail) and around 1.25 for ϵ ¼ 0 (black sail).
+The emission rocket with constant power formally reach an
+infinite time dilation factor after some finite proper time
+
+since, as soon as it has reached c, proper time of the traveler
+freezes, and the ratio dT=dτ → ∞. In the case of decaying
+internal power, the emission rocket finally experiences a
+frozen time dilation factor, around 1.15 for S ¼ 1=3 as can
+be seen from Fig. 3.
+Finally, we give in Fig. 4 a Tsiolkovsky diagram showing
+the change in velocity with the variation of inertial mass of
+the radiation rockets. The black light sail with ϵ ¼ 0 and the
+emission rocket both satisfy the relativistic Tsiolkovsky
+equation (14), while the Tsiolkovsky curve for the white
+sail with ϵ ¼ 1 moves from close to the purely absorbing
+case ϵ ¼ 0 to the emission rocket case. It is important to
+bear in mind that this mass loss is a purely relativistic effect
+due to the interaction of the rocket with radiation and is
+therefore quite different than the reaction process due to the
+ejection of massive propellant.
+Actually, there exists a well-known analytical solution
+that applies to radiation rockets as well. This special case is
+
+1
+
+2
+
+0.9
+
+1.8
+
+0.8
+
+m (m0)
+
+1.4
+
+0
+
+m (m )
+
+0.8
+0.7
+
+White Light Sail =1
+Black Light Sail =0
+
+1.2
+
+0.6
+
+0.5
+
+0.3
+
+0.5
+0.4
+
+1
+
+0.6
+
+0.4
+
+0.7
+
+1.6
+
+0.2
+
+0.3
+
+0.8
+
+0.2
+
+0.6
+
+0.1
+
+0.4
+
+0.9
+
+V Z (c)
+
+2.2
+
+1
+
+0
+
+1
+
+2
+
+3
+( c)
+
+4
+
+5
+
+0
+
+White Light Sail
+Black Light Sail
+Emission Rocket
+
+0.1
+Emission Rocket with constant power
+Emission Rocket with decaying power
+
+0
+
+1
+
+2
+
+3
+
+4
+
+0
+0
+
+5
+
+( c)
+
+1
+
+2
+
+3
+
+4
+
+5
+
+m (m0)
+
+FIG. 2. Evolution of the rocket’s inertial mass m with the
+traveler’s proper time τ for absorption (left) and emission (right)
+rockets.
+
+FIG. 4. Tsiolkovsky diagram of the variation of velocity as a
+function of the rocket mass.
+
+104081-6
+
+INTERSTELLAR TRAVELS ABOARD RADIATION …
+
+PHYS. REV. D 99, 104081 (2019)
+
+the so-called hyperbolic motion (cf. Refs. [5,14]),
+i.e., relativistic motion with a constant norm of the 4acceleration λ_ μ , with units m−1 , jλ_ μ λ_ μ j ¼ a2 ≥ 0. For the
+characteristic time, we therefore choose τc ¼ 1=ðcjajÞ so
+that ψ ¼ψ 0 þd:f:ðs−s0 Þ and M≡m=m0 ¼ expðf:ðs−s0 ÞÞ
+with f ¼ 1 giving the rocket type (þ1 absorption; −1
+emission) and d ¼ 1 so that the sign of the thrust is
+f:d. The corresponding 4-force components can now be
+deduced from Eqs. (12): f T ¼ ðm0 c2 =τc Þ:f:expð2fðs−s0 ÞÞ
+and f Z ¼ d:f T . In this solution, the speed of light c is
+reached asymptotically (when s → ∞), while the rocket’s
+inertial mass becomes exponentially large (absorption
+rocket) or decays exponentially (emission rocket). In terms
+of the above examples, the emission rocket with a decay
+time S ¼ 1=2 precisely corresponds to this solution of the
+constant norm of 4-acceleration.
+
+in the previous section. Figure 5 gives the evolution of the
+3-velocity [with Newtonian result V ¼ P=ðcm0 Þ:ð1 þ ϵÞτ
+indicated by dashed lines], the 3-acceleration (the last two
+with respect to inertial observer), and the mass with respect
+to the proper time τ during about one hour of continuous
+push by the lasers. Two different values of the reflexivity
+ϵ ¼ 0 and ϵ ¼ 1 are indicated, to give an idea of the spread
+of these kinematical variables with the reflexivity. The total
+energy cost of the mission roughly corresponds to the
+amount of energy spent by the power source during the
+whole acceleration phase, E ¼ P × τ (for constant power of
+the source), which corresponds to 100GW×4000s≈1014 J.
+In about an hour of continuous propulsion, the 10 g
+probe reaches a velocity between 0.3 and approximately
+0.6 × c for corresponding acceleration decreasing from the
+range ½6000; 3000 × g to ½2000; 1000 × g. This decrease
+of the acceleration is a purely relativistic effect. Finally, the
+mass relative variation of the probe lies in the range 15%–
+35%, which is non-negligible for performing corrections of
+trajectory with the embarked photon thrusters.
+
+C. Applications to interstellar travels
+1. Acceleration phase of a light sail
+We start by applying our modeling to the starshot project
+[4] in which tiny probes attached to the light sail will be
+accelerated by high power laser shots from the ground to
+reach a relativistic velocity after a short acceleration phase
+before heading to Proxima Centauri for a flyby. We assume
+here a mass of 10 g for the probe and the sail and the power
+of the laser beam at the source of P ¼ 100 GW, decaying
+with distance as the inverse of the distance to the source as
+
+0.6
+
+8000
+
+0.5
+
+7000
+Acceleration (g=9.81 m/s 2)
+
+=1
+
+Z
+
+V (c)
+
+0.4
+0.3
+0.2
+
+=0
+0.1
+0
+0
+
+6000
+
+=1
+
+5000
+4000
+3000
+2000
+1000
+
+1000
+
+2000
+(s)
+
+3000
+
+=0
+
+0
+0
+
+4000
+
+1000
+
+2000
+(s)
+
+3000
+
+4000
+
+1.4
+1.35
+1.3
+
+=0
+
+m (m0)
+
+1.25
+1.2
+
+1.15
+1.1
+
+=1
+1.05
+1
+0
+
+1000
+
+2000
+
+3000
+
+4000
+
+(s)
+
+FIG. 5. Acceleration phase of a laser-pushed light sail, with a
+beam power at a source of 100 GW and a mass of 10 g for
+reflexivity ϵ ¼ 0 and ϵ ¼ 1. Upper plots: velocity (left) and
+acceleration (right) with respect to inertial observer; bottom plot:
+mass variation.
+
+2. Traveling to Proxima Centauri
+with an emission radiation rocket
+The next application of our former results is a simple
+modeling of interstellar travels to Proxima Centauri,
+located about 4 light years away, with large emission
+radiation rockets. This example is purely illustrative, and
+we will not list the numerous engineering challenges that
+must be overcome in order to even start thinking about such
+a mission, yet it will clearly show the major impediment of
+interstellar travel: the energy cost.
+Let us consider a model of a rocket propelled by the
+redirection of the blackbody radiation emitted by a large
+hot surface in radiative cooling. The power driving the
+rocket is therefore given by P ¼ σAT 4 where σ ¼
+5.670373 × 10−8 W=ðm2 · K4 Þ is the Stefan-Boltzmann
+constant and A is the surface of the radiator at temperature
+T. To fix the ideas, we choose the total mass of the rocket to
+be m0 ¼ 100 tons. We also assume a decay time of S ¼ τc
+with τc ¼ m0 c2 =P being the characteristic timescale.
+Figure 6 presents the evolution of several interesting
+kinematical quantities for both a return and a single trip at a
+distance of approximately 4 light years. The presented
+single trip is done with a radiator of A ¼ 1 km2 at
+temperature T ∼ 8.4 × 103 K (and a total driving power
+P ∼ 3 × 102 terawatts) while the presented return trip is
+done with A ¼ 100 km2 at T ¼ 3000 K for a power source
+of P ∼ 4 × 102 terawatts. Those parameters have been
+chosen for illustrative reasons and do not pretend to be
+feasible; simply remember that the characteristic power of a
+civil nuclear reactor is of order 1 GW. In the top left plot of
+Fig. 6, one can see the velocity pattern of the trajectories. In
+the single trip, the rocket first accelerates at a speed of
+approximately 0.94 × c before it must be turned upside
+down for deceleration after about 8 months and finally
+
+104081-7
+
+PHYS. REV. D 99, 104081 (2019)
+
+1
+
+1
+
+0.8
+
+0.9
+
+0.6
+
+0.8
+
+0.4
+
+0.7
+
+0.2
+
+0.6
+
+0
+
+Mass (m )
+
+Velocity (c)
+
+ANDRÉ FÜZFA
+
+0
+-0.2
+
+0.4
+
+-0.4
+
+0.3
+
+-0.6
+
+0.2
+0.1
+
+-0.8
+-1
+0
+
+1
+
+2
+3
+4
+Traveller's time (yr)
+
+5
+
+0
+0
+
+6
+
+12
+
+12
+
+10
+
+10
+Time at home (yr)
+
+Time at home T (yr)
+
+0.5
+
+8
+6
+4
+2
+0
+0
+
+1
+
+2
+3
+4
+Traveller's time (yr)
+
+5
+
+6
+
+1
+
+2
+3
+4
+Traveller's time (yr)
+
+5
+
+6
+
+8
+6
+4
+2
+
+1
+
+2
+3
+4
+Distance travelled Z (lyr)
+
+5
+
+0
+0
+
+FIG. 6. Single and return trips (respectively, straight and dashed
+lines) toward any destination located about 4 light years away,
+like the Alpha Centauri star system, with an emission radiation
+rocket. Upper left: velocity as a function of traveler’s proper time
+τ; upper right: mass variation of the photon rocket during the trip;
+lower left: worldline L of the trips in inertial coordinates; lower
+right: time dilation for the traveler.
+
+arrives at destination in about 3 years. The acceleration with
+respect to inertial observers is not shown but is not above
+1.25 × g. In the case of the return trip, the rocket reaches
+about 0.97 × c after 5 months of acceleration before
+flipping for deceleration and reaches the destination after
+approximately 2.7 years. However, the rocket does not stop
+and immediately goes back toward its departure location.
+After having reached a return velocity of about −0.97 × c at
+mission time of approximately 3 years, the returning rocket
+will have to flip for deceleration and finally arrive back at
+home at rest after approximately 5.4 years. However, the
+total duration of the return trip from the point of view
+of the inertial observer who stayed home is approximately
+10.6 years, as a consequence of time dilation (see Fig. 6
+lower right panel). Similarly, the single trip has been
+performed in about 3.5 years from the point of view of
+the traveler but about 6 years from the point of view of his
+home. The accelerations underwent by the return rocket are
+less than 2g’s. In the upper right panel of Fig. 6, one can see
+the mass decrease of the rockets as a function of mission
+time. The flips of the rockets have been assumed instantaneous, which explains the shape of the curves around the
+flips. Worldlines of the interstellar travels in inertial
+coordinates are shown in the lower left panel of Fig. 6.
+The worldline of the charterer, i.e., the observer who stayed
+
+home corresponds to the ðZ ¼ 0; TÞ vertical line. The events
+of departure and arrival of the return rocket are given by the
+intersection of the traveler’s worldline and the vertical axis.
+We finish this section by echoing our Introduction.
+Emission radiation rockets do not involve new physics
+and actually are propelled by the least noble sort of energy,
+which is heat. By maintaining acceleration throughout the
+trip, one can significantly reduces its duration by comparison of the one measured by an observer who stayed at the
+departure location. However, the major impediment is that
+such rockets need to embark an extreme power source, 100
+terawatts, within the lowest mass possible, and make it
+work all along the several years of travel duration. By
+integrating f T ðτÞ all along the trips, one finds an estimation
+of the total energy cost E of an interstellar mission to
+Proxima Centauri with a 100 tons scale spaceship is the
+unbelievable figure of E ∼ 9 × 1021 J. To fix the ideas, this
+amount of energy corresponds to about 15 times the world
+energy production in 2017. Needless to say, no one can
+(presently?) afford such interstellar travel, and one should
+instead rely on another scheme, like the starshot concept
+[4], to physically investigate nearby star systems.
+III. PROPAGATION OF LIGHT TOWARD
+OBSERVERS ABOARD RADIATION ROCKETS
+A. Geodesics in the Hamiltonian formalism
+We now investigate spacetime geometry around the
+radiation rockets through characterizing null geodesics,
+which are nothing but the trajectories of light. As explained
+in Sec. II, Kinnersley’s spacetime geometry (3) is specified
+through the functions MðτÞ ¼ 2GmðτÞ=c2 (with dimension
+length) and α ¼ − _
+ψ=c (with dimension inverse of length)
+of proper time τ [which is also the value of the null
+coordinate u in Eq. (3) in the limits M → 0 or r → ∞].
+These functions M and α are associated, respectively, to
+the mass and to the 4-acceleration (i.e., jgμν λ_0 μ λ_0 ν j ¼ α2 ) of
+the rocket. Light rays incoming toward (or outgoing from)
+the traveler must be computed from the retarded (advanced)
+metric. Any geodesic curve G is specified in these coordinates by the following set of functions G ¼ ðc:τðσÞ;
+rðσÞ; θðσÞ; φðσÞÞ with σ some affine parameter on the
+geodesic. These functions are solutions of the geodesic
+equation,
+d2 xγ
+dxα dxβ
+þ Γγαβ
+¼ 0;
+2
+dσ dσ
+dσ
+
+ð17Þ
+
+but those equations are difficult to handle in the metric (3), as
+can be seen in Refs. [14,16]. This is why we prefer here to
+proceed with the so-called Hamiltonian formulation of
+geodesics [21].
+Geodesic equations (17) are Euler-Lagrange
+equations
+R
+for the action of a pointlike particle S ¼ m:ds (with ds
+being the line element in spacetime) but also of the
+
+104081-8
+
+INTERSTELLAR TRAVELS ABOARD RADIATION …
+
+PHYS. REV. D 99, 104081 (2019)
+
+μ
+
+following Lagrangian: L ¼ 1=2gμν _xμ _xν with _xμ ¼ dx
+dσ .
+∂L
+Introducing canonical momenta as usual by pα ¼ ∂ x_ α,
+one can introduce an associated Hamiltonian,
+1
+H ¼ gαβ pα pβ :
+2
+
+ð18Þ
+
+Then, instead of solving Euler-Lagrange equations (17),
+one can advantageously solve rather their Hamiltonian
+counterparts:
+( dxμ
+
+μν
+dσ ¼ g pν
+dpμ
+1 ∂gαβ
+dσ ¼ − 2 ∂xμ pα pβ :
+
+ð19Þ
+
+The contravariant metric components ½gαβ  read
+0
+
+0
+
+1
+
+0
+
+B 1 2rαcosðθÞ − 1þ2M=r −αsinðθÞ
+B
+B
+@ 0
+−αsinðθÞ
+−1=r2
+0
+
+0
+
+0
+
+1
+
+0
+
+C
+C
+C;
+A
+
+0
+0
+−1=ðr2 :sin2 ðθÞ
+
+where the þ (−) sign is for incoming (outgoing) geodesics.
+According to this, the (co)geodesic equations (19) can now
+be written down (c ¼ 1, a dot indicating a derivative with
+respect to τ),
+dτ
+¼ pr
+dσ
+
+
+dr
+M
+¼ pτ − pr 1 − 2 − 2αrcosðθÞ − pθ αsinðθÞ
+dσ
+r
+
+ð20Þ
+ð21Þ
+
+H¼−
+
+
+
+p2φ
+p2r
+2M
+−
+2rα
+cosðθÞ
+−
+1
+−
+r
+2r2 sin2 ðθÞ 2
+
+− α sinðθÞpr pθ  pτ pr −
+
+p2θ
+:
+2r2
+
+ð27Þ
+
+For light rays, or null geodesics, H identically vanishes,
+while for matter geodesics, H < 0, and both types of
+geodesics obey the same set of ordinary differential
+equations (19).
+A first trivial particular solution is given by constant τ, θ,
+and φ, while r ∼ σ (pr ¼ pθ ¼ pφ ¼ 0, pτ ¼ cst), which
+shows that τ is indeed a null coordinate. Special relativity
+describes motion at constant velocity and vanishing mass
+corresponding to the special case M ¼ α ¼ 0, which yields
+a second class of particular solutions: these are null
+geodesics, pφ ¼ pθ ¼ 0, pr ¼ 2pτ ≠ 0, and therefore
+τ ¼ τ0 ∓ 2r (the case of vanishing pr is the previous
+trivial solution).
+In the general case, spacetime geometry around the
+photon rocket is ruled by the two functions M and α,
+which can be obtained by solving the relativistic rocket
+equations given the radiation reaction 4-force (see Sec. II).
+However, the mass function can be safely neglected in any
+physical situation except those of huge luminosity of the
+rocket. To see this, one can simply rewrite the metric (3)
+with the characteristic units introduced before, by setting
+s ¼ τ=τc and R ¼ r=ðcτc Þ with τc ¼ m0 c2 =jf T j being the
+characteristic timescale of the photon rocket physical
+system. Doing so, the mass term M=r in Eq. (3) reduces
+to M=R × ðGjf T j=c5 Þ (m ¼ M:m0 ), and the product
+T
+5
+α · M ¼ − dψ
+ds :M × ðGjf j=c Þ. This means that one can
+safely neglect the mass effect carried by M in front of the
+acceleration effect due to α as long as
+
+dθ
+p
+¼ − 2θ − pr α sinðθÞ
+dσ
+r
+
+ð22Þ
+
+GL
+≪ 1;
+c5
+
+pφ
+dφ
+¼− 2 2
+dσ
+r sin ðθÞ
+
+ð23Þ
+
+dpτ
+p2
+_
+¼ pr pθ sinðθÞα_ − r ð _α cosðθÞr2 þ MÞ
+dσ
+r
+
+ð24Þ
+
+p2φ
+dpr p2r
+p2
+− 3θ
+¼ 2 ð−α cosðθÞr2 þ MÞ − 3 2
+dσ
+r
+r sin ðθÞ r
+
+ð25Þ
+
+p2φ cosðθÞ
+dpθ
+;
+¼ pr αðpθ cosðθÞ þ pr r sinðθÞÞ − 2 3
+dσ
+r sin ðθÞ
+
+ð26Þ
+
+where we have replaced jf T j by L, the luminosity driving
+the photon rocket. It is surprising to notice that it is not the
+rest mass m0 but the luminosity L that matters for the
+photon rocket spacetime geometry [22]. One can interestingly ask for which kind of physical phenomena the mass
+function M should not be neglected anymore. Well, a
+remarkable example is binary black hole mergers and
+their recoil (also dubbed a black hole kick) through the
+anisotropic emission of gravitational waves during merging. For instance, in the very final moments of the
+GW150914 binary black hole merger event, the emitted
+power of gravitational radiation reached about 1049 W [23],
+so that GL=c5 ≈ 10−3 . With such luminosity, the complete
+photon rocket metric, including M and α, should be
+considered in characterizing the spacetime geometry
+around a black hole merger self-accelerated by its anisotropic emission of gravitational waves. As a matter of
+
+with pφ a constant of motion, since the metric does not
+explicitly depend on φ (axial symmetry). The corresponding Hamiltonian, which is also a constant of motion
+dH=dσ ¼ 0, is given by
+
+104081-9
+
+ð28Þ
+
+ANDRÉ FÜZFA
+
+PHYS. REV. D 99, 104081 (2019)
+
+comparison, electromagnetic record luminosities are far
+lower: the most brilliant supernova reached a luminosity of
+only 1038 W [24] (with GL=c5 ≈ 10−15 ), while the brightest quasar, 3C273, has luminosity of order 1039 W [25]
+(yielding GL=c5 ≈ 10−14 ). It is also worth noticing that the
+luminosity L ¼ c5 =ð2GÞ appears as an absolute upper
+bound build from dimensional considerations in general
+relativity by Hogan [26] and is dubbed Planck luminosity.
+In what follows, we will apply photon rockets to models
+of interstellar travel and will assume weak luminosities in
+the sense of Eq. (28) such that their mass function is
+negligible M ≪ 1. Future works should investigate further
+the applications of photon rocket spacetimes to the modeling of astrophysical events such as black hole merger
+recoil.
+B. Relativistic aberration and Doppler effect
+for accelerated relativistic travelers
+We now derive from null geodesics of the Kinnersley
+metric two important effects on the light signals received by
+an accelerated observer moving at relativistic velocities: the
+deviation of the incidence angle, also called as relativistic
+aberration, and the frequency shift. We assume the traveler
+undergoes an accelerated trajectory, starting from rest at
+τ ¼ 0 and Zð0Þ ¼ Tð0Þ ¼ ψð0Þ ¼ 0 such that the coordinates ðθ; φÞ at start τ ¼ 0 are usual spherical coordinates
+(see Eqs. (4) and Ref. [9]) that can be used to map the
+reference celestial sphere. This reference celestial sphere
+also corresponds to the one of the inertial observer of which
+the worldline is tangent to the traveler’s worldline at
+departure τ ¼ 0. We are interested in the trajectories of
+light rays between departure τ ¼ 0 up to their reception by
+the interstellar traveler at some proper time τ ¼ τR , since
+the paths of light rays before traveler’s departure τ < 0 are
+not affected by its motion (the traveler stayed at rest at
+home at τ < 0). We also assume here that M ¼ 0, since we
+are not considering extreme luminosities as mentioned
+above, and therefore Eq. (3) will describe Minkowski flat
+spacetime (see also Ref. [9]) but from the point of view of
+the accelerated traveler. In this accelerated frame, light rays
+will undergo angular deviation, leading to relativistic
+aberration and frequency shifts (Doppler effect) which
+are different from those described by special relativity
+with motion at constant velocity. Both effects are of crucial
+importance for the interstellar traveler since this affects not
+only its telecommunications but also its navigation by
+modifying positions and color of the guiding stars. As we
+shall see below, these effects both depend on the trajectory
+followed by the traveler.
+Indeed, light ray trajectories are solutions of the
+geodesic equations Eqs. (20)–(26) with a null value of
+the Hamiltonian (27), and these solutions depend on the
+time variation of the acceleration function αðτÞ (M can be
+safely neglected unless one faces extreme luminosities).
+
+Here, we will solve the geodesic equations (20)–(26) by
+integrating numerically backward in time, from the reception of the light ray by the traveler at (τ ¼ τR , r ¼ 0,
+θ ¼ θR , φ ¼ φR ) back to the time of the traveler’s departure
+τ ¼ 0 at which the light ray was emitted by the reference
+celestial sphere at τ ¼ 0, r ¼ rE , θE , φE . In order to
+compute the local celestial sphere of the traveler (who is
+located at r ¼ 0), we are interested in incoming light rays
+with the two following features. First, they have a null
+impact parameter (i.e., pφ ¼ 0 yielding φR ¼ φE by
+Eq. (23). Second, smoothness of the null geodesics at
+reception rðτR Þ ¼ 0 requires that pθ ðτR Þ ¼ 0·. Since τR and
+θR are considered as free parameters, this leaves only two
+initial conditions, pr ðτR Þ, pτ ðτR Þ, to be determined. From
+Eqs. (20)–(26), we can set, without loss of generality,
+pr ðτR Þ ¼ 1 so that τ ≈ σ at reception (the affine parameter
+is then simply scaled by choice to proper time at reception).
+pτ ðτR Þ must then be obtained by solving the Hamiltonian
+constraint H ¼ 0 (27) with respect to pτ , given all the other
+initial conditions at τ ¼ τR . This achieves fixing our set of
+initial conditions at given τR . Then, integrating backward
+the geodesics equations (20)–(26) until the rays were
+emitted from the reference celestial sphere at τ ¼ 0, one
+can compute the angular deviation and the frequency shifts
+of light between the reference celestial sphere at τ ¼ 0 and
+the local celestial sphere of the traveler at τ ¼ τR .
+To compute relativistic aberration for the accelerated
+traveler, one needs to account for two contributions. The
+first is the angular coordinate change θR ≠ θE at both ends of
+the null geodesic (remember that pφ ¼ 0 so that φR ¼ φE ).
+The second input comes from the fact that the angular
+coordinate θR does not correspond anymore to the usual
+spherical coordinate at τ ¼ τR and ψ R ≠ 0. To find the
+corresponding angle ΘR on the local celestial sphere of the
+traveler, one has to move back to the instantaneous rest frame
+of the traveler. This is done by imposing
+ZR − ZL ðτR Þ ¼ ρ cos ΘR
+and
+X2 þ Y 2 ¼ r2R sin2 ðθR Þ ¼ ρ2 sin2 ðΘR Þ
+in the coordinate transformation (4), where ρ and ΘR are
+local spherical coordinates [27]. Doing so, we can write
+down the correspondence relation between both angles of
+incidence ΘR in the local traveler’s frame and the angular
+coordinate θR at reception τ ¼ τR as
+tan ΘR · ðβ þ cos θR Þ ¼ sin θR · ð1 − β2 Þ1=2
+
+ð29Þ
+
+with β ¼ tanh ψ R . One can check that Eq. (29) is identical to
+the formula of relativistic aberration in special relativity as
+obtained by Einstein in Refs. [5,28] for motion at constant
+velocity for which θR is then the angle of incidence as
+
+104081-10
+
+INTERSTELLAR TRAVELS ABOARD RADIATION …
+
+PHYS. REV. D 99, 104081 (2019)
+
+measured by the observer at rest (and θE ¼ θR in special
+relativity). The aberration angle for the accelerated observer
+is therefore given by ΘR ¼ ΘR ðθE Þ with ΘR given by
+Eq. (29) in which θR is a function of θE as obtained by
+the backward integration of null geodesic equations.
+Of course, in the case of motion at constant velocity
+ψ ¼ cst, α ¼ 0, and null geodesics are given by the trivial
+solution pφ ¼ pθ ¼ 0, pr ¼ 2pτ ¼ 1, τ ¼ τ0 ∓ 2r, such
+that one has θR ¼ θE leading to the special relativistic
+aberration described by Eq. (29). Quite interestingly,
+among all possible traveler’s worldlines, there is a nontrivial one for which there is also no angular deviation
+θðσÞ ¼ cst, or in other words θR ¼ θE , and the relativistic
+aberration of the accelerated traveler reduces to the one of
+special relativity and motion at a constant velocity. This is
+the case when αðτÞ ¼ cst, which corresponds to the hyperbolic motion of Sec. II. Indeed, setting dθ=dσ ¼ 0 in
+Eq. (22), one obtains that
+
+at ðXE ; Y E ; ZE Þ with assumed no proper motion at the
+position ðθE ; φE Þ on the reference celestial sphere and of
+which the light frequencies of the emitted light rays are
+those observed by the inertial observer stayed at home. The
+components of the tangent vector to the emitter’s worldline
+are given by dxμ =dT ¼ dðτE ; rE ; θE ; φE Þ=dT (and
+dφE =dT ¼ 0) and must be computed from Eqs. (4):
+
+pθ ¼ −pr r2 α sin θ:
+
+which we can substitute into the differentiations of
+Eqs. (34) and (35) with respect to T together with
+Eqs. (5) and (6) to find a system of linear equations for
+E drE
+the unknowns ðdτ
+dT ; dT Þ. Solving this system yields
+
+ð30Þ
+
+_ ¼ 0 (α ¼ cst, M ¼ 0), Eq. (24) yields
+Then, since _α ¼ M
+that pτ ¼ cst, of which the value can be obtained from the
+Hamiltonian constraint H ¼ 0. Solving Eq. (27) with
+respect to pτ and assuming pr ≠ 0, one finds that
+p
+pτ ¼ r ð1 − 2rα cos θ − α2 r2 sin2 θÞ:
+2
+
+dpr
+¼ −p2r ðα cos θ þ rα2 sin2 θÞ:
+dσ
+
+ð33Þ
+
+Finally, one can use Eqs. (30), (32), and (33) and pφ ¼ 0
+and dθ=dσ ¼ 0 to retrieve Eq. (26), showing that α ¼ cst
+implies dθ=dσ ¼ 0.
+Let us now focus on the Doppler effect, i.e., the
+frequency shift of light signals that are measured by the
+accelerated traveler in relativistic flight. The energy of
+the photon measured at spacetime event e by some observer
+is given by Ee ¼ h:νe ¼ ðpμ λ0μ Þe with λ0μ being the unit
+tangent vector to the observer O0 s worldline, h being
+Planck’s constant, and νe being the measured frequency of
+the photon. In this application, the receiver is the traveler,
+with worldline ðr ¼ 0; τÞ in his local coordinates, so that
+the received frequency of the photon is νR ∝ pτ ðτR Þ·. At
+start τ ¼ 0, we consider an emitter on the reference celestial
+sphere that has no proper motion with respect to the
+home position, corresponding to a worldline given by
+fixed inertial coordinates ðX; Y; ZÞτ¼0 ¼ ðXE ; Y E ; ZE Þ
+and proper time T. This models a fictitious star located
+
+ZE ¼ ZL þ rE · ½sinhðψ E Þ þ cosðθE Þ · coshðψ E Þ
+
+ð35Þ
+ð36Þ
+
+By differentiating each side of Eq. (36), one finds
+dθE
+tan θE drE
+¼−
+;
+dT
+rE dT
+
+dτE
+¼ cosh ψ E þ cos θE sinh ψ E
+dT
+drE
+¼ − cos θE sinh ψ E
+dT
+þ αE rE cos θE ðcosh ψ E þ cos θE sinh ψ E Þ·
+
+Putting Eqs. (30) and (31) and pφ ¼ 0 into Eqs. (21) and
+(25), we obtain
+ð32Þ
+
+ð34Þ
+
+ðXE þ Y E Þ1=2 ¼ rE sin θE ·
+
+ð31Þ
+
+dr
+¼ −pτ
+dσ
+
+T E ¼ T L þ rE · ½coshðψ E Þ þ cosðθE Þ · sinhðψ E Þ
+
+ð37Þ
+
+ð38Þ
+
+ð39Þ
+
+From this result, it is possible to retrieve the Doppler shift
+formula of special relativity since
+EE ¼ pτ ð0Þ
+
+dτE
+dr
+þ pr ð0Þ E
+dT
+dT
+
+1
+¼ ð− cos θE sinh ψ E þ cosh ψ E Þ
+2
+(remind that pτ ¼ 1=2 ¼ pr =2, pθ ¼ pφ ¼ 0, α ¼ 0 in this
+case) and
+ER ¼ pτ ðτR Þ
+
+dτR
+dτ
+þ pr ðrR Þ R ¼ 1=2
+dT
+dT
+
+drR
+R
+(since dτ
+dT ¼ 1 and dT ¼ 0). The ratio EE =ER then identically matches the relativistic Doppler effect formula
+(cf. Ref. [4]),
+ 
+qﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+νR
+ð40Þ
+¼ ð1 − βE cos θE Þ−1 · 1 − β2E ;
+νE SR
+
+with βE ¼ tanh ψ E . For accelerated motions, αE ≠ 0, and
+considering that we started at rest, ψ E ¼ 0, Eqs. (37)–(39)
+yield simply
+
+104081-11
+
+ANDRÉ FÜZFA
+
+PHYS. REV. D 99, 104081 (2019)
+
+1.5
+1
+1
+0.5
+
+0
+
+From these relations, one can compute the unit tangent
+vector of the emitter at time of emission,
+
+0.5
+
+0
+
+1
+
+0
+
+2
+
+r. cos( )
+
+0
+
+1
+
+2
+
+r. cos( )
+10-10
+
+1 dðτE ; rE ; θE Þ
+;
+N
+dT
+
+0.4
+Hamiltonian H
+
+λ0τ;r;θ ¼
+
+2
+
+1.5
+
+dτE
+¼1
+dT
+drE
+¼ rE cosðθE ÞαE
+dτ
+dθE
+¼ − sinðθE ÞαE :
+dτ
+
+0.3
+
+where
+
+0.2
+
+rﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+dxα dxβ
+N ¼ gαβ
+dT dT
+
+0.1
+
+is the norm of the tangent vector λ0μ ¼ dxμ =dT.
+The photon energy at emission e ¼ E is therefore
+EE ¼ ðpμ · λ0μÞ jðτE ¼0Þ . Finally, the frequency shift is simply
+given by ER =EE, the ratio of the received frequency νR over
+the emitted one, νE .
+The first type is (a) the hyperbolic motion, given by
+ψ ¼ s (α0 ¼ −dψ=ds ¼ −1 in characteristic units) and
+M ¼ es with s ¼ τ=τc , τc being the characteristic time
+defined in Sec. II. This case of hyperbolic motion is a
+critical point for which aberration of the accelerated
+traveller is the one described by special relativity. For
+reasons that will appear clearly below, we choose to
+consider also two other types: (b) a perfect light sail (see
+Sec. II) for which α0 monotonically increases from
+α0 ð0Þ ¼ −2 to α0 → 0 when s → ∞ and (c) an emission
+rocket with constant output power Eqs. (15) and (16) in
+which α0 ≤ −1.
+Figure 7 presents the convergence of null geodesics
+toward the observer at [τ ¼ τR , r ¼ 0 and V Z ðτR Þ ¼
+0.9 · c] as plots of the proper time τðσÞ along the null
+geodesics as functions of r · cos θ for the three different
+photon rockets mentioned above hyperbolic motion, light
+sail, and emission rocket. The different curves corresponds to different initial conditions θR . One can clearly
+see the Minkowskian regime τ ∼ 2r of the null geodesics
+as rðσÞ → 0, and the metric (3) becomes close to the case
+of motion at constant velocity α ¼ 0 (remember that
+M ¼ 0 here). Also shown in Fig. 7 is a consistency check
+through the violation of the Hamiltonian constraint
+H ¼ 0 along the null geodesics; this constraint is found
+to be pretty stable, and the value of H is kept around the order
+of magnitude of the numerical integrator tolerance. In
+establishing the following results, we have always monitored
+this Hamiltonian constraint, which has been found to be quite
+robust and always controlled by the numerical integration
+tolerance.
+
+0
+-0.2
+
+0
+
+0.2
+
+r. cos( )
+
+0.4
+
+10-12
+
+10-14
+
+-1
+
+-0.8 -0.6 -0.4 -0.2
+
+0
+
+/ 0
+
+FIG. 7. Convergence of null geodesics toward the traveler at
+(r ¼ 0, τ ¼ τR ) and tanhðψ R Þ ¼ 0.9 for different values of the
+initial emission angle θE (upper left panel: hyperbolic motion
+with α ¼ 1; upper right panel: light sail; lower left panel:
+emission rocket with constant driving power; lower right panel:
+Hamiltonian for the case of hyperbolic motion and a tolerance of
+the integrator of 10−12 , the exact value for H is zero for null
+geodesics).
+
+Figure 8 presents the relativistic aberration for the
+accelerated traveler as proper time evolves aboard a rocket
+with α ¼ 1 (top panel), a light sail (central panel), and an
+emission photon rocket (bottom panel). The case of hyperbolic motion gives rise to the same relativistic aberration as
+if the traveler were in motion at constant velocity,
+ΘR ¼ ΘSR , as explained above (see Fig. 8, top panel)
+and is shown for reference of the two other cases. In the
+case of a light sail (central panel in Fig. 8), one has that the
+received angle of incidence ΘR gets greater and greater than
+the angle of incidence at start θE as the traveler accelerates
+and increases its velocity. However, one can see from Fig. 8
+(central panel) that this effect is quantitatively smaller than
+the aberration in special relativity (θE ðΘSR Þ is shown as a
+dashed line) for the light sail: ΘR < ΘSR . In the case of an
+emission rocket in Fig. 8 (bottom panel), the angle of
+incidence as measured by the accelerated traveler ΘR is
+greater than the case of special relativity: ΘR > ΘSR .
+Hence, we have shown that relativistic aberration of an
+accelerated observer depends on the type of photon rocket.
+Figure 9 presents the Doppler effect for the accelerated
+traveler aboard the three different photon rockets discussed
+here, through the ratio νR =νE as a function of the direction
+of reception ΘR . The unit circle marks the transition from
+
+104081-12
+
+INTERSTELLAR TRAVELS ABOARD RADIATION …
+
+PHYS. REV. D 99, 104081 (2019)
+
+180
+
+90
+120
+
+160
+
+60
+
+140
+120
+
+150
+
+30
+
+E
+
+100
+80
+60
+40
+
+180
+
+0
+
+20
+0
+0
+
+50
+
+100
+
+1
+
+0
+3
+
+2
+
+150
+
+R
+
+90
+
+180
+
+120
+
+160
+
+60
+
+140
+120
+
+30
+
+150
+E
+
+100
+80
+60
+40
+
+180
+
+0
+
+20
+0
+0
+
+50
+
+100
+
+1
+
+0
+3
+
+2
+
+150
+
+R
+
+90
+
+180
+
+120
+
+160
+
+60
+
+140
+120
+
+150
+
+30
+
+E
+
+100
+80
+60
+40
+
+180
+
+20
+0
+0
+
+50
+
+100
+
+150
+
+R
+
+FIG. 8. Relativistic aberration for the accelerated traveler
+through the angle of incidence at emission θE as a function of
+the received angle of incidence ΘR for the hyperbolic motion
+(top), light sail (center), and emission rocket (bottom) at various
+velocities (V Z =c ¼ 0.2, 0.39, 0.57, 0.76, 0.95). Relativistic
+aberration for a motion at constant velocity of V Z =c ¼ 0.95 in
+special relativity is given as a black dashed line.
+
+redshifts νR =νE < 1 (for directions of reception ΘR far from
+zero) to blueshifts νR =νE > 1 (for directions of reception
+ΘR ≈ 0 close to that of motion). The emission rocket
+presents Doppler shifts that are found close to those
+described by special relativity [Eq. (40) for β ¼ 0.95 is
+
+0
+
+1
+
+2
+
+0
+3
+
+FIG. 9. Directional plots of the frequency shifts ðνR =νE ÞðΘÞ for
+the hyperbolic motion (top), light sail (center), and emission
+rocket (bottom) at various velocities (V Z =c ¼ 0.2, 0.39, 0.57,
+0.76, 0.95). The Doppler effect for a motion at constant velocity
+of V Z =c ¼ 0.95 in special relativity is given as a black dashed
+line, while the unit circle separates redshifts νR =νE < 1 from
+blueshifts νR =νE > 1
+
+shown as dashed lines in Fig. 9]. For hyperbolic motion and
+light sails, the Doppler effect for accelerated travelers
+departs farther and farther from the special relativistic
+value (40) as the velocity increases. The departures from
+the special relativistic case are, however, stronger with
+higher velocities and can be understood since in all the
+cases considered here we have αE ≠ 0. However, it must be
+noticed that on-axis Doppler shifts (for ΘR ¼ 0; π) are
+
+104081-13
+
+ANDRÉ FÜZFA
+
+PHYS. REV. D 99, 104081 (2019)
+
+given by the formula from special relativity (40) even when
+αE ≠ 0. Indeed, for θ ¼ 0; π, we have that pθ is conserved
+[since sin θ ¼ 0 in Eq. (22)] and therefore θE ¼ θR ¼ 0; π
+and, from Eq. (29), ΘR ¼ θR ¼ 0; π.
+C. Application: Deformation of the interstellar
+traveler’s local celestial sphere
+In this section, we build a model of the deformation of
+the local celestial sphere of the accelerated traveler during
+his trip toward a distant star under the combined effects of
+relativistic aberration, Doppler frequency shifts, and focusing of light under time dilation.
+Our reference celestial sphere will be given by data from
+the fifth edition of the Yale Bright Star Catalogue [29] in
+which we choose some star for the traveler’s destination
+and map through appropriate axis rotations the right
+ascension and declination coordinates onto spherical coordinates (θE , φ) at τ ¼ 0 with the axis Z pointing toward the
+destination star. For each star in the catalog, we can also
+obtain the temperature from its B-V magnitude2 from the
+results in Ref. [30]. With this temperature in hand, we have
+a blackbody spectrum for each star in the catalog, and from
+this spectrum, we can associate a specific color from
+colorimetric considerations [31]. For aesthetic reasons,
+we choose the destination star as Alnilam, at the center
+of the Orion belt, and will show only some field of view
+centered around the front and rear directions of the
+interstellar rockets. To reconstruct a local view of the
+accelerated traveler at proper time τR , we will loop on each
+star in the catalog and compute both its local position and
+color, taking into account relativistic aberration and the
+Doppler effect as follows. From the angle of incidence θE
+of a given star in the catalog, we can obtain the observed
+angle of incidence ΘR from our previous results in Fig. 8
+and hence the associated position on the traveler’s local
+celestial sphere. The observed angle of incidence ΘR of the
+star will also determine its frequency shift from relations
+shown in Fig. 9 and a rendering of some star’s observed
+color by applying the associated Doppler shift to the star’s
+blackbody spectrum to obtain a RGB triplet from our
+colorimetric functions. Finally, each star lying in the
+field of view is plotted as a sphere located at the found
+position, with color associated to the shifted blackbody
+spectrum. We also have to take into account the focusing
+effect of special relativity: the luminosity of the stars
+measured by the traveler is increased by the Lorentz factor
+Γ ¼ ð1 − β2 Þ−1=2 due to time dilation. Therefore, the
+apparent magnitude for the traveler mT is related to the
+magnitude on the reference celestial sphere m0 by
+the following relation:
+2
+
+In this context, B and V refers to two different spectral bands
+in the visible spectrum, which are standard in astrophysics. The B
+(for Blue) band is centered around a wavelength of 442 nm while
+the V (for Visible) is centered around 540 nm.
+
+mT ¼ m0 − 2.5 log10 Γ:
+Finally, each star lying in the field of view is plotted as a
+sphere located at the found position, with color associated
+to the shifted blackbody spectrum and a size inversely
+proportional to its visual magnitude mT , which is restricted
+to mT ≤ 6. The accelerated observer is located at the center
+of the local celestial sphere looking either in the front
+(Fig. 10) or the rear (Fig. 11) directions of motion.
+The evolution of the traveler’s celestial sphere heading
+toward Alnilam as its velocity increases is given in Figs. 10
+and 11 for an emission rocket and a light sail. Remember
+that the acceleration modifies both relativistic aberration
+and the Doppler effect compared to their descriptions in
+special relativity. Doing so, the relativistic beaming is
+observed in the front view (Fig. 10), but it is stronger
+for the emission rocket and weaker for the light sail than
+what is predicted by special relativity. One can see this by
+looking at how the asterism of the Winter Hexagon shrinks
+more rapidly aboard an emission rocket than aboard a light
+sail as velocity increases. One can also see how the Big
+Dipper in the upper left appears earlier in the field of view
+for the emission rocket than for the light sail (Fig. 10,
+central panel). The Doppler effect is responsible for the nice
+reddening of stars outside of some cone centered on the
+destination, while stars that are observed close to the front
+direction appear bluer than they are in their rest frame. The
+solid angle in which stars are bluer is slightly smaller for the
+light sail than for the emission rocket, but the blueshift in
+the light sail case is stronger (see Fig. 10, bottom panel, and
+Fig. 9, top and bottom panels). Figure 11 presents the
+evolution of the rear view from the photon rockets as time
+evolves. At β ¼ 0.2, the rear views are pretty similar aboard
+both photon rockets, where one can easily recognize the
+majestic constellations of Scorpius and Sagittarius (bottom
+of the field of view), Lyra (upper left), Aquila and
+Delphinus (on the left). Then, as the velocity increases,
+this rear view is emptied of stars more rapidly aboard the
+emission rocket than aboard a light sail. This can be seen
+while looking at how Scorpius and Aquila are leaving the
+field of rear view. This difference is due to the stronger
+relativistic aberration for the emission rocket. The Doppler
+shift on the rear is in both cases very close to the one
+predicted by special relativity for angles of incidence above
+120 deg, as can also be seen from Fig. 9.
+From the results presented here, it is possible to model
+the local celestial sphere of any accelerated relativistic
+observer, in any journey toward any star neither on a single
+nor on a return trip. As shown above, the mass function M
+can safely be neglected for sub-Planckian luminosities.
+Therefore, one simply needs to provide a smooth acceleration profile αðτÞ for the journey of interest, so that the
+spacetime metric is well defined without discontinuities,
+and use our procedure to compute the relativistic effects on
+incoming light signals.
+
+104081-14
+
+INTERSTELLAR TRAVELS ABOARD RADIATION …
+
+PHYS. REV. D 99, 104081 (2019)
+
+FIG. 10. Front views for travelers aboard photon rockets during their trip toward star Alnilam, at the center of the field of view, for
+increasing velocities (left: emission rocket; right: light sail).
+
+104081-15
+
+ANDRÉ FÜZFA
+
+PHYS. REV. D 99, 104081 (2019)
+
+FIG. 11. Rear views for travelers aboard photon rockets during their trip toward star Alnilam as their velocity increases (left: emission
+rocket; right: light sail).
+
+104081-16
+
+INTERSTELLAR TRAVELS ABOARD RADIATION …
+IV. CONCLUSION
+Interstellar travel at relativistic velocity (V ≲ c) is not
+forbidden by any physical laws. Even better, it could be
+done in principle without the need of any massive propellant, without invoking any speculative physics and with trip
+duration significantly reduced by relativistic time dilation.
+Indeed, energy-momentum conservation in relativity
+allows propulsion using anisotropic emission or absorption
+of radiation, leading to accelerated trajectories on which
+time is slowed down as it is in the equivalent gravity field.
+These principles are actually well known but are often not
+correctly dealt with in discussions on this unfortunately
+somewhat controversial subject. Deep space propulsion by
+the reaction of radiation emission or absorption is at the
+basis of many plausible and working devices such as solar/
+laser-pushed sails, photonic propulsion, pure antimatter
+rockets, or radiative cooling rockets. Indeed, radiative
+rockets could even be propelled by the least noble type
+of energy, which is heat, through collimating the blackbody
+radiation of some hot radiator. It is the energy cost of
+interstellar travel that really prevents it from becoming a
+practical reality.
+In addition, what has been missing so far is a rigorous
+physical modeling of radiation rockets in the framework of
+general relativity, which is unavoidable when one deals
+with accelerations, and this is the contribution of the
+present paper. Kinnersley’s solution of general relativity
+gives a pointlike description of a photon rocket, although
+Einstein’s equations reduce in this case to a single relation
+between the two functions of acceleration and mass in the
+metric and the (incoming and outgoing) radiation flux. To
+disentangle this problem, we use the energy-momentum
+conservation, which leads to the usual relativistic kinematics of the point particle, and derive specific models for light
+sails and radiative cooling rockets. We then applied these
+models to the practical example of interstellar trips to the
+Proxima Centauri star system, deriving important physical
+quantities for the acceleration, the variation of the rocket’s
+inertial mass, and the time dilation aboard the rockets. It is
+shown how the strategy of ultralight laser sails is far more
+plausible than a manned radiative cooling rocket, notably
+from the point of view of the energy cost. Indeed, while the
+former would require a few days of operation of a single
+nuclear reactor, the latter would require about 15 times the
+annual world energy production…for a single mission.
+Among the (numerous) technological challenges to
+achieve such an interstellar mission, there are the questions
+raised by telecommunication, course correction, navigation, and imaging at the destination. All these issues depend
+on how light rays are perceived by the traveler, and this
+depends on its past acceleration. By using the Hamiltonian
+formulation of geodesic flow, we have computed the
+trajectories of the incoming light rays for various types
+of radiation-powered rockets and derive the relativistic
+
+PHYS. REV. D 99, 104081 (2019)
+aberration (angular deviation of null geodesics) and
+Doppler effect (frequency shifts) experienced by the
+accelerated travelers. Our results extend the predictions
+of special relativity that are only valid for motion at
+constant velocity. It was also established analytically that,
+in the case of hyperbolic motion with constant norm of
+4-acceleration, the aberration is strictly the same as in
+special relativity but not the Doppler effect. In general,
+different acceleration histories lead to stronger or weaker
+relativistic aberrations and Doppler shifts. We also built
+visualizations for the traveler’s local celestial sphere that
+account for the modified aberration and Doppler effects
+found and showed what panoramas aboard an accelerated
+spaceship heading toward star Alnilam would look like.
+The mass function of the Kinnersley metric was
+neglected while computing the modifications of relativistic
+beaming and the Doppler effect mentioned above. This is a
+rather safe assumption for the case of interstellar travels
+aboard radiation-powered rockets since we showed that the
+effects of acceleration largely dominate those of rocket
+inertial mass when the luminosity that powers the radiation
+rocket is much less than the huge value c5 =G ≈ 1052 W,
+sometimes referred to as Planck luminosity. Quite interestingly, the extreme amount of energy lost in gravitational
+radiation by binary black hole mergers would constitute an
+astrophysical application of Kinnersley metric where one
+could not neglect the effect of the mass function anymore.
+In particular, further studies should interestingly investigate
+the impact of the mass function on the Doppler effect and
+relativistic beaming associated to the radiation recoil of the
+merger. This can be done by using the cogeodesic equations
+derived here and applying them to mass and acceleration
+functions modeling the merger.
+It is often (naively?) hoped that moving to other star
+systems will be our only escape if one day this planet
+becomes inhospitable. But actually, developing interstellar
+travel might well precipitate the exhaust of our planet
+resources. In our view, it is crucial that the difficulties and
+implications of interstellar travel are correctly taught, based
+on rigorous scientific argumentation. In addition, it seems
+to us that the time has come for starting the development of
+a technology demonstrator for a high-velocity radiationpowered rocket in the Solar System. The results of this
+paper are of direct application for the computation of the
+trajectory, the input-ouput transmissions to the probes, the
+relativistic aberration effects of image capture during a
+flyby, and course corrections of such a high-velocity
+demonstrator.
+We can now pave the way for interstellar exploration
+with radiation-powered rockets, beyond the engineering
+sketches and theoretical exploratory works done so far.
+Hopefully, we will at last leave ourselves to this intimate
+experience common to all those who go out stargazing: the
+appeal of the stars.
+
+104081-17
+
+ANDRÉ FÜZFA
+
+PHYS. REV. D 99, 104081 (2019)
+
+ACKNOWLEDGMENTS
+The author warmly thanks the anonymous referee and R.
+Lehoucq for their pertinent and encouraging remarks that
+helped improve the paper and its readability. This research
+was made during a scientific sabbatical funded by the Fonds
+National de la Recherche Scientifique F.R.S.-FNRS. This
+research used resources of the "Plateforme Technologique de
+
+[1] A. Camus, The Myth of Sisyphus, translated from French by
+J. O’Brien, (Vintage Books, New York, 2018), http://www
+.vintagebooks.com/.
+[2] Actually, the fastest object is the Voyager 1 probe with a
+record interplanetary cruise velocity of ∼17 km=s. Please
+note that other spacecrafts, like Parker Solar Probe, have
+reached a 10 times higher peak speed on some parts of their
+trajectory.
+[3] K. F. Long, Deep Space Propulsion–A Roadmap to Interstellar Flight (Springer, New York, 2012).
+[4] https://breakthroughinitiatives.org/initiative/3.
+[5] E. Gourgoulhon, Relativité Restreinte–Des particules à
+l’astrophysique (EDP Sciences & CNRS Editions, Paris,
+France, 2010).
+[6] W. Kinnersley, Field of an arbitrarily accelerating point
+mass, Phys. Rev. 186, 1335 (1969).
+[7] P. Vaidya, The gravitational field of a radiating star, Indian
+Acad. Sci. A 33, 264 (1951); R. W. Lindquist, R. A.
+Schwartz, and C. W. Misner, Vaidya's radiating schwarzschild metric, Phys. Rev. 137, B1364 (1965).
+[8] H. Stephani, D. Kramer, M. MacCallum, C. Hoenselaers,
+and E. Herlt, Exact Solutions of Einstein’s Field Equations,
+2nd ed. (Cambridge University Press, Cambridge, England,
+2003).
+[9] W. B. Bonnor, The photon rocket, Classical Quantum
+Gravity 11, 2007 (1994).
+[10] In addition, it was shown in Ref. [13] that a radiation rocket
+can be powered by gravitational waves as well.
+[11] W. B. Bonnor, Another photon rocket, Classical Quantum
+Gravity 13, 277 (1996).
+[12] J. Podolsky, Photon rockets in the (anti-)de Sitter universe,
+Phys. Rev. D 78, 044029 (2008).
+[13] W. B. Bonnor and M. S. Piper, The gravitational wave
+rocket, Classical Quantum Gravity 14, 2895 (1997).
+[14] J. Podolsky, Photon rockets moving arbitrarily in any
+dimension, Int. J. Mod. Phys. D 20, 335 (2011).
+[15] T. Damour, Photon rockets and gravitational radiation,
+Classical Quantum Gravity 12, 725 (1995).
+[16] S. Carlip, Aberration and the speed of gravity, Phys. Lett. A
+267, 81 (2000).
+
+Calcul Intensif (PTCI)" (http://www.ptci.unamur.be)
+located at the University of Namur, Belgium, which is
+supported by the FNRS-FRFC, the Walloon Region, and
+the University of Namur (Conventions No. 2.5020.11, GEQ
+U.G006.15, 1610468 et RW/GEQ2016). The PTCI is
+member of the "Consortium des Équipements de Calcul
+Intensif (CÉCI)" (http://www.ceci-hpc.be).
+
+[17] C. Rubbia, Nuclear space propulsion with a pure electromagnetic thrust, CERN Report No. CERN-SL-2002-006,
+2002, http://cds.cern.ch/record/541446.
+[18] J. Ackeret, Zur Theorie der Raketen, Helv. Phys. Acta 19,
+103 (1946).
+[19] It must be recalled here that the 4-acceleration is defined as
+the variation of the tangent vector with proper time and is
+not directly the conventional 3-acceleration with respect to
+some inertial observer, which is a related yet different
+quantity.
+[20] D. Mihalas and B. Weibel-Mihalas, Foundations of
+Radiation Hydrodynamics, 2nd ed. (Dover, New York,
+1999).
+[21] C. W. Misner, J. A. Wheeler, and K. S. Thorne, Gravitation
+(Freeman, San Francisco, 1973).
+[22] In addition, it was shown by Bonnor in Ref. [9] that
+quadratic curvature invariants depend only on the mass
+function M and not on the acceleration function α.
+[23] P. B. Abbott et al. (LIGO Scientific and Virgo Collaborations), Observation of Gravitational Waves from a Binary
+Black Hole Merger, Phys. Rev. Lett. 116, 061102 (2016).
+[24] B. J. S. Dong et al., ASASSN-15lh: A highly superluminous supernova, Science 351, 257 (2016).
+[25] J. L. Greenstein and M. Schmidt, The Quasi-Stellar
+Radio Sources 3C 48 and 3C 273, Astrophys. J. 140, 1
+(1964).
+[26] C. J. Hogan, Energy flow in the Universe, NATO Sci. Ser. C
+565, 283 (2001).
+[27] The local azimutal coordinate Φ can be identified to the
+coordinate φ due to axial symmetry.
+[28] A. Einstein, Zur Elektrodynamik bewegter Körper, Ann.
+Phys. (Berlin) 322, 891 (1905).
+[29] D. Hoffleit, Catalogue of Bright Stars, edited by D. Hoffleit,
+3rd revised ed. (Yale University Observatory, New Haven,
+CT, 1964); data from fifth edition (1991) are available at
+http://tdc-www.harvard.edu/catalogs/bsc5.html.
+[30] F. J. Ballesteros, New insights into black bodies, Europhys.
+Lett. 97, 34008 (2012).
+[31] http://cvrl.ioo.ucl.ac.uk/.
+
+104081-18
+
+
