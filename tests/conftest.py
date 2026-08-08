@@ -1,9 +1,17 @@
-"""pytest 設定: [v2-retracted] 考古学テストの既定除外。
+"""pytest 設定: src/ パス追加と [v2-retracted] 考古学テストの既定除外。
 
 tests/archaeology/ 配下は marker `archaeology` を持ち、既定では skip される。
 明示実行: pytest --run-archaeology
 """
+import sys
+from pathlib import Path
+
 import pytest
+
+# src レイアウトを未インストールでも import 可能に(conventions.md §7 の環境)
+_SRC = Path(__file__).resolve().parents[1] / "src"
+if str(_SRC) not in sys.path:
+    sys.path.insert(0, str(_SRC))
 
 
 def pytest_addoption(parser):
