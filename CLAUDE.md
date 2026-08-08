@@ -175,6 +175,9 @@ drive spacetimes." arXiv:2602.18023 (2026).
 
 Füzfa, A. "Interstellar travels aboard radiation-powered rockets."
 Phys. Rev. D 99, 104081 (2019).
+
+Damour, T. "Photon rockets and gravitational radiation."
+Class. Quantum Grav. 12, 725–738 (1995). arXiv:gr-qc/9412063.
 ```
 
 warpax は MIT ライセンス。使用時は引用。

@@ -47,3 +47,12 @@ df9dd368a7c83726bb039e66945fbb9ebbb7e206fd22ae8b7e654c693ad44509  le_ec_verifica
 各 PDF に対し `pdftotext`(poppler)で `papers/*.txt` を生成済み(検索用)。
 式の転記は PDF 画像描画(Read)で照合する。テキスト抽出は数式が崩れるため、
 式台帳の一次ソースにはしない。
+
+## 追補(2026-08-08、EXT1 照合のための取得)
+
+| # | ファイル | arXiv ID / 版 | 頁数 | 役割 |
+|---|---|---|---|---|
+| 6 | `papers/fuzfa_2020_sailing.pdf` | 2007.03530(PRR 2, 043186, 2020) | 15 | **照合用参考**(オラクルではない)。EXT1 ④ の数値検証(2500g/13kt/1500K/162日の実出典) |
+
+SHA256: 下記(取得時固定)
+35e707c5bf023273743464997d889d7653a3efcf78ea80bf24c90bbc6d9446df  fuzfa_2020_sailing.pdf
