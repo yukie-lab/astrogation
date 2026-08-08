@@ -7,7 +7,8 @@
 - **タイトル (JA)**: 正エネルギーワープシェルの恒星間飛行プロファイルと観測署名
 - **Author**: Yukie Maeda(Independent Researcher, Tokyo)— ORCID: 0009-0005-3401-9230
 - **著者(日本語表記)**: 前田 幸枝(Yukie Maeda)
-- **論文 DOI(Zenodo 予約、2026-08-09)**: https://doi.org/10.5281/zenodo.21853092
+- **論文 DOI(公開済み 2026-08-08 UTC)**: https://doi.org/10.5281/zenodo.21853092
+- **コード DOI(GitHub リリース v1.0-paper 連携)**: https://doi.org/10.5281/zenodo.21853406
 - **License**: 論文 CC BY 4.0 / コード MIT
 - **Keywords**: warp drive; positive energy; photon rocket; Kinnersley;
   Bondi--Sachs; interstellar travel; trajectory optimization; transients;

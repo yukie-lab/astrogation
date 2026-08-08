@@ -39,13 +39,13 @@
       Zenodo DOI"` → `git push` → **`git tag v1.0-paper && git push origin
       v1.0-paper`**(タグは DOI 記入済みの最終コミットに載る — tex の
       タグ参照が自己整合する)
-- [ ] F3. **Public 化**: https://github.com/yukie-lab/astrogation/settings →
+- [x] F3. **Public 化**(完了): https://github.com/yukie-lab/astrogation/settings →
       General 最下部 Danger Zone → Change repository visibility → Public
-- [ ] F4. **コード DOI**: https://zenodo.org/account/settings/github/ で
+- [x] F4. **コード DOI**(完了 — 10.5281/zenodo.21853406): https://zenodo.org/account/settings/github/ で
       `yukie-lab/astrogation` を ON →
       https://github.com/yukie-lab/astrogation/releases/new → タグ
       `v1.0-paper` を選択 → Publish release → 数分後にコード DOI が自動発行
-- [ ] F5. **Zenodo Publish**: F1 の draft に戻り、F2 で再コンパイルした
+- [x] F5. **Zenodo Publish**(完了 — 2026-08-08 UTC 公開): F1 の draft に戻り、F2 で再コンパイルした
       PDF 2 本へ差し替え → Related works に F4 のコード DOI を追記 →
       **Publish**(論文 DOI 確定)
 - [ ] F6. **Jxiv**: https://jxiv.jst.go.jp/ → ログイン(未登録なら作成。
@@ -55,7 +55,7 @@
       publication_metadata.md → 利益相反なし・資金なし・AI 利用申告
       (「計算・実装・起草は Claude(Fable 5, Anthropic)、人間ゲート付き
       プロトコル。詳細は Methods」)→ 関連情報に論文 DOI・GitHub URL → 投稿
-- [ ] F7. **記録**: コード DOI・論文 DOI・タグ・公開日を
+- [x] F7. **記録**(P3_release_record.md、2026-08-09): コード DOI・論文 DOI・タグ・公開日を
       `docs/reports/P3_release_record.md` に記録し、コミット+push
 - [ ] F8. 床 tier 裁定(c 鎖 STOP)が将来解決した場合: results/ 再生成 →
       `make_paper_numbers.py` → 再コンパイル → Zenodo 新版(DOI は版管理)
