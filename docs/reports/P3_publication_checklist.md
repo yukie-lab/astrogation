@@ -48,7 +48,7 @@
 - [x] F5. **Zenodo Publish**(完了 — 2026-08-08 UTC 公開): F1 の draft に戻り、F2 で再コンパイルした
       PDF 2 本へ差し替え → Related works に F4 のコード DOI を追記 →
       **Publish**(論文 DOI 確定)
-- [ ] F6. **Jxiv**: https://jxiv.jst.go.jp/ → ログイン(未登録なら作成。
+- [x] F6. **Jxiv**(2026-08-09 投稿済み・スクリーニング待ち。公開後に ID/DOI を release_record へ追記): https://jxiv.jst.go.jp/ → ログイン(未登録なら作成。
       所属 = Independent Researcher)→ 新規投稿 → `paper/paper_ja.pdf` →
       氏名欄 姓=前田 名=幸枝 / 英語表記 姓=Maeda 名=Yukie /
       ORCID 0009-0005-3401-9230 / 分野=物理学 / 抄録 JA =

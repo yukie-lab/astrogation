@@ -21,7 +21,7 @@
 
 - F1〜F5(Zenodo draft → DOI 注入+タグ → Public 化 → コード DOI → Publish)
   **完了**
-- **F6(Jxiv 日本語版投入)は未実施** — 実施時に本記録へ Jxiv ID を追記する
+- **F6(Jxiv 日本語版)は投稿済み・公開待ち**(2026-08-09 投稿、スクリーニング中)— 公開通知後に Jxiv ID / DOI を本記録へ追記する
 - F8(床 tier 裁定解決時の改訂): 該当なし(c 鎖 STOP 継続中。解決時は
   results/ 再生成 → make_paper_numbers.py → 再コンパイル → Zenodo 新版)
 
