@@ -98,18 +98,32 @@ const PHYS = (() => {
   // 減衰スケール ~ e^(−η)/(7λ)(t_obs 単位、R=1)
   const flashDecayScale = (eta, lam = LAMBDA_BURN) =>
     Math.exp(-eta) / (7 * lam);
+  // SI 換算(units.py C_SI と同一値)。R_m はシェル半径のシナリオ仮定
+  const C_SI = 299792458;
+  const flashDecaySeconds = (eta, R_m, lam = LAMBDA_BURN) =>
+    flashDecayScale(eta, lam) * R_m / C_SI;
 
   // ---- 星野用の相対論(β・光行差・ドップラー — 演出層が消費) ----
   const beta = (eta) => Math.tanh(eta);
   const gammaOf = (eta) => Math.cosh(eta);
+
+  // ---- 計器盤用カタログ量(HUD の数値はすべてここ経由 — ダミー禁止) ----
+  const M31_DIST_LY = 2.54e6;          // conventions §7a(カタログ固定値)
+  const TAU_LIFETIME_YR = 50.0;        // 乗員寿命等高線の仕様値
+  // η₅₀ = arcsinh(D/τ)(論文 Table III の規約。往復は 2D)
+  const etaFifty = (dLy, tauYr) => Math.asinh(dLy / tauYr);
+  // 座席の値段 e^(2η)(論文 Table II / L40)
+  const seatPrice = (eta) => Math.exp(2 * eta);
 
   return {
     X0, LAMBDA_BURN, M31_DETA_TOT, G_X, G_V, C_X, C_V,
     m, x, ceiling, gLower, cCons, lambdaTier,
     patternN2, saturatedPattern,
     invDopplerV, aberrateV, observedFluxV, dtObsDu, deltaHeadOn,
-    flashLaw, flashDecayScale, beta, gammaOf,
+    flashLaw, flashDecayScale, C_SI, flashDecaySeconds, beta, gammaOf,
+    M31_DIST_LY, TAU_LIFETIME_YR, etaFifty, seatPrice,
   };
 })();
 
 if (typeof module !== "undefined" && module.exports) module.exports = PHYS;
+if (typeof window !== "undefined") window.PHYS = PHYS;

@@ -43,6 +43,12 @@ cd paper && tectonic paper_en.tex && tectonic paper_ja.tex
 公表数値はすべてラベルを相続する。[R] 厳密閉形式、[N] 公表数値(外挿禁止)、
 [H] 発見法(表示のみ)、[R(A3)/暫定] 照合待ちの保守床(論文 Methods 参照)。
 
+## シミュレータ
+
+`simulator/` に、認証済みカタログの上に組んだ Three.js の航海シークエンス
+がある(可視化作品。科学的主張は論文と公開データが担う —
+`simulator/README.md` の境界宣言を参照)。
+
 ## ライセンスと引用
 
 コード: MIT。論文: CC BY 4.0。warpax と world_tube(MIT、An T. Le)を使用。

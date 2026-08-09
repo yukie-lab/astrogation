@@ -106,6 +106,17 @@ function run() {
   check("g̲ 域外フォールバック(x=0.05 → 天井)",
         P.gLower(0.05), P.ceiling(0.05), 1e-14);
 
+  // --- 計器盤カタログ量(HUD 供給値の認証)
+  // η₅₀(M31)= arcsinh(2.54e6/50)。カタログ CSV 値(バーン補正込み)と
+  // 巡航支配閉形式の一致は論文 C14/C19 で確立済み — ここでは転記値と照合
+  check("HUD: etaFifty(M31, 50yr)", P.etaFifty(P.M31_DIST_LY, 50.0),
+        11.52879881422351, 1e-10);
+  check("HUD: seatPrice(0.24) = e^0.48", P.seatPrice(0.24),
+        1.6160744021928936, 1e-12);
+  // 減衰の SI 換算(R=1 km で ~15 ps — 論文 Sec. IV.E の表示値スケール)
+  check("HUD: flashDecaySeconds(12, 1 km)", P.flashDecaySeconds(12.0, 1000.0),
+        1.5409688980024305e-11, 1e-12);
+
   // --- 到着時間圧縮の恒等: dt_obs/du(v=0) = e^(−η) = 1/δ
   check("dt_obs/du(0, 12) = e^(−12)", P.dtObsDu(0.0, 12.0),
         1.0 / SNAP.m31.deltaHeadOn12, 1e-12);

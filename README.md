@@ -53,6 +53,12 @@ published numerics (never extrapolated), [H] heuristic (display only),
 [R(A3)/provisional] the conservative floor pending reconciliation (see the
 paper, Methods).
 
+## Simulator
+
+`simulator/` contains a Three.js voyage sequence built on the certified
+catalog (visualization artwork; scientific claims live in the paper and
+data — see `simulator/README.md`).
+
 ## License and citation
 
 Code: MIT. Paper: CC BY 4.0. This package uses warpax and world_tube
