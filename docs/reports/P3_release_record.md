@@ -16,6 +16,7 @@
 | 収録 PDF | `paper/paper_en.pdf`(英語正本)/ `paper/paper_ja.pdf`(日本語版)— DOI 注入済み 01:49 JST 再コンパイル版 |
 | 著者 | Yukie Maeda(前田 幸枝)、Independent Researcher, Tokyo、ORCID 0009-0005-3401-9230 |
 | ライセンス | 論文 CC BY 4.0 / コード MIT |
+| **GitHub Pages(2026-08-09 公開)** | ランディング https://yukie-lab.github.io/astrogation/(日本語版 …/index_ja.html)/ シミュレータ https://yukie-lab.github.io/astrogation/simulator/(英語既定、`?lang=ja` で日本語。ブラウザ版 P4-C20: …/simulator/test_snapshot.html)— 全 URL の 200 応答を確認済み |
 
 ## 状態
 

@@ -60,6 +60,8 @@ catalog (visualization artwork; scientific claims live in the paper and
 data — see `simulator/README.md`). English UI by default; Japanese via
 `?lang=ja` or the on-screen toggle. `index.html` at the repository root
 is the landing page (English-first, Japanese at `index_ja.html`).
+Live site: https://yukie-lab.github.io/astrogation/ (landing) —
+https://yukie-lab.github.io/astrogation/simulator/ (simulator).
 
 ## License and citation
 

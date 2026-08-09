@@ -50,6 +50,8 @@ cd paper && tectonic paper_en.tex && tectonic paper_ja.tex
 `simulator/README.md` の境界宣言を参照)。UI は英語が既定で、日本語は
 `?lang=ja` または画面トグルで明示指定する。リポジトリ直下の `index.html`
 がランディングページ(英語主、日本語版は `index_ja.html`)。
+公開サイト: https://yukie-lab.github.io/astrogation/(ランディング)/
+https://yukie-lab.github.io/astrogation/simulator/(シミュレータ)。
 
 ## ライセンスと引用
 
