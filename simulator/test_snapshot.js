@@ -15,6 +15,8 @@
  */
 "use strict";
 const P = (typeof PHYS !== "undefined") ? PHYS : require("./physics.js");
+const SF = (typeof SKY !== "undefined") ? SKY : require("./skyframe.js");
+const ST = (typeof STARS !== "undefined") ? STARS : require("./stars.js");
 
 const SNAP = {
   m31: {
@@ -59,6 +61,10 @@ function check(name, got, want, tol = TOL) {
 }
 function checkExactZero(name, got) {
   results.push({ name, got, want: 0, rel: Math.abs(got), pass: got === 0 });
+}
+function checkAbs(name, got, want, atol) {
+  const rel = Math.abs(got - want);
+  results.push({ name, got, want, rel, pass: rel <= atol });
 }
 
 function run() {
@@ -120,6 +126,31 @@ function run() {
   // --- 到着時間圧縮の恒等: dt_obs/du(v=0) = e^(−η) = 1/δ
   check("dt_obs/du(0, 12) = e^(−12)", P.dtObsDu(0.0, 12.0),
         1.0 / SNAP.m31.deltaHeadOn12, 1e-12);
+
+  // --- 二重時計(Phase 4 改訂 (d)): M31 到着プロファイル完走時の τ 合計が
+  //     カタログの固有時間列(mission grid u 終端、R_ref=1km)と一致
+  check("clock: missionTauR(M31 到着) = カタログ u 終端",
+        P.missionTauR(12.0, P.M31_DIST_LY, P.LAMBDA_BURN, 1000.0),
+        295293984180252.6, 1e-8);
+  check("clock: 巡航恒等 t_E = τ·cosh η(dτ/dt = 1/cosh η)",
+        P.tauCruiseR(1.0, 12.0) * Math.cosh(12.0),
+        P.tEarthCruiseR(1.0, 12.0), 1e-14);
+
+  // --- 実天球(Phase 4 改訂 (1)): 光行差ゼロ時に M31 方向 = 画面正面
+  //     (M31 は船首フレームの前方極 v=0。前方極は光行差の不動点)
+  checkAbs("skyframe: M31 → 前方極 v=0",
+           SF.shipFrameVPhi(SF.M31_RA_DEG, SF.M31_DEC_DEG).v, 0, 1e-12);
+  checkExactZero("skyframe: 前方極は光行差不動点 aberrate(0,−η)=0",
+                 P.aberrateV(0.0, -12.0));
+  {
+    let ok = ST.length > 1000;
+    for (const s of ST) {
+      if (!(s[0] >= 0 && s[0] < 360 && s[1] >= -90 && s[1] <= 90 &&
+            s[2] <= 6.505)) { ok = false; break; }
+    }
+    results.push({ name: `stars.js: N=${ST.length}・RA/Dec/Vmag≤6.5 域内`,
+                   got: ST.length, want: ">1000", rel: 0, pass: ok });
+  }
 
   return results;
 }

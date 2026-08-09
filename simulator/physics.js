@@ -107,6 +107,27 @@ const PHYS = (() => {
   const beta = (eta) => Math.tanh(eta);
   const gammaOf = (eta) => Math.cosh(eta);
 
+  // ---- 二重時計(乗員固有時間 τ / 出発系時間 t、Phase 4 改訂 (d)) ----
+  // バーン: dη = (λ/R)dτ、dt = cosh η·dτ → Δτ = RΔη/λ、Δt = (R/λ)Δ(sinh η)
+  // 巡航: dτ/dt = 1/cosh η → τ = d/sinh η、t = d/tanh η(単位はすべて R)
+  const LY_M = 9460730472580800;   // m(厳密: c·Julian yr。units.py LY_SI と同値)
+  const YEAR_S = 31557600;         // s(厳密: 365.25 d。units.py YEAR_SI と同値)
+  const tauBurnR = (deta, lam = LAMBDA_BURN) => deta / lam;
+  const tEarthBurnR = (eta0, eta1, lam = LAMBDA_BURN) =>
+    Math.abs(Math.sinh(eta1) - Math.sinh(eta0)) / lam;
+  const tauCruiseR = (dR, eta) => dR / Math.sinh(eta);
+  const tEarthCruiseR = (dR, eta) => dR / Math.tanh(eta);
+  // M31 到着ミッション合成(カタログ mission grid の u 列と同じ構成:
+  // 加速バーン+巡航+減速バーン。R_m はシェル半径のシナリオ仮定)
+  const missionCruiseDistR = (etaC, dLy, lam = LAMBDA_BURN, R_m = 1000) =>
+    dLy * LY_M / R_m - 2 * (Math.cosh(etaC) - 1) / lam;
+  const missionTauR = (etaC, dLy, lam = LAMBDA_BURN, R_m = 1000) =>
+    2 * etaC / lam + tauCruiseR(missionCruiseDistR(etaC, dLy, lam, R_m), etaC);
+  const missionTEarthR = (etaC, dLy, lam = LAMBDA_BURN, R_m = 1000) =>
+    2 * Math.sinh(etaC) / lam +
+    tEarthCruiseR(missionCruiseDistR(etaC, dLy, lam, R_m), etaC);
+  const secondsFromR = (tR, R_m = 1000) => tR * R_m / C_SI;
+
   // ---- 計器盤用カタログ量(HUD の数値はすべてここ経由 — ダミー禁止) ----
   const M31_DIST_LY = 2.54e6;          // conventions §7a(カタログ固定値)
   const TAU_LIFETIME_YR = 50.0;        // 乗員寿命等高線の仕様値
@@ -122,6 +143,8 @@ const PHYS = (() => {
     invDopplerV, aberrateV, observedFluxV, dtObsDu, deltaHeadOn,
     flashLaw, flashDecayScale, C_SI, flashDecaySeconds, beta, gammaOf,
     M31_DIST_LY, TAU_LIFETIME_YR, etaFifty, seatPrice,
+    LY_M, YEAR_S, tauBurnR, tEarthBurnR, tauCruiseR, tEarthCruiseR,
+    missionCruiseDistR, missionTauR, missionTEarthR, secondsFromR,
   };
 })();
 

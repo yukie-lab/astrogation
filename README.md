@@ -57,7 +57,9 @@ paper, Methods).
 
 `simulator/` contains a Three.js voyage sequence built on the certified
 catalog (visualization artwork; scientific claims live in the paper and
-data — see `simulator/README.md`).
+data — see `simulator/README.md`). English UI by default; Japanese via
+`?lang=ja` or the on-screen toggle. `index.html` at the repository root
+is the landing page (English-first, Japanese at `index_ja.html`).
 
 ## License and citation
 

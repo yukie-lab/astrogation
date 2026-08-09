@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ASTROGATION — M31 への航海(認証済みカタログの可視化)</title>
+<title>ASTROGATION — Voyage to M31 (visualization of the certified catalog)</title>
 <style>
   :root {
     --ink: #dfe6ee; --ink-dim: #8b97a5; --accent: #7dd3fc;
@@ -104,55 +104,60 @@
 <div id="caption"></div>
 
 <aside id="panel">
-  <h2>航 路 儀</h2>
-  <div class="row"><span>η(ラピディティ)</span><b class="mono" id="hud-eta">—</b></div>
-  <div class="row"><span>β = tanh η</span><b class="mono" id="hud-beta">—</b></div>
-  <div class="row"><span>m / m₀</span><b class="mono" id="hud-m">—</b></div>
-  <div class="row"><span>x = 2m/R</span><b class="mono" id="hud-x">—</b></div>
+  <h2 id="panel-title">NAVIGATION</h2>
+  <div class="row"><span id="r-eta">η (rapidity)</span><b class="mono" id="hud-eta">—</b></div>
+  <div class="row"><span id="r-beta">β = tanh η</span><b class="mono" id="hud-beta">—</b></div>
+  <div class="row" id="row-tau"><span id="r-tau">Ship time (crew)</span><b class="mono" id="hud-tau">—</b></div>
+  <div class="row" id="row-tearth"><span id="r-tearth">Earth time (departure frame)</span><b class="mono" id="hud-tearth">—</b></div>
+  <div class="row"><span id="r-m">m / m₀</span><b class="mono" id="hud-m">—</b></div>
+  <div class="row"><span id="r-x">x = 2m/R</span><b class="mono" id="hud-x">—</b></div>
   <div class="sep"></div>
-  <div class="row"><span>λ = aR(現在)</span><b class="mono" id="hud-lam">—</b></div>
+  <div class="row"><span id="r-lam">λ = aR (current)</span><b class="mono" id="hud-lam">—</b></div>
   <div id="tierbar">
     <div class="tick" style="background:#f87171" id="tick-floor"></div>
     <div class="tick" style="background:#7dd3fc" id="tick-eff"></div>
     <div class="tick" style="background:#a5b4fc" id="tick-ceil"></div>
     <div class="lam" id="lam-dot"></div>
   </div>
-  <div id="tierbar-legend"><span>0</span><span>フロンティア三層</span><span>0.40</span></div>
+  <div id="tierbar-legend"><span>0</span><span id="r-tiermid">three-tier frontier</span><span>0.40</span></div>
   <div class="sep"></div>
-  <div class="row"><span>座席の値段 e²η</span><b class="mono" id="hud-price">—</b></div>
+  <div class="row"><span id="r-price">seat price e²η</span><b class="mono" id="hud-price">—</b></div>
   <div id="ladder"></div>
   <div class="sep"></div>
-  <div class="row"><span>目的地 M31</span><b class="mono" id="hud-dist">—</b></div>
-  <div class="row"><span>η₅₀(片道・寿命50年)</span><b class="mono" id="hud-eta50">—</b></div>
-  <div class="row"><span>予測 m_f/m₀</span><b class="mono" id="hud-mf">—</b></div>
+  <div class="row"><span id="r-dist">destination M31</span><b class="mono" id="hud-dist">—</b></div>
+  <div class="row"><span id="r-eta50">η₅₀ (one-way, 50-yr life)</span><b class="mono" id="hud-eta50">—</b></div>
+  <div class="row"><span id="r-mf">predicted m_f/m₀</span><b class="mono" id="hud-mf">—</b></div>
 </aside>
 
 <div id="flashmeter">
-  <div class="frow"><span>受信フラックス F·D²(対数計)</span><b class="mono" id="fm-val">—</b></div>
+  <div class="frow"><span id="fm-l-flux">received flux F·D² (log meter)</span><b class="mono" id="fm-val">—</b></div>
   <div class="fbar"><div id="fm-bar"></div></div>
-  <div class="frow"><span>減衰尺(R = 1 km 仮定)</span><b class="mono" id="fm-tau">—</b></div>
+  <div class="frow"><span id="fm-l-tau">decay scale (R = 1 km assumed)</span><b class="mono" id="fm-tau">—</b></div>
 </div>
 
 <div id="controls">
-  <button id="btn-play">⏸ 一時停止</button>
-  <button data-act="0">1 出発</button>
-  <button data-act="1">2 巡航</button>
-  <button data-act="2">3 反転</button>
-  <button data-act="3">4 減速</button>
-  <button data-act="4">5 到着</button>
+  <button id="btn-play">⏸ Pause</button>
+  <button data-act="0">1 Depart</button>
+  <button data-act="1">2 Cruise</button>
+  <button data-act="2">3 Turnaround</button>
+  <button data-act="3">4 Decelerate</button>
+  <button data-act="4">5 Arrive</button>
+  <button id="btn-lang">日本語</button>
 </div>
 <div id="progress"></div>
 
 <div id="boundary">
-  物理: <span class="mono">physics.js</span>(P4-C20 <span id="c20-badge">…</span>)/
-  色・ペーシングは演出(<span class="mono">README</span> に境界宣言)
+  physics: <span class="mono">physics.js</span> (P4-C20 <span id="c20-badge">…</span>) /
+  color &amp; pacing are presentation (boundary declared in <span class="mono">README</span>)
 </div>
 
-<script src="physics.js"></script>
-<script src="test_snapshot.js"></script>
+<script src="physics.js?v=f9039d7d"></script>
+<script src="skyframe.js?v=255da882"></script>
+<script src="stars.js?v=2fca32dc"></script>
+<script src="test_snapshot.js?v=a39c7c6c"></script>
 <script type="importmap">
 { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" } }
 </script>
-<script type="module" src="main.js"></script>
+<script type="module" src="main.js?v=3885f9be"></script>
 </body>
 </html>

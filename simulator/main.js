@@ -7,7 +7,8 @@
  *   - 前方ヌル: ローブの輝度・粒子密度は飽和パターン (1−cosϑ) に比例
  *     (ϑ=0 で厳密ゼロ)。ダミー発光なし
  *   - ローブの向きは thrust 履歴(幕1-2: 後方 / 幕3-4: 前方)
- *   - 星野の光行差・ドップラーは η から厳密に計算(誇張倍率 1.0)
+ *   - 星野は実天球(BSC5 V≤6.5、stars.js)。光行差・ドップラーは η から
+ *     厳密に計算(誇張倍率 1.0)。船首方位は M31 実座標(skyframe.js)
  *   - 輝度は対数圧縮で表示(README に宣言。色は演出であり物理主張ではない)
  *   - 実時間演出は 出発・反転・到着 の三箇所のみ、他は対数圧縮
  */
@@ -18,13 +19,13 @@ const P = window.PHYS;
 /* ================= C20 バッジ(起動時に実認証を走らせる) ================= */
 const rs = window.SNAPSHOT_RUN();
 const c20Fails = rs.filter(r => !r.pass).length;
-const badge = document.getElementById("c20-badge");
-badge.textContent = c20Fails === 0 ? `${rs.length}/${rs.length} 緑` : `${c20Fails} 赤`;
-badge.className = c20Fails === 0 ? "green" : "red";
+const C20_OK = c20Fails === 0;
+const C20_TXT = { ja: C20_OK ? `${rs.length}/${rs.length} 緑` : `${c20Fails} 赤`,
+                  en: C20_OK ? `${rs.length}/${rs.length} green` : `${c20Fails} red` };
 
 /* ================= 演出定数(自由領域) ================= */
 const CFG = {
-  starCount: 4200, skyR: 820,
+  skyR: 820,
   exhaustCount: 900, lobeLen: 7.0,
   lumFloorLog: Math.log(1e-33), lumCeilLog: Math.log(0.57), // L 表示正規化域
   flashLogFloor: -9,                                        // F 対数計の下端
@@ -33,11 +34,11 @@ const CFG = {
 
 /* ================= 五幕タイムライン ================= */
 const ACTS = [
-  { no: "ACT I",   name: "出 発", dur: 15 },
-  { no: "ACT II",  name: "巡 航", dur: 30 },
-  { no: "ACT III", name: "反 転", dur: 7 },
-  { no: "ACT IV",  name: "減 速", dur: 26 },
-  { no: "ACT V",   name: "到 着 / 視 点 反 転", dur: 30 },
+  { no: "ACT I",   ja: "出 発", en: "DEPARTURE", dur: 15 },
+  { no: "ACT II",  ja: "巡 航", en: "CRUISE", dur: 30 },
+  { no: "ACT III", ja: "反 転", en: "TURNAROUND", dur: 7 },
+  { no: "ACT IV",  ja: "減 速", en: "DECELERATION", dur: 26 },
+  { no: "ACT V",   ja: "到 着 / 視 点 反 転", en: "ARRIVAL / POV REVERSAL", dur: 30 },
 ];
 const TOTAL = ACTS.reduce((s, a) => s + a.dur, 0);
 
@@ -90,21 +91,85 @@ function stateAt(act, t) {
 
 /* ================= 字幕 ================= */
 const CAPTIONS = [
-  { a: 0, t0: 1.0, t1: 5.5,  txt: "アンドロメダ座大銀河 M31 — 二百五十万光年。" },
-  { a: 0, t0: 7.0, t1: 13.5, txt: "飽和バーン点火。質量を光に変えて進む。燃えるのは後方だけ。" },
-  { a: 1, t0: 1.0, t1: 6.0,  txt: "η が昇る。星野が前方へ絞られていく。" },
-  { a: 1, t0: 8.5, t1: 14.0, txt: "正面は、厳密に暗い。加速するワープ船は前から見えない。" },
-  { a: 1, t0: 21.0, t1: 27.0, txt: "座席の値段は e²ᵑ で嵩む。それでも星は近づく。" },
-  { a: 2, t0: 0.6, t1: 6.2,  txt: "反転。ここからは、目的地に向かって焚く。" },
-  { a: 3, t0: 2.0, t1: 8.0,  txt: "質量は e⁻⁷² へ。フロンティアは広がり続ける。" },
-  { a: 3, t0: 15.0, t1: 21.0, txt: "船はもう、ほとんど光だけでできている。" },
-  { a: 4, t0: 0.4, t1: 3.6,  txt: "到着。M31 の静かな重力場へ。" },
-  { a: 4, t0: 5.0, t1: 11.5, txt: "視点反転 — 目的地の観測者は、二百五十万年、何も見ていない。" },
-  { a: 4, t0: 13.0, t1: 17.5, txt: "そして —" },
-  { a: 4, t0: 18.5, t1: 23.5, txt: "F ∝ e⁷ᵑ⁻⁷² 。ピコ秒の閃光だけが、航海のすべてを語る。" },
+  { a: 0, t0: 1.0, t1: 5.5,
+    ja: "アンドロメダ座大銀河 M31 — 二百五十万光年。",
+    en: "The Andromeda galaxy, M31 — two and a half million light-years." },
+  { a: 0, t0: 7.0, t1: 13.5,
+    ja: "飽和バーン点火。質量を光に変えて進む。燃えるのは後方だけ。",
+    en: "Saturated burn ignition. Mass becomes light; only the rear burns." },
+  { a: 1, t0: 1.0, t1: 6.0,
+    ja: "η が昇る。星野が前方へ絞られていく。",
+    en: "η climbs. The starfield funnels forward." },
+  { a: 1, t0: 8.5, t1: 14.0,
+    ja: "正面は、厳密に暗い。加速するワープ船は前から見えない。",
+    en: "Dead ahead is exactly dark — the forward null. An accelerating warp shell cannot be seen from the front." },
+  { a: 1, t0: 21.0, t1: 27.0,
+    ja: "乗客を運ぶ代価は e²ᵑ で嵩む。それでも星は近づく。",
+    en: "The seat price climbs as e²ᵑ. And still the stars draw nearer." },
+  { a: 2, t0: 0.6, t1: 6.2,
+    ja: "反転。ここからは、目的地に向かって焚く。",
+    en: "Turnaround. From here, the exhaust burns toward the destination." },
+  { a: 3, t0: 2.0, t1: 8.0,
+    ja: "質量は e⁻⁷² へ。フロンティアは広がり続ける。",
+    en: "Mass falls toward e⁻⁷². The frontier keeps widening." },
+  { a: 3, t0: 15.0, t1: 21.0,
+    ja: "船はもう、ほとんど光だけでできている。",
+    en: "The ship is, by now, made almost entirely of light." },
+  { a: 4, t0: 0.4, t1: 3.6,
+    ja: "到着。M31 の静かな重力場へ。",
+    en: "Arrival. Into the quiet gravity of M31." },
+  { a: 4, t0: 5.0, t1: 11.5,
+    ja: "視点反転 — 目的地の観測者は、二百五十万年、何も見ていない。",
+    en: "Point of view reversal — for 2.5 million years, the destination observer has seen nothing." },
+  { a: 4, t0: 13.0, t1: 17.5, ja: "そして —", en: "And then —" },
+  { a: 4, t0: 18.5, t1: 23.5,
+    ja: "F ∝ e⁷ᵑ⁻⁷² 。ピコ秒の閃光だけが、航海のすべてを語る。",
+    en: "F ∝ e⁷ᵑ⁻⁷². The deceleration flash — a picosecond of light that tells the whole voyage." },
   { a: 4, t0: 25.0, t1: 29.6,
-    txt: "加速するワープ船は正面から見えない。到着だけが、閃光として届く。" },
+    ja: "加速するワープ船は正面から見えない。到着だけが、閃光として届く。",
+    en: "An accelerating warp shell cannot be seen head-on. Only the arrival is delivered — as a flash." },
 ];
+
+/* ================= UI 文言辞書(数値はすべて physics.js — 文言のみ) ================= */
+const I18N = {
+  ja: {
+    play: "⏵ 再生", pause: "⏸ 一時停止",
+    actBtns: ["1 出発", "2 巡航", "3 反転", "4 減速", "5 到着"],
+    langBtn: "EN",
+    panelTitle: "航 路 儀",
+    rows: { eta: "η(ラピディティ)", beta: "β = tanh η",
+            tau: "船内時間(乗員)", tearth: "地球時間(出発系)",
+            m: "m / m₀",
+            x: "x = 2m/R", lam: "λ = aR(現在)", tiermid: "フロンティア三層",
+            price: "座席係数 e²η", dist: "目的地 M31",
+            eta50: "η₅₀(片道・寿命50年)", mf: "予測 m_f/m₀" },
+    dur: { us: " µs", ms: " ms", s: " 秒", h: " 時間", d: " 日", yr: " 年" },
+    fmFlux: "受信フラックス F·D²(対数計)", fmTau: "減衰尺(R = 1 km 仮定)",
+    years: (y) => `経過 ${y} 年 … 受信フラックス 0`,
+    boundary: (b) => `物理: <span class="mono">physics.js</span>(P4-C20 ` +
+      `<span id="c20-badge" class="${b.cls}">${b.txt}</span>)/ ` +
+      `色・ペーシングは演出(<span class="mono">README</span> に境界宣言)`,
+  },
+  en: {
+    play: "⏵ Play", pause: "⏸ Pause",
+    actBtns: ["1 Depart", "2 Cruise", "3 Turnaround", "4 Decelerate", "5 Arrive"],
+    langBtn: "日本語",
+    panelTitle: "NAVIGATION",
+    rows: { eta: "η (rapidity)", beta: "β = tanh η",
+            tau: "Ship time (crew)", tearth: "Earth time (departure frame)",
+            m: "m / m₀",
+            x: "x = 2m/R", lam: "λ = aR (current)", tiermid: "three-tier frontier",
+            price: "seat price e²η", dist: "destination M31",
+            eta50: "η₅₀ (one-way, 50-yr life)", mf: "predicted m_f/m₀" },
+    dur: { us: " µs", ms: " ms", s: " s", h: " h", d: " d", yr: " yr" },
+    fmFlux: "received flux F·D² (log meter)", fmTau: "decay scale (R = 1 km assumed)",
+    years: (y) => `${y} years elapsed … received flux 0`,
+    boundary: (b) => `physics: <span class="mono">physics.js</span> (P4-C20 ` +
+      `<span id="c20-badge" class="${b.cls}">${b.txt}</span>) / ` +
+      `color &amp; pacing are presentation (boundary declared in ` +
+      `<span class="mono">README</span>)`,
+  },
+};
 
 /* ================= シーン ================= */
 const stage = document.getElementById("stage");
@@ -119,28 +184,46 @@ scene.background = new THREE.Color(CFG.colBg);
 const camera = new THREE.PerspectiveCamera(58, innerWidth / innerHeight, 0.05, 4000);
 scene.add(new THREE.AmbientLight(0x404a5a, 0.5));
 
-/* ---- 星野(InstancedMesh、光行差・ドップラーは η から厳密) ---- */
-// v = sin²(θ/2) を一様乱数に取ると方向は球面一様になる
-const stars = { v0: [], phi: [], lum: [], tint: [] };
-for (let i = 0; i < CFG.starCount; i++) {
-  stars.v0.push(Math.random());
-  stars.phi.push(Math.random() * Math.PI * 2);
-  stars.lum.push(0.35 + 0.65 * Math.pow(Math.random(), 2.2));
-  const w = Math.random();                  // 温度前処理(演出)
-  stars.tint.push(new THREE.Color().setHSL(
-    w < 0.6 ? 0.60 : (w < 0.85 ? 0.12 : 0.02),
-    0.25 * Math.random(), 0.92));
+/* ---- 星野(InstancedMesh、実天球 BSC5 V≤6.5、光行差・ドップラーは η から厳密) ---- */
+// stars.js(生成物)の RA/Dec を skyframe.js で船首フレーム {v, φ} に変換。
+// 等級→輝度・B−V→色温度の写像は演出裁量(README 宣言)
+function bvColor(bv) {
+  const stops = [[-0.4, [0.62, 0.74, 1.00]], [0.0, [0.80, 0.88, 1.00]],
+                 [0.4, [1.00, 0.98, 0.93]], [0.8, [1.00, 0.90, 0.72]],
+                 [1.4, [1.00, 0.80, 0.55]], [2.0, [1.00, 0.70, 0.42]]];
+  const t = Math.max(stops[0][0], Math.min(stops[stops.length - 1][0], bv));
+  for (let k = 0; k < stops.length - 1; k++) {
+    if (t <= stops[k + 1][0]) {
+      const w = (t - stops[k][0]) / (stops[k + 1][0] - stops[k][0]);
+      const A = stops[k][1], B = stops[k + 1][1];
+      return new THREE.Color(lerp(A[0], B[0], w), lerp(A[1], B[1], w),
+                             lerp(A[2], B[2], w));
+    }
+  }
+  return new THREE.Color(1, 1, 1);
+}
+const CAT = window.STARS;
+const N_STARS = CAT.length;
+const stars = { v0: [], phi: [], lum: [], size: [], tint: [] };
+for (const [ra, dec, vmag, bv] of CAT) {
+  const sf = window.SKY.shipFrameVPhi(ra, dec);
+  stars.v0.push(sf.v);
+  stars.phi.push(sf.phi);
+  // 等級(対数輝度)→ 表示係数(圧縮写像、演出)
+  stars.lum.push(0.06 + 0.94 * Math.pow(clamp01((6.6 - vmag) / 8.1), 1.35));
+  stars.size.push(1.15 + 2.5 * Math.pow(clamp01((6.5 - vmag) / 8.0), 1.6));
+  stars.tint.push(bvColor(bv));
 }
 const starGeo = new THREE.SphereGeometry(1.0, 6, 4);
 const starMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-const starMesh = new THREE.InstancedMesh(starGeo, starMat, CFG.starCount);
+const starMesh = new THREE.InstancedMesh(starGeo, starMat, N_STARS);
 starMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
 scene.add(starMesh);
 const dummy = new THREE.Object3D();
 const cTmp = new THREE.Color();
 
 function updateStars(eta) {
-  for (let i = 0; i < CFG.starCount; i++) {
+  for (let i = 0; i < N_STARS; i++) {
     // 見かけ方向: v_app = aberrate(v_lab, −η)(前方収束)。誇張倍率 1.0
     const vApp = P.aberrateV(stars.v0[i], -eta);
     const delta = P.invDopplerV(vApp, -eta);      // δ = γ(1+βμ_app)
@@ -150,8 +233,7 @@ function updateStars(eta) {
     dummy.position.set(CFG.skyR * sinT * Math.cos(ph),
                        CFG.skyR * sinT * Math.sin(ph),
                        CFG.skyR * cosT);
-    const sc = 1.5 + 1.3 * stars.lum[i];
-    dummy.scale.setScalar(sc);
+    dummy.scale.setScalar(stars.size[i]);
     dummy.updateMatrix();
     starMesh.setMatrixAt(i, dummy.matrix);
     // 輝度: 物理は δ⁴ — 表示は対数圧縮(README 宣言)。色相は演出
@@ -298,13 +380,13 @@ scene.add(m31);
 const mw = new THREE.Sprite(new THREE.SpriteMaterial({
   map: galaxyTexture("rgba(255,246,225,0.9)", "rgba(210,190,255,0.30)"),
   transparent: true, depthWrite: false }));
-mw.position.set(0, 4, CFG.skyR * 0.985); mw.scale.set(46, 46, 1);
+mw.position.set(0, 4, -CFG.skyR * 0.985); mw.scale.set(46, 46, 1);
 mw.visible = false;
 scene.add(mw);
 const flash = new THREE.Sprite(new THREE.SpriteMaterial({
   map: flareTexture(), transparent: true, depthWrite: false,
   blending: THREE.AdditiveBlending }));
-flash.position.set(0, 4, CFG.skyR * 0.97);
+flash.position.set(0, 4, -CFG.skyR * 0.97);
 flash.scale.set(0.001, 0.001, 1); flash.visible = false;
 scene.add(flash);
 
@@ -314,8 +396,8 @@ function camKeys(act, t, st) {
   // 各幕のキーフレーム(pos, look)。返り値 {pos, look}
   if (act === 0) {
     const u = smooth(t / ACTS[0].dur);
-    return { pos: V(lerp(6.4, 5.2, u), lerp(2.6, 1.9, u), lerp(-8.2, -6.6, u)),
-             look: V(0, 0, -1.5) };
+    return { pos: V(lerp(5.6, 4.8, u), lerp(2.0, 1.6, u), lerp(-9.0, -7.6, u)),
+             look: V(1.0, 0.35, 20) };
   }
   if (act === 1) {
     if (t < 8) {          // 後方→機首へ回り込む
@@ -350,7 +432,7 @@ function camKeys(act, t, st) {
     return { pos: V(lerp(6.6, 7.8, u), lerp(2.2, 2.7, u), lerp(4.6, 6.4, u)),
              look: V(0, 0, 0), cut: t < 0.12 };
   }
-  return { pos: V(0, 0, 0), look: V(0, 4, CFG.skyR), cut: t < 4.15 };
+  return { pos: V(0, 0, 0), look: V(0, 4, -CFG.skyR), cut: t < 4.15 };
 }
 
 /* ================= HUD(全数値 physics.js) ================= */
@@ -405,6 +487,47 @@ function updateHUD(st) {
     el.classList.toggle("hot", i === best && st.mode === "ship"));
 }
 
+/* ---- 二重時計(改訂 (d)) — 値はすべて physics.js の閉形式 ----
+ * ミッション写像(演出ペーシング、README 宣言):
+ *   幕1-2前半 = 加速バーン(Δτ = RΔη/λ)/ 幕2後半(t 25-30 s)= 巡航
+ *   (η=12 閉形式、対数圧縮で計上)/ 幕3 = 反転(瞬時)/ 幕4 = 減速バーン。
+ *   完走合計はカタログ u 列と C20 で照合済み。視点反転後は非表示。 */
+const R_SCN = 1000;   // R = 1 km(README のシナリオ仮定と同一)
+function clocksAt(act, t, st) {
+  if (st.mode === "dest") return null;
+  const lam = P.LAMBDA_BURN;
+  const dCr = P.missionCruiseDistR(12, P.M31_DIST_LY, lam, R_SCN);
+  let tauR, tER;
+  if (act <= 1) {
+    tauR = P.tauBurnR(st.eta, lam);
+    tER = P.tEarthBurnR(0, st.eta, lam);
+    if (act === 1) {
+      const w = smooth((t - 25) / 5);
+      tauR += w * P.tauCruiseR(dCr, 12);
+      tER += w * P.tEarthCruiseR(dCr, 12);
+    }
+  } else {
+    const preTau = P.tauBurnR(12, lam) + P.tauCruiseR(dCr, 12);
+    const preTE = P.tEarthBurnR(0, 12, lam) + P.tEarthCruiseR(dCr, 12);
+    if (act === 2) { tauR = preTau; tER = preTE; }
+    else {
+      tauR = preTau + P.tauBurnR(12 - st.eta, lam);
+      tER = preTE + P.tEarthBurnR(st.eta, 12, lam);
+    }
+  }
+  return { tauS: P.secondsFromR(tauR, R_SCN), tES: P.secondsFromR(tER, R_SCN) };
+}
+function fmtDur(sec, lang) {
+  const u = I18N[lang].dur;
+  if (sec < 1e-3) return (sec * 1e6).toFixed(1) + u.us;
+  if (sec < 1) return (sec * 1e3).toFixed(1) + u.ms;
+  if (sec < 120) return sec.toFixed(2) + u.s;
+  if (sec < 172800) return (sec / 3600).toFixed(1) + u.h;
+  if (sec < 2 * P.YEAR_S) return (sec / 86400).toFixed(1) + u.d;
+  const yr = sec / P.YEAR_S;
+  return (yr >= 1e5 ? sci(yr) : yr.toFixed(2)) + u.yr;
+}
+
 /* ---- フラッシュ計(幕 5)---- */
 const fmEl = $("flashmeter");
 function updateFlash(st) {
@@ -441,21 +564,46 @@ function actOf(ph) {
   }
   return { i: ACTS.length - 1, t: ACTS[ACTS.length - 1].dur - 1e-4 };
 }
+// 初期言語は英語(論文の英語正本主義と整合)。?lang=ja と画面トグルのみで
+// 日本語化する — ブラウザ言語の自動判定はしない(挙動を決定的に保つ)
+let LANG = qp.get("lang") === "ja" ? "ja" : "en";
+
+function applyLang() {
+  const d = I18N[LANG];
+  document.documentElement.lang = LANG;
+  $("btn-play").textContent = playing ? d.pause : d.play;
+  document.querySelectorAll("#controls button[data-act]").forEach(b =>
+    b.textContent = d.actBtns[+b.dataset.act]);
+  $("btn-lang").textContent = d.langBtn;
+  $("panel-title").textContent = d.panelTitle;
+  for (const k of ["eta", "beta", "tau", "tearth", "m", "x", "lam", "tiermid",
+                   "price", "dist", "eta50", "mf"]) {
+    $("r-" + k).textContent = d.rows[k];
+  }
+  $("fm-l-flux").textContent = d.fmFlux;
+  $("fm-l-tau").textContent = d.fmTau;
+  document.getElementById("boundary").innerHTML =
+    d.boundary({ txt: C20_TXT[LANG], cls: C20_OK ? "green" : "red" });
+  curActShown = -1; curCap = "";       // タイトル・字幕を再描画させる
+}
+
 $("btn-play").onclick = () => {
   playing = !playing;
-  $("btn-play").textContent = playing ? "⏸ 一時停止" : "⏵ 再生";
+  $("btn-play").textContent = playing ? I18N[LANG].pause : I18N[LANG].play;
 };
 document.querySelectorAll("#controls button[data-act]").forEach(b => {
   b.onclick = () => {
     playhead = ACTS.slice(0, +b.dataset.act).reduce((s, a) => s + a.dur, 0);
-    playing = true; $("btn-play").textContent = "⏸ 一時停止";
+    playing = true; $("btn-play").textContent = I18N[LANG].pause;
   };
 });
+$("btn-lang").onclick = () => { LANG = LANG === "ja" ? "en" : "ja"; applyLang(); };
 
 const titleNo = document.querySelector("#act-title .no");
 const titleName = document.querySelector("#act-title .name");
 const capEl = $("caption");
 let curActShown = -1, curCap = "";
+applyLang();
 
 /* ================= メインループ ================= */
 function frame(now) {
@@ -471,16 +619,17 @@ function frame(now) {
     actChanged = true;
     curActShown = act;
     titleNo.textContent = ACTS[act].no;
-    titleName.textContent = ACTS[act].name;
+    titleName.textContent = ACTS[act][LANG];
     document.querySelectorAll("#controls button[data-act]").forEach(b =>
       b.classList.toggle("on", +b.dataset.act === act));
   }
   // 字幕
   let cap = "";
-  for (const c of CAPTIONS) if (c.a === act && t >= c.t0 && t <= c.t1) cap = c.txt;
+  for (const c of CAPTIONS) if (c.a === act && t >= c.t0 && t <= c.t1) cap = c[LANG];
   if (st.mode === "dest" && !st.replay && st.wait !== undefined && !cap) {
     const yr = st.wait * P.M31_DIST_LY;
-    cap = "経過 " + Math.round(yr).toLocaleString("ja-JP") + " 年 … 受信フラックス 0";
+    cap = I18N[LANG].years(
+      Math.round(yr).toLocaleString(LANG === "ja" ? "ja-JP" : "en-US"));
   }
   if (cap !== curCap) {
     curCap = cap;
@@ -495,7 +644,7 @@ function frame(now) {
   updateStars(shipMode ? st.eta : 0);
   if (shipMode) {
     updateExhaust(st, dt);
-    const gs = lerp(22, 190, smooth(Math.pow(st.spent / 24, 0.55)));
+    const gs = lerp(30, 190, smooth(Math.pow(st.spent / 24, 0.55)));
     m31.scale.set(gs, gs, 1);
     ring.rotation.z += dt * 0.15;
   } else {
@@ -503,6 +652,14 @@ function frame(now) {
   }
   updateFlash(st);
   updateHUD(st);
+  const clk = clocksAt(act, t, st);
+  const showClk = clk !== null;
+  $("row-tau").style.display = showClk ? "flex" : "none";
+  $("row-tearth").style.display = showClk ? "flex" : "none";
+  if (showClk) {
+    $("hud-tau").textContent = fmtDur(clk.tauS, LANG);
+    $("hud-tearth").textContent = fmtDur(clk.tES, LANG);
+  }
 
   // カメラ
   const ck = camKeys(act, t, st);
